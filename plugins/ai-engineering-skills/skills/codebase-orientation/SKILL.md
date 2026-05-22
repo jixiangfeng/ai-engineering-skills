@@ -44,9 +44,20 @@ Orientation artifacts should be reusable by later review or delivery work:
 Before writing artifacts:
 - confirm current `cwd` and project root
 - inspect whether the worktree already has changes if the result may hand off to implementation
+- locate or create the current run directory
+- read `orientation-workflow-state.md` if it exists
+- read the latest required stage document before continuing
 - create artifacts under the project root, not under the skill directory
 - keep the skill read-only unless the human explicitly changes the task
 
+## Resume Protocol
+
+When resuming after interruption, compaction, or a new agent turn:
+1. read `orientation-workflow-state.md`
+2. read the latest stage document listed there
+3. inspect current git diff/status if later handoff may affect implementation
+4. state the current stage, blockers, and whether code edits are allowed
+5. continue only from the recorded next action
 
 ## Filename Compatibility
 
@@ -63,6 +74,7 @@ Project root resolution:
 
 Required files:
 
+0. `orientation-workflow-state.md`
 1. `01-orientation-scope.md`
 2. `02-orientation-project-map.md`
 3. `03-orientation-business-flow.md`
@@ -74,6 +86,8 @@ Required files:
 9. `orientation-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
 
 Use the templates in `assets/orientation-templates/`.
+
+After each stage document is written or updated, update `orientation-workflow-state.md` with current stage, status, next action, and whether code edits are allowed.
 
 ## Stage 1 — Scope
 

@@ -24,9 +24,21 @@ Use this skill when the user asks to investigate an error, failing test, startup
 
 Before writing artifacts:
 - confirm current `cwd` and project root
-- inspect whether the worktree already has changes if the result may hand off to implementation
+- inspect whether the worktree already has changes if reproduction or prior fix attempts may matter
+- locate or create the current run directory
+- read `debug-workflow-state.md` if it exists
+- read the latest required stage document before continuing
 - create artifacts under the project root, not under the skill directory
 - keep the skill read-only unless the human explicitly changes the task
+
+## Resume Protocol
+
+When resuming after interruption, compaction, or a new agent turn:
+1. read `debug-workflow-state.md`
+2. read the latest stage document listed there
+3. inspect current git diff/status if any attempted fix or reproduction artifact exists
+4. state the current stage, blockers, whether code edits are allowed, and whether a handoff already exists
+5. continue only from the recorded next action
 
 ## Filename Compatibility
 
@@ -37,6 +49,7 @@ New runs must use the prefixed artifact filenames documented above. If an older 
 Create artifacts under `<project-root>/workflow/debug/<YYYY-MM-DD>-<slug>/`.
 
 Required files:
+0. `debug-workflow-state.md`
 1. `01-debug-scope.md`
 2. `02-debug-reproduction.md`
 3. `03-debug-evidence.md`
@@ -48,6 +61,8 @@ Required files:
 9. `debug-to-delivery-handoff.md` (optional, when implementation is needed)
 
 Use templates in `assets/debug-templates/`.
+
+After each stage document is written or updated, update `debug-workflow-state.md` with current stage, status, next action, reproduction status, and whether code edits are allowed.
 
 ## Workflow
 
