@@ -46,9 +46,6 @@ skills/
     SKILL.md
     assets/
     references/
-scripts/
-  install-codex.sh
-  install-claude.sh
 .claude-plugin/
   marketplace.json
 .agents/
@@ -68,13 +65,7 @@ plugins/
 
 ## Codex 使用
 
-安装到本机 Codex：
-
-```bash
-./scripts/install-codex.sh
-```
-
-默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
+作为 Codex plugin marketplace 安装。发布到 GitHub 后，在 Codex 里添加 marketplace 并安装 `ai-engineering-skills` plugin。
 
 安装后可在 Codex 中使用：
 
@@ -88,26 +79,14 @@ $api-contract-design
 $data-migration-planning
 ```
 
-也可以作为 Codex plugin marketplace 安装。发布到 GitHub 后，在 Codex 里添加 marketplace 并安装 `ai-engineering-skills` plugin。
-
 ## Claude 使用
 
-安装到本机 Claude：
-
-```bash
-./scripts/install-claude.sh
-```
-
-默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
-
-也可以作为 Claude Code plugin marketplace 安装。发布到 GitHub 后执行：
+作为 Claude Code plugin marketplace 安装。发布到 GitHub 后执行：
 
 ```bash
 claude plugin marketplace add <owner>/ai-engineering-skills
 claude plugin install ai-engineering-skills@ai-engineering-skills
 ```
-
-本地开发时仍建议使用 `./scripts/install-claude.sh`，因为它会直接链接到当前工作区，修改 skill 后不需要重新安装 plugin。
 
 安装后在 Claude 中按 skill 名称调用，或在提示词中明确引用：
 

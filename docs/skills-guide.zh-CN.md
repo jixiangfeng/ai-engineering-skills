@@ -20,13 +20,7 @@
 
 ### Codex
 
-在本仓库根目录执行：
-
-```bash
-./scripts/install-codex.sh
-```
-
-默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
+通过 Codex plugin marketplace 安装 `ai-engineering-skills` plugin。
 
 调用示例：
 
@@ -41,13 +35,12 @@ $data-migration-planning 规划这次表结构和数据迁移
 
 ### Claude
 
-在本仓库根目录执行：
+通过 Claude Code plugin marketplace 安装：
 
 ```bash
-./scripts/install-claude.sh
+claude plugin marketplace add <owner>/ai-engineering-skills
+claude plugin install ai-engineering-skills@ai-engineering-skills
 ```
-
-默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
 
 调用示例：
 
@@ -634,4 +627,3 @@ handoff-to-delivery.md
 - 用户说“接口怎么设计”：用 `api-contract-design`。
 - 用户说“表结构/数据怎么迁移”：用 `data-migration-planning`。
 - 用户说“实现/落地/按 handoff 修”：用 `software-delivery-pipeline`。
-

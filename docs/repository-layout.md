@@ -10,17 +10,7 @@ skills/
     references/
 ```
 
-`skills/` is the source of truth for Codex, Claude local installs, and GitHub
-directory-based installs.
-
-```text
-scripts/
-  install-codex.sh
-  install-claude.sh
-```
-
-The local install scripts link every directory under `skills/` into the target
-agent's local skill directory.
+`skills/` is the source of truth for Codex and Claude plugin installs.
 
 ```text
 .claude-plugin/
