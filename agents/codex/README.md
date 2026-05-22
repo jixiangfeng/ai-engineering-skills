@@ -10,6 +10,18 @@ Run from the repository root:
 
 The script symlinks each directory under `skills/` into `~/.codex/skills`.
 
+## Marketplace Plugin
+
+This repository also includes Codex plugin marketplace metadata:
+
+```text
+.agents/plugins/marketplace.json
+plugins/ai-engineering-skills/.codex-plugin/plugin.json
+```
+
+The plugin exposes the canonical root `skills/` directory through symlinks under
+`plugins/ai-engineering-skills/skills/`.
+
 Use in Codex:
 
 ```text

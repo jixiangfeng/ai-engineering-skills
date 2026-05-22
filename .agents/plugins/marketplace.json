@@ -1,0 +1,20 @@
+{
+  "name": "ai-engineering-skills",
+  "interface": {
+    "displayName": "AI Engineering Skills"
+  },
+  "plugins": [
+    {
+      "name": "ai-engineering-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ai-engineering-skills"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Coding"
+    }
+  ]
+}

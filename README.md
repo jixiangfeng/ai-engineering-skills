@@ -54,13 +54,20 @@ agents/
   claude/README.md
 .claude-plugin/
   marketplace.json
+.agents/
+  plugins/
+    marketplace.json
 plugins/
   ai-engineering-skills/
     .claude-plugin/
       plugin.json
+    .codex-plugin/
+      plugin.json
+    skills/
+      <skill-name> -> ../../../skills/<skill-name>
 ```
 
-`skills/` 是唯一 skill 源码目录；`plugins/` 只放 Claude Code marketplace 元数据，不维护第二份 skill 内容。
+`skills/` 是唯一 skill 源码目录；`plugins/ai-engineering-skills/skills/` 只放指向根目录 `skills/` 的软链接，用于 Codex plugin 读取，不维护第二份 skill 内容。
 
 ## Codex 使用
 
@@ -83,6 +90,8 @@ $debug-root-cause
 $api-contract-design
 $data-migration-planning
 ```
+
+也可以作为 Codex plugin marketplace 安装。发布到 GitHub 后，在 Codex 里添加 marketplace 并安装 `ai-engineering-skills` plugin。
 
 ## Claude 使用
 

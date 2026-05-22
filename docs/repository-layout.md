@@ -25,11 +25,20 @@ agent's local skill directory.
 ```text
 .claude-plugin/
   marketplace.json
+.agents/
+  plugins/
+    marketplace.json
 plugins/
   ai-engineering-skills/
     .claude-plugin/
       plugin.json
+    .codex-plugin/
+      plugin.json
+    skills/
+      <skill-name> -> ../../../skills/<skill-name>
 ```
 
-These files are Claude Code marketplace metadata. Do not duplicate or edit skill
-content under `plugins/`; edit the canonical skill under `skills/`.
+These files are marketplace metadata for Claude Code and Codex. The
+`plugins/ai-engineering-skills/skills/` entries are symlinks to the canonical
+skill directories. Do not duplicate or edit skill content under `plugins/`; edit
+the canonical skill under `skills/`.

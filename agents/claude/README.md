@@ -14,7 +14,8 @@ The script symlinks each directory under `skills/` into `~/.claude/skills`.
 
 This repository also includes Claude Code plugin marketplace metadata.
 The canonical skill content remains under the repository root `skills/`
-directory; `plugins/` only contains plugin metadata.
+directory. `plugins/ai-engineering-skills/skills/` contains symlinks used by the
+Codex plugin package, not a second source copy.
 
 After publishing the repository to GitHub:
 

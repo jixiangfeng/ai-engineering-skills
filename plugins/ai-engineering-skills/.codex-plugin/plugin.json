@@ -1,0 +1,38 @@
+{
+  "name": "ai-engineering-skills",
+  "version": "0.1.0",
+  "description": "Document-driven software engineering workflow skills.",
+  "author": {
+    "name": "ai-engineering-skills"
+  },
+  "repository": "https://github.com/jixiangfeng/ai-engineering-skills",
+  "license": "MIT",
+  "keywords": [
+    "software-engineering",
+    "workflow",
+    "code-review",
+    "debugging",
+    "api-contract",
+    "data-migration"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AI Engineering Skills",
+    "shortDescription": "Document-driven workflows for orientation, review, debugging, contracts, migrations, and delivery.",
+    "longDescription": "Reusable Codex skills for software engineering workflows: project orientation, code review triage, root-cause debugging, API contract design, data migration planning, and implementation delivery.",
+    "developerName": "ai-engineering-skills",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use workflow-bootstrap for this software engineering task.",
+      "Use codebase-orientation to understand this project.",
+      "Use code-review-triage to review this module."
+    ],
+    "brandColor": "#111111",
+    "screenshots": []
+  }
+}
