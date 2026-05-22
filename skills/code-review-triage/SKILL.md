@@ -22,6 +22,17 @@ Use this skill when the work starts with code review rather than a known impleme
 - If implementation discovers new issues or requires scope expansion, append the issue to the review artifacts and pause for human confirmation.
 - Fix selection and fix-plan gates are clarification-and-convergence loops: do not treat the human's first selected findings or proposed fix direction as automatically safe or sufficient.
 - If selected findings are insufficient, conflict with each other, require an unselected finding, or imply architecture/scope expansion, explain the issue, update the current review artifact, and ask for confirmation again.
+- If the human provides an existing review artifact path or asks to continue a prior review run, resume that run instead of creating a new one unless a reset is explicitly requested.
+
+## Review Does Not Implement
+
+- `code-review-triage` is read-first and read-only by default.
+- Do not start code edits inside this workflow unless the human explicitly overrides the workflow boundary.
+- “按这个修”, “继续修”, “把这些问题修掉” should normally mean:
+  1. confirm the selected findings
+  2. create or update `review-to-delivery-handoff.md`
+  3. continue in `software-delivery-pipeline`
+- Do not silently convert review work into implementation work.
 
 
 ## Document Quality Rules
@@ -112,10 +123,11 @@ Actions:
 - write `02-review-findings.md`
 - group findings by severity
 - for every finding include: ID, title, severity, location, evidence, impact, fix direction, confidence
+- when applicable, also include: `requires_spec_compliance_check`, `requires_code_quality_review`, `requires_architecture_gate`, `verification_focus`
 - include a `不建议处理` section for items that look tempting but should not be changed now
 
 After writing `02-review-findings.md`, stop and ask the human which finding IDs to fix. Do not write the fix plan yet unless the human has already clearly selected the findings.
-If the human says no fixes are needed, says to only record the review, or closes the review without implementation, write `07-review-summary.md` as a no-fix closure and stop.
+If the human says no fixes are needed, says to only record the review, or closes the review without implementation, write `07-review-summary.md` as a no-fix closure and stop. The summary should clearly state which findings were selected for repair, which were explicitly excluded, whether the review is ready to hand off to delivery, and the recommended next workflow with rationale.
 
 ## Stage 3 — Fix Selection
 
@@ -140,6 +152,15 @@ Actions:
 Human confirmation gate: stop after `04-review-fix-plan.md` and ask the human to confirm or revise the plan. Do not implement before approval. If the plan is unsafe, incomplete, conflicts with code evidence, or needs architecture/scope expansion, state that plainly, update `04-review-fix-plan.md`, and repeat the confirmation gate.
 
 After the human approves the fix plan, write `review-to-delivery-handoff.md` if the next step is to use `software-delivery-pipeline`. The handoff must include selected finding IDs, excluded finding IDs, evidence locations, user constraints, architecture-gate recommendation, fix plan summary, verification requirements, the source review run path, and a machine-readable YAML summary.
+For each selected finding when relevant, `review-to-delivery-handoff.md` should also include:
+- accepted scope
+- excluded scope
+- implementation constraints
+- whether spec compliance review is required
+- whether code quality review is required
+- whether architecture gate is recommended
+- special verification focus
+Do not hand off a selected finding as a vague paragraph when structured review metadata is available.
 If the human says “按这个修”, “继续”, “落地”, “修复选中的问题”, or equivalent after handoff creation, treat that as intent to continue with `software-delivery-pipeline` using the handoff file.
 
 ## Stage 5 — Delivery Handoff or Explicit No-Fix Closure
@@ -153,6 +174,8 @@ Hard rules:
 - Do not edit code in the default review flow.
 - If `review-to-delivery-handoff.md` does not exist, implementation must not start.
 - If the human says “按这个修”, “继续”, “落地”, or “修复选中的问题”, treat that as a request to start `software-delivery-pipeline` with the handoff, not as permission for this skill to edit code.
+- Do not include unselected findings in implementation scope.
+- If an unselected finding blocks a selected fix, stop, explain the dependency clearly, and ask the human whether to expand scope.
 - Implement inside this skill only when the human explicitly says to bypass `software-delivery-pipeline` and explicitly asks this skill to implement. In that exception, still write `05-review-implementation.md`, `06-review-verification.md`, and `07-review-summary.md`.
 
 If the task becomes a normal feature/bugfix after findings are selected, chain into `software-delivery-pipeline` by passing `review-to-delivery-handoff.md` as the source-of-truth input. Keep the review artifacts as the source of truth for selected findings and scope.

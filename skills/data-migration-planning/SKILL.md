@@ -41,5 +41,5 @@ Required files:
 4. `04-migration-plan.md`
 5. `05-migration-rollback-plan.md`
 6. `06-migration-validation-sql.md`
-7. `07-orientation-summary.md`
-8. `review-to-delivery-handoff.md` (optional)
+7. `07-migration-summary.md`
+8. `migration-to-delivery-handoff.md` (optional)

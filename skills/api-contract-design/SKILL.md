@@ -41,5 +41,5 @@ Required files:
 4. `04-api-compatibility.md`
 5. `05-api-validation-errors.md`
 6. `06-api-examples.md`
-7. `07-orientation-summary.md`
-8. `review-to-delivery-handoff.md` (optional)
+7. `07-api-summary.md`
+8. `api-to-delivery-handoff.md` (optional)

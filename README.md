@@ -1,6 +1,6 @@
 # AI Engineering Skills
 
-面向软件研发流程的六套 agent skill，Codex 和 Claude 都可以使用。
+面向软件研发流程的七套 agent skill，Codex 和 Claude 都可以使用。
 
 ## 文档
 
@@ -8,12 +8,26 @@
 
 ## Skills
 
+- [`workflow-bootstrap`](./skills/workflow-bootstrap/SKILL.md)：软件研发任务的统一入口分流，先判断该走熟悉、review、debug、契约设计、迁移规划还是直接交付实现。
 - [`codebase-orientation`](./skills/codebase-orientation/SKILL.md)：只读熟悉项目/模块/业务流程，输出业务与技术理解文档，并可交接到 review 或交付流程。
 - [`software-delivery-pipeline`](./skills/software-delivery-pipeline/SKILL.md)：需求确认、架构/选型门禁、实施计划、实现、调试、验证、交付的闭环流程。
 - [`code-review-triage`](./skills/code-review-triage/SKILL.md)：只读代码审查、问题清单、修复项选择、修复计划、handoff 到交付流程。
 - [`debug-root-cause`](./skills/debug-root-cause/SKILL.md)：错误、失败测试、启动异常、运行时问题的证据优先根因分析。
 - [`api-contract-design`](./skills/api-contract-design/SKILL.md)：接口、DTO、响应结构、错误码、兼容策略的契约设计。
 - [`data-migration-planning`](./skills/data-migration-planning/SKILL.md)：表结构、数据回填、清理、兼容、验证 SQL、回滚恢复的迁移计划。
+
+## 推荐使用入口
+
+对于软件研发类任务，建议优先从 `workflow-bootstrap` 开始，由它判断当前任务最适合进入哪条 workflow：
+
+- 熟悉项目 → `codebase-orientation`
+- 代码审查 → `code-review-triage`
+- 问题排查 → `debug-root-cause`
+- 契约设计 → `api-contract-design`
+- 迁移规划 → `data-migration-planning`
+- 功能实现 / 修复交付 → `software-delivery-pipeline`
+
+简单概念问答不强制进入 workflow。
 
 ## 目录结构
 
@@ -50,6 +64,7 @@ agents/
 安装后可在 Codex 中使用：
 
 ```text
+$workflow-bootstrap
 $codebase-orientation
 $code-review-triage
 $software-delivery-pipeline
@@ -69,6 +84,7 @@ $data-migration-planning
 安装后在 Claude 中按 skill 名称调用，或在提示词中明确引用：
 
 ```text
+Use the workflow-bootstrap skill first for software engineering tasks...
 Use the codebase-orientation skill...
 Use the code-review-triage skill...
 Use the software-delivery-pipeline skill...
@@ -79,20 +95,27 @@ Use the data-migration-planning skill...
 
 ## 工作流关系
 
+设计哲学：
+
+- 先分流，再执行
+- 先证据，再结论
+- 先确认，再改代码
+
 典型链路：
 
-1. `codebase-orientation` 先只读熟悉项目/模块，产出 `workflow/orientation/<run>/07-summary.md`。
-2. `code-review-triage` 基于理解结果做只读 review，产出 `workflow/reviews/<run>/02-findings.md`。
-3. 用户选择要修复的 findings。
-4. 生成 `handoff-to-delivery.md`。
-5. `software-delivery-pipeline` 读取 handoff，进入需求确认、架构门禁、计划、实现、验证、交付。
-6. 修复完成后回写 `workflow/reviews/<run>/delivery-result.md`。
+1. `workflow-bootstrap` 先识别任务类型。
+2. 若是“先熟悉”，进入 `codebase-orientation`，产出 `workflow/orientation/<run>/07-orientation-summary.md`。
+3. 若是“先 review”，进入 `code-review-triage`，产出 `workflow/reviews/<run>/02-review-findings.md`。
+4. 用户选择要修复的 findings。
+5. 生成 `review-to-delivery-handoff.md`。
+6. `software-delivery-pipeline` 读取 handoff，进入需求确认、架构门禁、计划、实现、验证、交付。
+7. 修复完成后回写 `workflow/reviews/<run>/review-delivery-result.md`。
 
 所有中间文档默认使用简体中文。
 
-
 其他常用链路：
 
-- `debug-root-cause` 找到根因后，生成 handoff 给 `software-delivery-pipeline` 修复。
-- `api-contract-design` 确认 API 契约后，生成 handoff 给 `software-delivery-pipeline` 实现。
-- `data-migration-planning` 确认迁移/回滚方案后，生成 handoff 给 `software-delivery-pipeline` 落地。
+- `workflow-bootstrap` → `debug-root-cause` → `software-delivery-pipeline`
+- `workflow-bootstrap` → `api-contract-design` → `software-delivery-pipeline`
+- `workflow-bootstrap` → `data-migration-planning` → `software-delivery-pipeline`
+- 对于已经范围明确的实现任务，也可以由 `workflow-bootstrap` 直接路由到 `software-delivery-pipeline`

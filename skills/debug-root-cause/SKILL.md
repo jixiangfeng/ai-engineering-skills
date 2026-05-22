@@ -13,9 +13,12 @@ Use this skill when the user asks to investigate an error, failing test, startup
 - Debugging starts read-first and evidence-first. Do not patch code until root cause and fix direction are confirmed or the user explicitly asks for immediate repair.
 - Reproduce before explaining when practical. If reproduction is blocked, record the blocker and use available evidence.
 - Do not guess fixes from symptoms. Trace data/control flow back to the source.
+- Do not propose code fixes before establishing a root-cause hypothesis supported by evidence.
+- Do not confuse symptom relief with root-cause correction.
+- If two or more fix attempts have already failed, explicitly check whether the problem is architectural, contractual, or lifecycle-related rather than continuing incremental patching.
 - Separate environment failures, existing failures, test bugs, product-code bugs, and unclear behavior.
 - All generated documents must be Simplified Chinese, except code identifiers, commands, paths, error text, API names, and quoted user text.
-- If a fix is needed, create `review-to-delivery-handoff.md` for `software-delivery-pipeline` rather than silently expanding into implementation.
+- If a fix is needed, create `debug-to-delivery-handoff.md` for `software-delivery-pipeline` rather than silently expanding into implementation.
 
 ## Preflight Checklist
 
@@ -24,7 +27,6 @@ Before writing artifacts:
 - inspect whether the worktree already has changes if the result may hand off to implementation
 - create artifacts under the project root, not under the skill directory
 - keep the skill read-only unless the human explicitly changes the task
-
 
 ## Filename Compatibility
 
@@ -43,7 +45,7 @@ Required files:
 6. `06-debug-fix-options.md`
 7. `07-debug-verification-plan.md`
 8. `08-debug-summary.md`
-9. `review-to-delivery-handoff.md` (optional, when implementation is needed)
+9. `debug-to-delivery-handoff.md` (optional, when implementation is needed)
 
 Use templates in `assets/debug-templates/`.
 
@@ -58,6 +60,34 @@ Use templates in `assets/debug-templates/`.
 7. Define verification plan.
 8. Ask the human to confirm fix direction before implementation, or hand off to `software-delivery-pipeline`.
 
+## Escalation After Repeated Failed Fixes
+
+If the same issue has already gone through two or three failed fix attempts:
+
+1. stop stacking new fixes
+2. review each prior hypothesis and why it failed
+3. inspect whether the real issue is caused by:
+   - incorrect system-boundary assumptions
+   - incorrect data-contract assumptions
+   - incorrect initialization or lifecycle assumptions
+   - a design or architecture mismatch
+4. explicitly state in `05-debug-root-cause.md` whether the issue should escalate into architecture review or delivery replanning
+
+## Fix Options Guidance
+
+`06-debug-fix-options.md` should distinguish clearly between:
+- symptom relief
+- root-cause fix
+- monitoring/logging/guardrail improvements
+
+## Summary Guidance
+
+`08-debug-summary.md` should capture at least:
+- attempted fixes
+- rejected hypotheses
+- confirmed root cause
+- recommended next workflow
+
 ## Handoff
 
-`review-to-delivery-handoff.md` must include root cause, selected fix option, affected files, scope lock, verification requirements, risks, and unresolved questions.
+`debug-to-delivery-handoff.md` must include root cause, selected fix option, affected files, scope lock, verification requirements, risks, and unresolved questions.

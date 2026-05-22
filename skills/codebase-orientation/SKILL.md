@@ -18,6 +18,17 @@ Use this skill when the user asks to become familiar with a project, module, pac
 - Do not produce a shallow file listing. Explain what each important component does in the business and runtime flow.
 - Do not turn suspicious code into review findings inside this skill. Put them under “后续可 review 的线索”.
 - If the user later asks to review or fix issues, hand off to `code-review-triage` or `software-delivery-pipeline` using the orientation artifacts as context.
+- If the human provides an existing orientation artifact path or asks to continue a prior orientation run, continue that run instead of starting a new one unless a reset is explicitly requested.
+
+## Output Discipline
+
+- Distinguish clearly between `事实`, `推断`, and `待确认`.
+- Do not present an inference as a confirmed conclusion without evidence.
+- If a possible risk or code smell is noticed, record it as a follow-up review clue rather than a confirmed finding.
+- The final summary should recommend the most suitable next workflow when enough evidence exists.
+- Orientation is not code review.
+- Do not label a behavior as a bug, defect, or finding unless the task explicitly switches into `code-review-triage` or `debug-root-cause`.
+- Suspicions should be recorded as review/debug leads, not as confirmed issues.
 
 
 ## Document Quality Rules
@@ -60,7 +71,7 @@ Required files:
 6. `06-orientation-open-questions.md`
 7. `07-orientation-summary.md`
 8. `orientation-to-review-handoff.md` (optional, when the next step is `code-review-triage`)
-9. `review-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
+9. `orientation-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
 
 Use the templates in `assets/orientation-templates/`.
 
@@ -127,13 +138,14 @@ Goal: give the human a concise reusable understanding.
 Actions:
 - write `07-orientation-summary.md`
 - include architecture overview, business flow summary, technical flow summary, key files, risks, and recommended next step
+- explicitly recommend the next best workflow when appropriate, for example: `code-review-triage`, `software-delivery-pipeline`, `debug-root-cause`, `api-contract-design`, or `data-migration-planning`, and state why
 - if the user wants review next, write `orientation-to-review-handoff.md`
-- if the user wants implementation next, write `review-to-delivery-handoff.md`
+- if the user wants implementation next, write `orientation-to-delivery-handoff.md`
 
 ## Handoff Rules
 
-- `orientation-to-review-handoff.md` should tell `code-review-triage` what scope to review and which review leads to inspect.
-- `review-to-delivery-handoff.md` should tell `software-delivery-pipeline` what confirmed context, constraints, and unresolved questions should shape requirements.
+- `orientation-to-review-handoff.md` should tell `code-review-triage` what scope to review and which review leads to inspect. It should include confirmed scope, key modules and flows, suspicious areas worth reviewing, recommended review starting points, and known evidence sources.
+- `orientation-to-delivery-handoff.md` should tell `software-delivery-pipeline` what confirmed context, constraints, and unresolved questions should shape requirements. It should include confirmed business goal, affected modules, key constraints, unresolved questions, and why direct delivery is appropriate without a separate review/debug stage.
 - Handoffs must not invent decisions. If something is uncertain, mark it `待确认`.
 
 ## References

@@ -1,6 +1,6 @@
 # AI Engineering Skills 使用说明
 
-这套仓库包含 6 个面向软件研发流程的 agent skill，目标是把“熟悉项目、审查问题、定位根因、设计契约、规划迁移、实现交付”变成可复用、可审查、可交接的文档化流程。
+这套仓库包含 7 个面向软件研发流程的 agent skill，目标是把“熟悉项目、审查问题、定位根因、设计契约、规划迁移、实现交付”变成可复用、可审查、可交接的文档化流程。
 
 所有中间产物默认使用中文，生成在当前项目根目录的 `workflow/` 下，而不是生成在 skill 安装目录里。
 
@@ -8,6 +8,7 @@
 
 | Skill | 适用场景 | 是否默认改代码 | 主要产物目录 |
 | --- | --- | --- | --- |
+| `workflow-bootstrap` | 研发任务入口分流，选择正确 workflow | 否 | 无固定产物，负责路由 |
 | `codebase-orientation` | 熟悉项目、模块、业务流程、调用链 | 否 | `workflow/orientation/<run>/` |
 | `code-review-triage` | 只读代码审查，找问题并选择要修复的 findings | 否 | `workflow/reviews/<run>/` |
 | `software-delivery-pipeline` | 需求确认、架构设计、计划、实现、二次 review、验证、交付 | 是，但必须过确认门禁 | `workflow/runs/<run>/` |
@@ -55,14 +56,30 @@ Use the api-contract-design skill to design this endpoint contract.
 Use the data-migration-planning skill to plan this migration.
 ```
 
-## 三、核心理念
+## 三、统一入口与路由
 
-### 1. 先理解，再审查，再实现
+对于软件研发任务，推荐优先使用 `workflow-bootstrap`。
+
+它负责判断当前任务更适合进入哪条 workflow：
+
+- 熟悉项目、模块、调用链 → `codebase-orientation`
+- 只读审查、列问题 → `code-review-triage`
+- 报错、失败测试、启动异常 → `debug-root-cause`
+- API / DTO / 响应契约设计 → `api-contract-design`
+- 表结构 / 数据迁移 / 回滚规划 → `data-migration-planning`
+- 已明确的实现或修复任务 → `software-delivery-pipeline`
+
+简单概念问答不强制进入 workflow。
+
+## 四、核心理念
+
+### 1. 先分流，再理解，再审查，再实现
 
 推荐主链路：
 
 ```text
-codebase-orientation
+workflow-bootstrap
+  -> codebase-orientation
   -> code-review-triage
   -> software-delivery-pipeline
 ```
@@ -131,7 +148,7 @@ codebase-orientation
 
 二次 review 通过后才能进入验证。
 
-## 四、各 Skill 详细说明
+## 五、各 Skill 详细说明
 
 ## 1. codebase-orientation
 
@@ -255,6 +272,12 @@ $software-delivery-pipeline 按 API 契约设计落地
 
 它是唯一默认可以改代码的主流程 skill，但必须经过确认门禁。
 
+补充执行纪律：
+- 支持 `inline` / `subagent` 两种执行模式
+- 默认对可测试行为变更采用 fail-first
+- 连续修复失败时应切换到 debugging stage，而不是持续拍脑袋修改
+- 高风险或长任务建议使用独立分支或 git worktree
+
 核心门禁：
 
 1. `01-delivery-requirements.md` 需求确认。
@@ -349,6 +372,8 @@ $debug-root-cause 项目启动失败，找根因
 - 只读优先，不直接修。
 - 先复现，再解释。
 - 先证据，再假设。
+- 未形成有证据支撑的根因假设前，不应直接提出代码修复。
+- 如果同一问题已有两到三轮修复尝试失败，应检查是否存在架构、边界、生命周期或契约层问题。
 - 区分环境问题、既有失败、测试错误、产品代码错误。
 - 找到根因后生成修复选项和验证计划。
 
@@ -472,7 +497,7 @@ migration-to-delivery-handoff.md
 
 - 迁移方案确认后，交给 `software-delivery-pipeline` 读取 `migration-to-delivery-handoff.md` 落地。
 
-## 五、常见组合流程
+## 六、常见组合流程
 
 ### 1. 先熟悉，再 review，再修复
 
@@ -532,7 +557,7 @@ $software-delivery-pipeline 按 workflow/reviews/<run>/review-to-delivery-handof
 
 `software-delivery-pipeline` 可以重建需求，但必须停在 `01-delivery-requirements.md` 等用户确认，不能直接改代码。
 
-## 六、状态机与恢复
+## 七、状态机与恢复
 
 `software-delivery-pipeline` 和 `code-review-triage` 都有状态机文件：
 
@@ -551,7 +576,7 @@ review-workflow-state.md
 4. 明确当前阶段、阻塞项、是否允许改代码。
 5. 只从记录的下一步继续。
 
-## 七、文件命名规则
+## 八、文件命名规则
 
 新 run 必须使用带流程前缀的文件名：
 
@@ -573,7 +598,7 @@ handoff-to-delivery.md
 
 可以读取兼容，但不要继续生成新的老命名文件。
 
-## 八、防误用规则
+## 九、防误用规则
 
 ### 所有 skill
 
@@ -597,7 +622,7 @@ handoff-to-delivery.md
 - 不允许回滚用户或既有改动，除非用户明确要求。
 - Change Review Gate 未通过，不能进入验证。
 
-## 九、推荐使用习惯
+## 十、推荐使用习惯
 
 - 用户说“熟悉一下”：用 `codebase-orientation`。
 - 用户说“review 下”：用 `code-review-triage`。

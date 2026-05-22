@@ -54,6 +54,42 @@ Do not use this skill for:
 - Review-originated fixes have a hard start gate: do not edit code until a delivery run has written and received approval for `01-delivery-requirements.md` and the required plan document.
 - If code changes already exist before the delivery run starts, record them as pre-existing workspace state in `01-delivery-requirements.md`, lock the intended scope, and do not expand or normalize unrelated diffs.
 
+## Execution Modes
+
+### Mode A — Inline Execution
+Use this mode for:
+- single-file or small-scope tasks
+- low-risk edits
+- tightly scoped fixes with simple verification
+
+### Mode B — Subagent Execution
+Use this mode for:
+- multi-step plans
+- multi-file changes
+- review-handoff implementation
+- architecture-sensitive changes
+- higher-risk bugfixes or refactors
+
+Recommended Subagent Execution loop per plan item:
+1. dispatch an implementer for the scoped task
+2. review for spec compliance against the confirmed requirements/plan
+3. review for code quality and maintainability
+4. only then mark the item complete
+
+Default principle:
+- simple work may stay inline
+- complex work should prefer subagent execution
+
+## Workspace Isolation Guidance
+
+Strongly consider using a dedicated branch or git worktree when:
+- the current worktree already has local changes
+- the task spans multiple modules
+- the change is high-risk or long-running
+- multiple agents may work in parallel
+- the main workspace should remain stable
+
+If isolated workspace is not used for a risky task, record the reason and risk in `01-delivery-requirements.md`.
 
 ## Review Handoff Input
 
@@ -211,17 +247,42 @@ Goal: implement from the plan with test-first discipline.
 
 Actions:
 - read `02-delivery-plan.md`
-- identify the smallest meaningful failing test
-- add or update tests first when practical
-- verify the test fails for the right reason
+- identify the smallest meaningful failing test or failing reproduction
+- default to fail-first for behavior changes that are reasonably testable
+- verify the test or reproduction fails for the right reason
 - implement the minimal change to pass
 - repeat incrementally
 - keep notes of files changed, tests added, and deviations from the plan
 - if implementation requires materially deviating from the approved plan or expanding scope, update `03-delivery-implementation.md`, explain the deviation, ask for human confirmation, and pause before continuing
 - write the implementation report
 
-If true TDD is not practical, document why in `03-delivery-implementation.md` instead of pretending it happened.
+Default rule:
+- do not treat “tests later” as the normal path
 
+If strict fail-first is not practical, document all of the following in `03-delivery-implementation.md`:
+- why fail-first was not practical
+- what alternative verification strategy was used
+- what regression coverage was added later
+- what residual risk remains because fail-first was not fully applied
+
+
+## Failure Escalation
+
+If implementation fails, verification fails, or behavior contradicts the plan, do not continue with repeated guess-based edits.
+
+Switch to the debugging stage when any of the following is true:
+- the same issue has already had two or more fix attempts
+- the current fix depends on an unverified hypothesis
+- the failure crosses multiple layers or components
+- the current plan no longer explains the observed behavior
+
+When escalating into debugging, record:
+- attempted fixes so far
+- rejected hypotheses
+- current best root-cause hypothesis
+- whether the task should return to requirements, architecture, or planning
+
+Return to implementation only after the debugging stage has produced a root-cause hypothesis with supporting evidence and an updated fix direction.
 
 ## Change Review Gate — Post-Implementation Review
 
@@ -280,6 +341,8 @@ If debugging is not needed, still create `04-delivery-debugging.md` with a short
 Goal: prove the change works before reporting success.
 
 Precondition: if Change Review Gate triggers applied, `05-delivery-change-review.md` must conclude `approved_for_verification` or `approved_with_notes`.
+
+Before verification, confirm that the implementation still matches the approved requirements and plan, and that no unnecessary scope expansion or over-engineering was introduced.
 
 Actions:
 - run the smallest meaningful verification gates
