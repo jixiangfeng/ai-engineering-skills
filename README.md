@@ -5,17 +5,17 @@
 ## 文档
 
 - [完整中文使用说明](./docs/skills-guide.zh-CN.md)：所有 skill 的定位、使用方式、产物、联动和防误用规则。
-- [仓库结构说明](./docs/repository-layout.md)：说明 `skills/`、安装脚本和 Claude marketplace 元数据之间的关系。
+- [仓库结构说明](./docs/repository-layout.md)：说明 plugin 内 `skills/` 和 marketplace 元数据之间的关系。
 
 ## Skills
 
-- [`workflow-bootstrap`](./skills/workflow-bootstrap/SKILL.md)：软件研发任务的统一入口分流，先判断该走熟悉、review、debug、契约设计、迁移规划还是直接交付实现。
-- [`codebase-orientation`](./skills/codebase-orientation/SKILL.md)：只读熟悉项目/模块/业务流程，输出业务与技术理解文档，并可交接到 review 或交付流程。
-- [`software-delivery-pipeline`](./skills/software-delivery-pipeline/SKILL.md)：需求确认、架构/选型门禁、实施计划、实现、调试、验证、交付的闭环流程。
-- [`code-review-triage`](./skills/code-review-triage/SKILL.md)：只读代码审查、问题清单、修复项选择、修复计划、handoff 到交付流程。
-- [`debug-root-cause`](./skills/debug-root-cause/SKILL.md)：错误、失败测试、启动异常、运行时问题的证据优先根因分析。
-- [`api-contract-design`](./skills/api-contract-design/SKILL.md)：接口、DTO、响应结构、错误码、兼容策略的契约设计。
-- [`data-migration-planning`](./skills/data-migration-planning/SKILL.md)：表结构、数据回填、清理、兼容、验证 SQL、回滚恢复的迁移计划。
+- [`workflow-bootstrap`](./plugins/ai-engineering-skills/skills/workflow-bootstrap/SKILL.md)：软件研发任务的统一入口分流，先判断该走熟悉、review、debug、契约设计、迁移规划还是直接交付实现。
+- [`codebase-orientation`](./plugins/ai-engineering-skills/skills/codebase-orientation/SKILL.md)：只读熟悉项目/模块/业务流程，输出业务与技术理解文档，并可交接到 review 或交付流程。
+- [`software-delivery-pipeline`](./plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md)：需求确认、架构/选型门禁、实施计划、实现、调试、验证、交付的闭环流程。
+- [`code-review-triage`](./plugins/ai-engineering-skills/skills/code-review-triage/SKILL.md)：只读代码审查、问题清单、修复项选择、修复计划、handoff 到交付流程。
+- [`debug-root-cause`](./plugins/ai-engineering-skills/skills/debug-root-cause/SKILL.md)：错误、失败测试、启动异常、运行时问题的证据优先根因分析。
+- [`api-contract-design`](./plugins/ai-engineering-skills/skills/api-contract-design/SKILL.md)：接口、DTO、响应结构、错误码、兼容策略的契约设计。
+- [`data-migration-planning`](./plugins/ai-engineering-skills/skills/data-migration-planning/SKILL.md)：表结构、数据回填、清理、兼容、验证 SQL、回滚恢复的迁移计划。
 
 ## 推荐使用入口
 
@@ -33,19 +33,6 @@
 ## 目录结构
 
 ```text
-skills/
-  software-delivery-pipeline/
-    SKILL.md
-    assets/
-    references/
-  code-review-triage/
-    SKILL.md
-    assets/
-    references/
-  codebase-orientation/
-    SKILL.md
-    assets/
-    references/
 .claude-plugin/
   marketplace.json
 .agents/
@@ -58,10 +45,21 @@ plugins/
     .codex-plugin/
       plugin.json
     skills/
-      <skill-name> -> ../../../skills/<skill-name>
+      software-delivery-pipeline/
+        SKILL.md
+        assets/
+        references/
+      code-review-triage/
+        SKILL.md
+        assets/
+        references/
+      codebase-orientation/
+        SKILL.md
+        assets/
+        references/
 ```
 
-`skills/` 是唯一 skill 源码目录；`plugins/ai-engineering-skills/skills/` 只放指向根目录 `skills/` 的软链接，用于 Codex plugin 读取，不维护第二份 skill 内容。
+`plugins/ai-engineering-skills/skills/` 是唯一 skill 源码目录；仓库根目录不再保留第二份 `skills/`。
 
 ## Codex 使用
 

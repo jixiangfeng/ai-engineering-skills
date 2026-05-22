@@ -3,16 +3,6 @@
 This repository keeps one canonical copy of every skill.
 
 ```text
-skills/
-  <skill-name>/
-    SKILL.md
-    assets/
-    references/
-```
-
-`skills/` is the source of truth for Codex and Claude plugin installs.
-
-```text
 .claude-plugin/
   marketplace.json
 .agents/
@@ -25,10 +15,12 @@ plugins/
     .codex-plugin/
       plugin.json
     skills/
-      <skill-name> -> ../../../skills/<skill-name>
+      <skill-name>/
+        SKILL.md
+        assets/
+        references/
 ```
 
-These files are marketplace metadata for Claude Code and Codex. The
-`plugins/ai-engineering-skills/skills/` entries are symlinks to the canonical
-skill directories. Do not duplicate or edit skill content under `plugins/`; edit
-the canonical skill under `skills/`.
+`plugins/ai-engineering-skills/skills/` is the source of truth for Codex and
+Claude plugin installs. It contains the only copy of the skill content; there is
+no root-level `skills/` directory and no symlinked duplicate.
