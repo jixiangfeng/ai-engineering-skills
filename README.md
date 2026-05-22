@@ -49,9 +49,6 @@ skills/
 scripts/
   install-codex.sh
   install-claude.sh
-agents/
-  codex/README.md
-  claude/README.md
 .claude-plugin/
   marketplace.json
 .agents/
