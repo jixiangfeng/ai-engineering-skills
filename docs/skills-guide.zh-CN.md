@@ -26,6 +26,8 @@
 ./scripts/install-codex.sh
 ```
 
+默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
+
 调用示例：
 
 ```text
@@ -44,6 +46,8 @@ $data-migration-planning 规划这次表结构和数据迁移
 ```bash
 ./scripts/install-claude.sh
 ```
+
+默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
 
 调用示例：
 

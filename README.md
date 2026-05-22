@@ -61,6 +61,8 @@ agents/
 ./scripts/install-codex.sh
 ```
 
+默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
+
 安装后可在 Codex 中使用：
 
 ```text
@@ -80,6 +82,8 @@ $data-migration-planning
 ```bash
 ./scripts/install-claude.sh
 ```
+
+默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
 
 安装后在 Claude 中按 skill 名称调用，或在提示词中明确引用：
 

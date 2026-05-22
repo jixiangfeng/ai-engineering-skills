@@ -6,6 +6,8 @@ Run from the repository root:
 ./scripts/install-claude.sh
 ```
 
+默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
+
 The script symlinks each directory under `skills/` into `~/.claude/skills`.
 
 Use in Claude by naming the skill in the prompt, for example:
