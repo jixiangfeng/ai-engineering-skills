@@ -13,6 +13,8 @@ The script symlinks each directory under `skills/` into `~/.claude/skills`.
 ## Marketplace Plugin
 
 This repository also includes Claude Code plugin marketplace metadata.
+The canonical skill content remains under the repository root `skills/`
+directory; `plugins/` only contains plugin metadata.
 
 After publishing the repository to GitHub:
 

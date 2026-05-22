@@ -5,6 +5,7 @@
 ## 文档
 
 - [完整中文使用说明](./docs/skills-guide.zh-CN.md)：所有 skill 的定位、使用方式、产物、联动和防误用规则。
+- [仓库结构说明](./docs/repository-layout.md)：说明 `skills/`、安装脚本和 Claude marketplace 元数据之间的关系。
 
 ## Skills
 
@@ -51,7 +52,15 @@ scripts/
 agents/
   codex/README.md
   claude/README.md
+.claude-plugin/
+  marketplace.json
+plugins/
+  ai-engineering-skills/
+    .claude-plugin/
+      plugin.json
 ```
+
+`skills/` 是唯一 skill 源码目录；`plugins/` 只放 Claude Code marketplace 元数据，不维护第二份 skill 内容。
 
 ## Codex 使用
 
