@@ -1,0 +1,13 @@
+{
+  "name": "ai-engineering-skills",
+  "owner": {
+    "name": "ai-engineering-skills"
+  },
+  "plugins": [
+    {
+      "name": "ai-engineering-skills",
+      "source": "./plugins/ai-engineering-skills",
+      "description": "Document-driven software engineering workflow skills for Claude Code."
+    }
+  ]
+}

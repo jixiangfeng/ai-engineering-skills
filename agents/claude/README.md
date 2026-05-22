@@ -10,6 +10,20 @@ Run from the repository root:
 
 The script symlinks each directory under `skills/` into `~/.claude/skills`.
 
+## Marketplace Plugin
+
+This repository also includes Claude Code plugin marketplace metadata.
+
+After publishing the repository to GitHub:
+
+```bash
+claude plugin marketplace add <owner>/ai-engineering-skills
+claude plugin install ai-engineering-skills@ai-engineering-skills
+```
+
+For local development, prefer `./scripts/install-claude.sh` because it links
+directly to this working tree.
+
 Use in Claude by naming the skill in the prompt, for example:
 
 ```text

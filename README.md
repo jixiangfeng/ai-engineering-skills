@@ -85,6 +85,15 @@ $data-migration-planning
 
 默认会删除已有同名真实目录，并改为链接到本仓库的 skill；如需备份可使用 `--backup-existing`，如需保守模式可使用 `--strict`。
 
+也可以作为 Claude Code plugin marketplace 安装。发布到 GitHub 后执行：
+
+```bash
+claude plugin marketplace add <owner>/ai-engineering-skills
+claude plugin install ai-engineering-skills@ai-engineering-skills
+```
+
+本地开发时仍建议使用 `./scripts/install-claude.sh`，因为它会直接链接到当前工作区，修改 skill 后不需要重新安装 plugin。
+
 安装后在 Claude 中按 skill 名称调用，或在提示词中明确引用：
 
 ```text
