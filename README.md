@@ -6,6 +6,7 @@
 
 - [完整中文使用说明](./docs/skills-guide.zh-CN.md)：所有 skill 的定位、使用方式、产物、联动和防误用规则。
 - [仓库结构说明](./docs/repository-layout.md)：说明 plugin 内 `skills/` 和 marketplace 元数据之间的关系。
+- [Skill 一致性清单](./docs/skill-consistency-checklist.md)：新增或修改 skill 时的仓库级自检标准。
 
 ## Skills
 

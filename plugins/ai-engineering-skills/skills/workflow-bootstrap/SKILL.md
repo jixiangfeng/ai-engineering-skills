@@ -31,6 +31,8 @@ It helps decide whether the task should begin with:
 - Simple conceptual Q&A does not require a workflow run.
 - If the task is both ambiguous and risky, ask one concise blocking question after identifying the most likely workflow.
 - If the user provides an existing workflow artifact path or asks to continue a prior run, prefer continuing that workflow rather than starting a new routing decision.
+- If the user provides a handoff artifact, treat the handoff as higher priority than generic re-routing.
+- Do not create a new parallel workflow when a single existing run can be resumed safely.
 
 ## Routing Priority
 
@@ -98,6 +100,36 @@ Use these rules when the task could fit more than one workflow:
 - If the user asks to “review and then fix”, start with `code-review-triage`.
 - If the user asks to “先熟悉一下”, start with `codebase-orientation`.
 - If the task is already well-defined implementation work with no missing design/debugging/review gate, use `software-delivery-pipeline`.
+
+## Existing Run / Handoff Priority
+
+Apply these rules before ordinary routing:
+
+1. If the user gives a concrete workflow artifact path, continue that workflow first.
+2. If the user gives a handoff file such as review/debug/api/migration handoff, continue in the downstream workflow expected by that handoff.
+3. If the user says “继续”, “按这个修”, “接着上次”, or equivalent and a clearly relevant prior workflow run is already in play, prefer resuming that run over opening a new one.
+4. Only open a new workflow when no safe, relevant prior run or handoff exists.
+
+## When Not to Open a Workflow
+
+Do not open a workflow run when the user is only asking for:
+- a simple conceptual explanation
+- a terminology question
+- a lightweight comparison or recommendation that does not require repository work
+- a status confirmation about an already-finished workflow artifact
+
+In those cases, answer directly unless the user explicitly asks to start or continue a workflow.
+
+## Routing Output Contract
+
+After routing:
+- state which workflow is being used and why
+- if continuing an existing run, say so explicitly
+- if using a handoff, mention that the handoff is the source of truth
+- proceed into that workflow
+- do not create duplicate parallel workflows for the same request unless the user explicitly asks
+
+The routing response should be short and decisive, not a long meta-discussion.
 
 ## Output Behavior
 

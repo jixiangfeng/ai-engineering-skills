@@ -420,6 +420,8 @@ $api-contract-design 梳理前后端接口契约
 - 强调字段名、字段位置、类型、空值语义。
 - Java 后端优先强类型 DTO，不使用 `Map<String,Object>` / raw `Object` / `JSONObject` 作为契约。
 - 明确兼容旧客户端与否。
+- 使用 `api-contract-workflow-state.md` 记录当前阶段、恢复点和是否允许改代码。
+- 按 scope → current contract → proposed contract → compatibility → validation/errors → examples → summary/handoff 的阶段推进。
 
 ### 主要产物
 
@@ -445,6 +447,7 @@ api-to-delivery-handoff.md
 ### 后续联动
 
 - 契约确认后，交给 `software-delivery-pipeline` 读取 `api-to-delivery-handoff.md` 实现。
+- 相关最小文档契约由 `plugins/ai-engineering-skills/skills/api-contract-design/references/api-contract-document-contracts.md` 约束。
 
 ## 6. data-migration-planning
 
@@ -468,6 +471,8 @@ $data-migration-planning 设计数据回填和回滚方案
 - 必须有验证 SQL 或可执行检查。
 - 必须有回滚或恢复策略。
 - 破坏性操作必须等待用户确认。
+- 使用 `migration-workflow-state.md` 记录当前阶段、恢复点和是否允许改代码。
+- 按 scope → current data model → target data model → migration plan → rollback → validation → summary/handoff 的阶段推进。
 
 ### 主要产物
 
@@ -493,6 +498,7 @@ migration-to-delivery-handoff.md
 ### 后续联动
 
 - 迁移方案确认后，交给 `software-delivery-pipeline` 读取 `migration-to-delivery-handoff.md` 落地。
+- 相关最小文档契约由 `plugins/ai-engineering-skills/skills/data-migration-planning/references/data-migration-document-contracts.md` 约束。
 
 ## 六、常见组合流程
 
@@ -627,3 +633,12 @@ handoff-to-delivery.md
 - 用户说“接口怎么设计”：用 `api-contract-design`。
 - 用户说“表结构/数据怎么迁移”：用 `data-migration-planning`。
 - 用户说“实现/落地/按 handoff 修”：用 `software-delivery-pipeline`。
+
+
+## 十一、仓库级一致性清单
+
+仓库级 skill 一致性自检清单见：
+
+- `docs/skill-consistency-checklist.md`
+
+建议在新增 skill、重写 `SKILL.md`、或做仓库级 review 时先按清单逐项核对，避免不同 skill 的成熟度继续分叉。

@@ -1,0 +1,40 @@
+# API Contract Workflow State
+
+## 文档元信息
+- 项目根目录：
+- 生成时间：
+- 当前分支 / commit：
+- 执行 agent：
+- Run 目录：
+
+## 当前状态
+- 当前阶段：
+- 当前状态：pending | in_progress | pending_confirmation | completed | blocked
+- 是否允许改代码：否
+- 下一步动作：
+- 阻塞项：
+
+## 阶段状态
+| 阶段 | 文档 | 状态 | 确认记录 |
+| --- | --- | --- | --- |
+| scope | `01-api-contract-scope.md` | pending / approved / skipped |  |
+| current_contract | `02-api-current-contract.md` | pending / approved / skipped |  |
+| proposed_contract | `03-api-proposed-contract.md` | pending / approved / skipped |  |
+| compatibility | `04-api-compatibility.md` | pending / approved / skipped |  |
+| validation_and_errors | `05-api-validation-errors.md` | pending / approved / skipped |  |
+| examples | `06-api-examples.md` | pending / approved / skipped |  |
+| summary | `07-api-summary.md` | pending / done |  |
+| handoff | `api-to-delivery-handoff.md` | optional / pending / done |  |
+
+## Preflight 记录
+- cwd：
+- git root：
+- worktree 状态摘要：
+- 当前 run 目录：
+- 上一阶段文档：
+- 写代码许可：否
+
+## Resume 记录
+| 时间 | 恢复时读取的文档 | git diff 摘要 | 恢复结论 |
+| --- | --- | --- | --- |
+|  |  |  |  |
