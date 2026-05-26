@@ -17,5 +17,10 @@
   "blockers": [],
   "selectedScope": null,
   "affectedServices": [],
+  "affectedControllers": [],
+  "affectedTables": [],
+  "affectedCollections": [],
+  "affectedTopics": [],
+  "affectedConfigKeys": [],
   "updatedAt": "2026-05-26T00:00:00+08:00"
 }

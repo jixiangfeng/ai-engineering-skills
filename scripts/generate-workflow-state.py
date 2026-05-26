@@ -78,6 +78,11 @@ def main() -> int:
     parser.add_argument("--domain-module", action="append", default=[], help="Repeat or comma-separate domain modules.")
     parser.add_argument("--selected-scope", default=None)
     parser.add_argument("--affected-service", action="append", default=[], help="Repeat or comma-separate affected services.")
+    parser.add_argument("--affected-controller", action="append", default=[], help="Repeat or comma-separate affected controllers.")
+    parser.add_argument("--affected-table", action="append", default=[], help="Repeat or comma-separate affected tables.")
+    parser.add_argument("--affected-collection", action="append", default=[], help="Repeat or comma-separate affected collections.")
+    parser.add_argument("--affected-topic", action="append", default=[], help="Repeat or comma-separate affected MQ topics.")
+    parser.add_argument("--affected-config-key", action="append", default=[], help="Repeat or comma-separate affected config keys.")
     parser.add_argument("--blocker", action="append", default=[], help="Repeat or comma-separate blockers.")
     parser.add_argument("--code-edits-allowed", action="store_true")
     parser.add_argument("--risk-level", default="low", choices=RISK_LEVELS)
@@ -112,6 +117,11 @@ def main() -> int:
         "blockers": parse_blockers(args.blocker),
         "selectedScope": nullable(args.selected_scope),
         "affectedServices": parse_csv_items(args.affected_service),
+        "affectedControllers": parse_csv_items(args.affected_controller),
+        "affectedTables": parse_csv_items(args.affected_table),
+        "affectedCollections": parse_csv_items(args.affected_collection),
+        "affectedTopics": parse_csv_items(args.affected_topic),
+        "affectedConfigKeys": parse_csv_items(args.affected_config_key),
         "updatedAt": updated_at,
     }
 

@@ -38,6 +38,10 @@ python3 "${REPO_ROOT}/scripts/generate-workflow-state.py" \
   --confirmation-required \
   --selected-scope F-001 \
   --affected-service order-service \
+  --affected-controller OrderController \
+  --affected-table orders \
+  --affected-topic order.event \
+  --affected-config-key order.submit.timeout \
   --blocker "human confirmation" \
   --updated-at "2026-05-26T00:00:00+08:00" \
   --output "${generated_state}" >/dev/null

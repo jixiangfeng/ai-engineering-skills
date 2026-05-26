@@ -38,7 +38,7 @@ nextAction: continue_current_stage
 ## 机器可读状态
 - 同步文件：`workflow-state.json`
 - Schema：`docs/workflow-state-schema.json`
-- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`domainModules`、`affectedServices`、`codeEditsAllowed`、`riskLevel`、`riskReason`、`confirmationRequired`、`rollbackRequired`、`updatedAt`
+- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`domainModules`、`affectedServices`、`affectedControllers`、`affectedTables`、`affectedCollections`、`affectedTopics`、`affectedConfigKeys`、`codeEditsAllowed`、`riskLevel`、`riskReason`、`confirmationRequired`、`rollbackRequired`、`updatedAt`
 - 索引更新：如果项目根目录存在 `workflow/index.md`，同步当前 run 条目
 
 ## 阶段状态

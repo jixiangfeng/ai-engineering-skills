@@ -23,5 +23,18 @@
   "affectedServices": [
     "order-service"
   ],
+  "affectedControllers": [
+    "OrderController"
+  ],
+  "affectedTables": [
+    "orders"
+  ],
+  "affectedCollections": [],
+  "affectedTopics": [
+    "order.event"
+  ],
+  "affectedConfigKeys": [
+    "order.submit.timeout"
+  ],
   "updatedAt": "2026-05-26T00:00:00+08:00"
 }

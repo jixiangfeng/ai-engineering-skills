@@ -417,7 +417,7 @@ for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolv
   rg -q "${term}" "${REPO_ROOT}/docs/artifact-templates/handoff.md" || fail "shared handoff template missing term: ${term}"
 done
 
-for term in "schemaVersion" "workflow" "runPath" "domainModules" "affectedServices" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do
+for term in "schemaVersion" "workflow" "runPath" "domainModules" "affectedServices" "affectedControllers" "affectedTables" "affectedCollections" "affectedTopics" "affectedConfigKeys" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do
   rg -q "\"${term}\"" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/valid-state.json" || fail "valid workflow state fixture missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/generated-state.expected.json" || fail "generated workflow state fixture missing field: ${term}"

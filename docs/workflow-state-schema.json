@@ -110,6 +110,41 @@
       },
       "default": []
     },
+    "affectedControllers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "affectedTables": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "affectedCollections": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "affectedTopics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "affectedConfigKeys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "updatedAt": {
       "type": "string",
       "minLength": 1

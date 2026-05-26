@@ -21,6 +21,11 @@ nextAction: continue_current_stage
 - Source artifact：
 - 领域模块：
 - 影响服务：
+- 影响 Controller：
+- 影响表：
+- 影响集合：
+- 影响 Topic：
+- 影响配置 Key：
 
 ## Execution Mode
 - executionMode：lightweight | standard | full
@@ -44,7 +49,7 @@ nextAction: continue_current_stage
 ## 机器可读状态
 - 同步文件：`workflow-state.json`
 - Schema：`docs/workflow-state-schema.json`
-- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`selectedScope`、`domainModules`、`affectedServices`、`codeEditsAllowed`、`riskLevel`、`riskReason`、`confirmationRequired`、`rollbackRequired`、`updatedAt`
+- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`selectedScope`、`domainModules`、`affectedServices`、`affectedControllers`、`affectedTables`、`affectedCollections`、`affectedTopics`、`affectedConfigKeys`、`codeEditsAllowed`、`riskLevel`、`riskReason`、`confirmationRequired`、`rollbackRequired`、`updatedAt`
 - 索引更新：如果项目根目录存在 `workflow/index.md`，同步当前 run 条目
 
 ## 阶段状态
