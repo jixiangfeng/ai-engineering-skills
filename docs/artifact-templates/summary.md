@@ -40,6 +40,10 @@ nextAction: wait_for_user_acceptance
 ## 未解决问题
 
 ## 主要风险
+- riskLevel：low | medium | high
+- riskReason：
+- confirmationRequired：true | false
+- rollbackRequired：true | false
 
 ## 验证结果
 

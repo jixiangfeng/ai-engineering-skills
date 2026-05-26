@@ -61,6 +61,12 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 最小改动和 scope guard
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 完成前验证
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module: Java / Spring
+
+If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, the Implementation Plan must include affectedServices, affectedControllers, affectedTables, affectedCollections, affectedTopics, affectedConfigKeys, riskLevel, rollbackPlan, and verificationPlan.
 
 ## Core Rules
 

@@ -45,6 +45,12 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — review 默认只读，修复不扩大 scope
 - `docs/prompt-modules/verification-gate.zh-CN.md` — review 结论和修复闭环 Verification
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module: Java / Spring
+
+If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, review findings must prioritize transaction boundaries, Feign dependency and timeout risks, MQ idempotency/retry/DLQ, Redis lock safety, Mapper dynamic SQL, DTO/VO/Entity boundaries, patientId/storeId/tenantId authorization, and enum/status magic strings.
 
 ## Core Rules
 

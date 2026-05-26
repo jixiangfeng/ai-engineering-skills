@@ -58,6 +58,17 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 路由阶段不扩大 scope、不引入无关变更
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 路由结果和停止条件的 Verification
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module Routing
+
+When a task involves Java / Spring Boot / Spring Cloud / MyBatis / Mongo / Redis / MQ / Nacos / XXL-JOB / Feign / Spring Security:
+
+1. Do not create a new workflow.
+2. Choose the main workflow with the normal routing rules.
+3. Also load `docs/domain-modules/java-spring-microservice.zh-CN.md`.
+4. Record `domainModules: [java-spring-microservice]` in workflow state when a workflow run is created.
 
 ## Core Rules
 

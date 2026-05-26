@@ -12,6 +12,10 @@
     "currentStage",
     "nextAction",
     "codeEditsAllowed",
+    "riskLevel",
+    "riskReason",
+    "confirmationRequired",
+    "rollbackRequired",
     "updatedAt"
   ],
   "additionalProperties": false,
@@ -37,6 +41,14 @@
     },
     "sourceArtifact": {
       "type": ["string", "null"]
+    },
+    "domainModules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["java-spring-microservice"]
+      },
+      "default": []
     },
     "executionMode": {
       "type": "string",
@@ -68,6 +80,19 @@
     "codeEditsAllowed": {
       "type": "boolean"
     },
+    "riskLevel": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "riskReason": {
+      "type": "string"
+    },
+    "confirmationRequired": {
+      "type": "boolean"
+    },
+    "rollbackRequired": {
+      "type": "boolean"
+    },
     "blockers": {
       "type": "array",
       "items": {
@@ -77,6 +102,13 @@
     },
     "selectedScope": {
       "type": ["string", "null"]
+    },
+    "affectedServices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     },
     "updatedAt": {
       "type": "string",

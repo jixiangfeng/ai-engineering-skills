@@ -39,11 +39,13 @@ require_file "${REPO_ROOT}/docs/superpowers-inspired-rules.zh-CN.md"
 require_file "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md"
 require_file "${REPO_ROOT}/docs/install-smoke-test.zh-CN.md"
 require_file "${REPO_ROOT}/docs/release-checklist.zh-CN.md"
+require_file "${REPO_ROOT}/docs/domain-modules/java-spring-microservice.zh-CN.md"
 require_file "${PLUGIN_DIR}/.codex-plugin/plugin.json"
 require_file "${PLUGIN_DIR}/.claude-plugin/plugin.json"
 require_file "${REPO_ROOT}/.claude-plugin/marketplace.json"
 require_file "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv"
 require_file "${REPO_ROOT}/tests/bootstrap-routing/fake-agent-runtime.py"
+require_file "${REPO_ROOT}/tests/domain-modules/java-spring-microservice-cases.tsv"
 require_file "${REPO_ROOT}/scripts/install-codex-skills.sh"
 require_file "${REPO_ROOT}/scripts/install-claude-plugin.sh"
 require_file "${REPO_ROOT}/scripts/smoke-install-local.sh"
@@ -53,6 +55,7 @@ require_file "${REPO_ROOT}/scripts/validate-workflow-state.py"
 require_file "${REPO_ROOT}/scripts/check-markdown.py"
 require_file "${REPO_ROOT}/scripts/check-artifact-metadata.py"
 require_file "${REPO_ROOT}/scripts/check-bootstrap-routing.py"
+require_file "${REPO_ROOT}/scripts/check-domain-module-routing.py"
 require_file "${REPO_ROOT}/scripts/check-workflow-state.sh"
 require_file "${REPO_ROOT}/scripts/check-workflow-index.sh"
 require_file "${REPO_ROOT}/scripts/release-check.sh"
@@ -76,7 +79,9 @@ for prompt_module in \
   finish-checklist.zh-CN.md \
   handoff.zh-CN.md \
   lightweight-mode.zh-CN.md \
-  minimal-change.zh-CN.md; do
+  minimal-change.zh-CN.md \
+  write-guard.zh-CN.md \
+  risk-gate.zh-CN.md; do
   require_file "${REPO_ROOT}/docs/prompt-modules/${prompt_module}"
 done
 
@@ -133,6 +138,7 @@ rg -q -- '--backup' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Cla
 [[ -x "${REPO_ROOT}/scripts/check-markdown.py" ]] || fail "Markdown check script should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-artifact-metadata.py" ]] || fail "Artifact metadata check script should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-bootstrap-routing.py" ]] || fail "Bootstrap routing harness should be executable"
+[[ -x "${REPO_ROOT}/scripts/check-domain-module-routing.py" ]] || fail "Domain module routing harness should be executable"
 [[ -x "${REPO_ROOT}/tests/bootstrap-routing/fake-agent-runtime.py" ]] || fail "Fake agent runtime should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-workflow-state.sh" ]] || fail "Workflow state check script should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-workflow-index.sh" ]] || fail "Workflow index check script should be executable"
@@ -145,7 +151,7 @@ rg -q '.claude-plugin/plugin.json' "${REPO_ROOT}/scripts/smoke-install-local.sh"
 rg -q 'generate-workflow-state.py' "${REPO_ROOT}/scripts/check-workflow-state.sh" || fail "Workflow state check should call generator"
 rg -q 'validate-workflow-state.py' "${REPO_ROOT}/scripts/check-workflow-state.sh" || fail "Workflow state check should call validator"
 rg -q 'update-workflow-index.py' "${REPO_ROOT}/scripts/check-workflow-index.sh" || fail "Workflow index check should call updater"
-for term in 'check-consistency.sh' 'check-workflow-state.sh' 'check-workflow-index.sh' 'check-markdown.py' 'check-artifact-metadata.py' 'check-bootstrap-routing.py' 'smoke-install-local.sh' 'install-codex-skills.sh" --dry-run --backup' 'install-claude-plugin.sh" --dry-run --backup'; do
+for term in 'check-consistency.sh' 'check-workflow-state.sh' 'check-workflow-index.sh' 'check-markdown.py' 'check-artifact-metadata.py' 'check-bootstrap-routing.py' 'check-domain-module-routing.py' 'smoke-install-local.sh' 'install-codex-skills.sh" --dry-run --backup' 'install-claude-plugin.sh" --dry-run --backup'; do
   rg -q "${term}" "${REPO_ROOT}/scripts/release-check.sh" || fail "release check script missing term: ${term}"
 done
 for term in '--ci' '--no-smoke' '--skip-dry-run'; do
@@ -223,6 +229,9 @@ for skill in "${expected_skills[@]}"; do
   rg -q 'Prompt Modules' "${skill_dir}/SKILL.md" || fail "skill missing Prompt Modules section: ${skill}"
   rg -q 'lightweight-mode.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing lightweight mode prompt module: ${skill}"
   rg -q 'minimal-change.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing minimal change prompt module: ${skill}"
+  rg -q 'write-guard.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing write guard prompt module: ${skill}"
+  rg -q 'risk-gate.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing risk gate prompt module: ${skill}"
+  rg -q 'java-spring-microservice.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing Java/Spring domain module reference: ${skill}"
   for mode in lightweight standard full; do
     rg -q "${mode}" "${skill_dir}/SKILL.md" || fail "skill missing execution mode ${mode}: ${skill}"
   done
@@ -408,7 +417,7 @@ for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolv
   rg -q "${term}" "${REPO_ROOT}/docs/artifact-templates/handoff.md" || fail "shared handoff template missing term: ${term}"
 done
 
-for term in "schemaVersion" "workflow" "runPath" "status" "currentStage" "nextAction" "codeEditsAllowed" "updatedAt"; do
+for term in "schemaVersion" "workflow" "runPath" "domainModules" "affectedServices" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do
   rg -q "\"${term}\"" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/valid-state.json" || fail "valid workflow state fixture missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/generated-state.expected.json" || fail "generated workflow state fixture missing field: ${term}"

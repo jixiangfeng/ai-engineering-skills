@@ -45,6 +45,12 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 默认不执行迁移、不扩大数据范围
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 迁移校验、回滚和残余风险 Verification
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module: Java / Spring
+
+If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, migration planning must cover MyBatis / entity field changes, historical data compatibility, affected tables and collections, backfill scope, read/write compatibility period, rollback SQL or recovery plan, and validation queries.
 
 ## Core Rules
 

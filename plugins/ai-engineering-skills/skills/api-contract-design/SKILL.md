@@ -45,6 +45,12 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 只调整契约范围内字段和行为
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 契约覆盖 UI/异常/兼容状态的 Verification
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module: Java / Spring
+
+If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, API contracts must check Request DTO / Response VO naming, Entity leakage, enum compatibility, null / empty / missing field semantics, historical data compatibility, and frontend fallback behavior.
 
 ## Core Rules
 

@@ -44,6 +44,12 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 保持只读，不做无关改动
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 证据覆盖和 analysis-only 判断
 
+- `docs/prompt-modules/write-guard.zh-CN.md` — 写入、删除、覆盖、安装和迁移门禁
+- `docs/prompt-modules/risk-gate.zh-CN.md` — low/medium/high 风险等级、确认和回滚要求
+
+## Domain Module: Java / Spring
+
+If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, orientation output must also cover Java module structure, Controller / Service / Mapper boundaries, Feign call chains, MQ topics/queues, Redis keys/locks, MySQL tables, Mongo collections, config keys, permission context, and high-risk modules.
 
 ## Core Rules
 

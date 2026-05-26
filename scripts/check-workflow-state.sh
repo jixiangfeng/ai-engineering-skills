@@ -28,11 +28,16 @@ python3 "${REPO_ROOT}/scripts/generate-workflow-state.py" \
   --workflow software-delivery-pipeline \
   --run-path workflow/runs/2026-05-26-generated \
   --source-artifact workflow/reviews/2026-05-26-review/review-to-delivery-handoff.md \
+  --domain-module java-spring-microservice \
   --status in_progress \
   --current-stage requirements \
   --latest-document 01-delivery-requirements.md \
   --next-action "Wait for requirements confirmation." \
+  --risk-level medium \
+  --risk-reason "Review handoff requires user confirmation before implementation." \
+  --confirmation-required \
   --selected-scope F-001 \
+  --affected-service order-service \
   --blocker "human confirmation" \
   --updated-at "2026-05-26T00:00:00+08:00" \
   --output "${generated_state}" >/dev/null

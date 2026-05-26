@@ -19,9 +19,9 @@ NO_WORKFLOW_INTENTS = [
 WORKFLOW_ACTIONS = {
     "code-review-triage": ["review", "审查", "找问题", "找出", "风险", "代码质量", "先列问题"],
     "debug-root-cause": ["排查", "启动失败", "启动不了", "失败", "报错", "异常", "根因", "测试为什么失败"],
-    "api-contract-design": ["设计接口", "请求响应契约", "接口契约", "返回字段", "响应结构", "DTO", "VO", "days[]"],
+    "api-contract-design": ["设计接口", "接口返回结构", "请求响应契约", "接口契约", "返回字段", "响应结构", "DTO", "VO", "days[]"],
     "data-migration-planning": ["表结构", "数据迁移", "回填", "迁移", "schema", "兼容"],
-    "software-delivery-pipeline": ["实现", "修复", "落地", "改代码", "小改", "handoff 落地", "修复选中的"],
+    "software-delivery-pipeline": ["实现", "修复", "落地", "改代码", "改一下", "小改", "handoff 落地", "修复选中的"],
     "codebase-orientation": ["熟悉", "梳理", "看懂", "项目地图", "调用链", "怎么跑"],
 }
 

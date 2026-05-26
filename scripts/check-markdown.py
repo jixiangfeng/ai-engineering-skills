@@ -31,12 +31,16 @@ def check_file(path: Path) -> list[str]:
 
     if text and not text.endswith("\n"):
         errors.append("missing final newline")
+    if len(text) > 1000 and len(lines) < 5:
+        errors.append("document appears collapsed into too few lines")
 
     fence_count = 0
     previous_heading = 0
     for idx, line in enumerate(lines, start=1):
         if line.rstrip("\n\r") != line.rstrip():
             errors.append(f"line {idx}: trailing whitespace")
+        if len(line) > 2000 and ("# " in line or "## " in line or "|" in line):
+            errors.append(f"line {idx}: possible collapsed markdown structure")
         if line.startswith("```"):
             fence_count += 1
         level = heading_level(line)

@@ -88,6 +88,7 @@ python3 scripts/check-markdown.py README.md docs plugins/ai-engineering-skills/s
 python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/artifact-templates plugins/ai-engineering-skills/skills/*/assets/*-templates docs/full-run-examples tests/artifact-metadata/valid-artifact.md
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv --runtime-command tests/bootstrap-routing/fake-agent-runtime.py
+python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv
 ```
 
 ## `install-codex-skills.sh`

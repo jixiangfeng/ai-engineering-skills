@@ -27,13 +27,17 @@ nextAction: continue_current_stage
 ## 当前状态
 - 阶段：
 - 是否允许改代码：否
+- 风险等级：low | medium | high
+- 风险原因：
+- 是否需要用户确认：是 / 否
+- 是否需要回滚方案：是 / 否
 - 下一步动作：
 - 阻塞项：
 
 ## 机器可读状态
 - 同步文件：`workflow-state.json`
 - Schema：`docs/workflow-state-schema.json`
-- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`selectedScope`、`codeEditsAllowed`、`updatedAt`
+- 更新要求：每次阶段文档更新后同步 `currentStage`、`status`、`latestDocument`、`nextAction`、`blockers`、`selectedScope`、`domainModules`、`affectedServices`、`codeEditsAllowed`、`riskLevel`、`riskReason`、`confirmationRequired`、`rollbackRequired`、`updatedAt`
 - 索引更新：如果项目根目录存在 `workflow/index.md`，同步当前 run 条目
 
 ## 阶段状态

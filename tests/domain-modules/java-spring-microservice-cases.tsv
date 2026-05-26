@@ -1,0 +1,8 @@
+prompt	expectedWorkflow	expectedDomainModule	expectedMode
+熟悉下这个 Spring Boot 项目	codebase-orientation	java-spring-microservice	standard
+review 下这个 Controller 有没有问题	code-review-triage	java-spring-microservice	standard
+这个 Feign 调用超时怎么排查	debug-root-cause	java-spring-microservice	standard
+设计一个 Spring Controller 用户详情接口返回结构	api-contract-design	java-spring-microservice	standard
+帮我改一下 MQ 消费逻辑	software-delivery-pipeline	java-spring-microservice	full
+排查 Redis 分布式锁偶发失效	debug-root-cause	java-spring-microservice	standard
+新增一个 MyBatis 字段并兼容老数据	data-migration-planning	java-spring-microservice	full

@@ -3,13 +3,23 @@
   "workflow": "codebase-orientation",
   "runPath": "workflow/orientation/2026-05-26-example",
   "sourceArtifact": null,
+  "domainModules": [
+    "java-spring-microservice"
+  ],
   "executionMode": "lightweight",
   "status": "completed",
   "currentStage": "summary",
   "latestDocument": "07-orientation-summary.md",
   "nextAction": "No action required.",
   "codeEditsAllowed": false,
+  "riskLevel": "low",
+  "riskReason": "Read-only orientation example.",
+  "confirmationRequired": false,
+  "rollbackRequired": false,
   "blockers": [],
   "selectedScope": "Example orientation scope",
+  "affectedServices": [
+    "example-service"
+  ],
   "updatedAt": "2026-05-26T00:00:00+08:00"
 }

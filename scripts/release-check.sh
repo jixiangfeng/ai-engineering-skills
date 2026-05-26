@@ -88,6 +88,11 @@ python3 "${REPO_ROOT}/scripts/check-bootstrap-routing.py" \
   --runtime-command "${REPO_ROOT}/tests/bootstrap-routing/fake-agent-runtime.py"
 
 echo
+echo "== Domain module routing =="
+python3 "${REPO_ROOT}/scripts/check-domain-module-routing.py" \
+  --cases "${REPO_ROOT}/tests/domain-modules/java-spring-microservice-cases.tsv"
+
+echo
 echo "== Isolated smoke install =="
 if [[ "${RUN_SMOKE}" -eq 1 ]]; then
   bash "${REPO_ROOT}/scripts/smoke-install-local.sh"

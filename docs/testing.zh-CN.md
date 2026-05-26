@@ -15,6 +15,7 @@ python3 scripts/check-markdown.py README.md docs plugins/ai-engineering-skills/s
 python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/artifact-templates plugins/ai-engineering-skills/skills/*/assets/*-templates docs/full-run-examples tests/artifact-metadata/valid-artifact.md
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv --runtime-command tests/bootstrap-routing/fake-agent-runtime.py
+python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv
 ```
 
 发布或真实安装前，推荐直接运行：
@@ -45,6 +46,7 @@ bash scripts/check-workflow-index.sh
 | 修改 `SKILL.md` | `bash scripts/check-consistency.sh` |
 | 修改模板或 reference | `bash scripts/check-consistency.sh` |
 | 修改 `workflow-bootstrap` 路由 | `bash scripts/check-consistency.sh` + `python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv` |
+| 修改领域模块路由 | `bash scripts/check-consistency.sh` + `python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv` |
 | 修改安装脚本 | `bash scripts/check-consistency.sh` + `bash scripts/smoke-install-local.sh` |
 | 修改 plugin metadata | `bash scripts/check-consistency.sh` + `bash scripts/smoke-install-local.sh` |
 | 修改 `workflow-state.json` schema | `bash scripts/check-workflow-state.sh` + `bash scripts/check-workflow-index.sh` + `bash scripts/check-consistency.sh` |
@@ -63,6 +65,7 @@ bash scripts/check-workflow-index.sh
 - Codex plugin `defaultPrompt` 推荐使用 `workflow-bootstrap`
 - `tests/bootstrap-routing/cases.tsv` 中的期望 workflow 在 skill 目录中存在
 - bootstrap routing harness 对结构化用例做确定性规则检查
+- domain module routing harness 对 Java/Spring 领域模块触发做确定性规则检查
 - markdown fence、尾随空格和标题层级检查
 - full-run artifact metadata YAML 块检查
 - `docs/bootstrap-examples.zh-CN.md` 覆盖路由验收说明

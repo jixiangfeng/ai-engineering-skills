@@ -3,15 +3,25 @@
   "workflow": "software-delivery-pipeline",
   "runPath": "workflow/runs/2026-05-26-generated",
   "sourceArtifact": "workflow/reviews/2026-05-26-review/review-to-delivery-handoff.md",
+  "domainModules": [
+    "java-spring-microservice"
+  ],
   "executionMode": "standard",
   "status": "in_progress",
   "currentStage": "requirements",
   "latestDocument": "01-delivery-requirements.md",
   "nextAction": "Wait for requirements confirmation.",
   "codeEditsAllowed": false,
+  "riskLevel": "medium",
+  "riskReason": "Review handoff requires user confirmation before implementation.",
+  "confirmationRequired": true,
+  "rollbackRequired": false,
   "blockers": [
     "human confirmation"
   ],
   "selectedScope": "F-001",
+  "affectedServices": [
+    "order-service"
+  ],
   "updatedAt": "2026-05-26T00:00:00+08:00"
 }
