@@ -173,7 +173,7 @@ Required files:
 3. `03-delivery-plan.md` (or `02-delivery-plan.md` for simple tasks without standalone architecture)
 4. `04-delivery-implementation.md` (or `03-delivery-implementation.md` for simple tasks without standalone architecture)
 5. `05-delivery-change-review.md` (required when Change Review Gate triggers apply)
-6. `06-delivery-debugging.md` (only if needed; otherwise create a short Chinese "not needed" stub; use `04-delivery-debugging.md` for simple tasks)
+6. `06-delivery-debugging.md` (for complex paths; if no debugging is needed, still create a short Chinese stub)
 7. `07-delivery-verification.md` (or `05-delivery-verification.md` for simple low-risk tasks without change review/debugging)
 8. `08-delivery-summary.md` (or `06-delivery-summary.md` for simple low-risk tasks)
 
@@ -235,31 +235,31 @@ Actions:
 - break work into concrete steps
 - identify risks, dependencies, and verification strategy
 - define test targets before implementation
-- write `02-delivery-plan.md`
+- write `02-delivery-plan.md` for simple tasks, or `03-delivery-plan.md` after a standalone architecture stage
 
 Planning should be specific enough that another agent could implement from the document.
 After writing the plan, reply to the human with the run folder path, a concise plan summary, major risks, verification strategy, any unresolved assumptions, and a direct request to confirm or revise the plan. Stop before implementation until explicit approval and no unresolved blocking questions remain.
-If the human revises the plan or the plan conflicts with confirmed requirements/architecture/code evidence, update the plan document and repeat the confirmation gate.
+If the human revises the plan or the plan conflicts with confirmed requirements/architecture/code evidence, update the active plan document and repeat the confirmation gate.
 
 ## Stage 3 — Test-First Implementation
 
 Goal: implement from the plan with test-first discipline.
 
 Actions:
-- read `02-delivery-plan.md`
+- read the approved plan document: `02-delivery-plan.md` for simple tasks, or `03-delivery-plan.md` when a standalone architecture stage exists
 - identify the smallest meaningful failing test or failing reproduction
 - default to fail-first for behavior changes that are reasonably testable
 - verify the test or reproduction fails for the right reason
 - implement the minimal change to pass
 - repeat incrementally
 - keep notes of files changed, tests added, and deviations from the plan
-- if implementation requires materially deviating from the approved plan or expanding scope, update `03-delivery-implementation.md`, explain the deviation, ask for human confirmation, and pause before continuing
+- if implementation requires materially deviating from the approved plan or expanding scope, update the active implementation report (`03-delivery-implementation.md` for simple tasks, or `04-delivery-implementation.md` after standalone architecture), explain the deviation, ask for human confirmation, and pause before continuing
 - write the implementation report
 
 Default rule:
 - do not treat “tests later” as the normal path
 
-If strict fail-first is not practical, document all of the following in `03-delivery-implementation.md`:
+If strict fail-first is not practical, document all of the following in the active implementation report:
 - why fail-first was not practical
 - what alternative verification strategy was used
 - what regression coverage was added later
@@ -331,10 +331,10 @@ Actions:
 - inspect recent changes and likely boundaries
 - trace the failing data/control path backward to source
 - only then propose and apply a fix
-- if the fix changes approved scope, architecture, persistence, compatibility behavior, or other high-risk boundaries, write the finding to `04-delivery-debugging.md`, ask for human confirmation, and pause before applying it
+- if the fix changes approved scope, architecture, persistence, compatibility behavior, or other high-risk boundaries, write the finding to the active debugging report (`04-delivery-debugging.md` for simple paths, or `06-delivery-debugging.md` for architecture/change-review paths), ask for human confirmation, and pause before applying it
 - write the debugging report
 
-If debugging is not needed, still create `04-delivery-debugging.md` with a short Chinese note saying no debugging stage was required.
+If debugging is not needed, still create the active debugging report with a short Chinese note saying no debugging stage was required: `04-delivery-debugging.md` for simple paths, or `06-delivery-debugging.md` for architecture/change-review paths.
 
 ## Stage 5 — Verification Before Completion
 
@@ -349,7 +349,7 @@ Actions:
 - prefer project-native checks: tests, build, lint, typecheck, smoke test, screenshot, diff inspection
 - record exactly what was run and the outcome
 - list any skipped checks and why they were skipped
-- if meaningful verification is blocked or cannot be run, write the blocker to `05-delivery-verification.md`, ask whether to accept the risk or provide the missing environment/input, and pause before claiming completion
+- if meaningful verification is blocked or cannot be run, write the blocker to the active verification report (`05-delivery-verification.md` for simple low-risk paths, or `07-delivery-verification.md` for architecture/change-review paths), ask whether to accept the risk or provide the missing environment/input, and pause before claiming completion
 - write the verification report
 
 Do not mark the work complete unless verification evidence exists or a blocker is explicitly documented.
@@ -363,7 +363,7 @@ Actions:
 - list files touched
 - summarize verification results
 - note any remaining risks, follow-ups, or decisions needed
-- write `06-delivery-summary.md`
+- write `06-delivery-summary.md` for simple low-risk paths, or `08-delivery-summary.md` for architecture/change-review paths
 - if continuing from `code-review-triage`, write or update the source review run's `review-delivery-result.md`
 - reply with the delivery summary path and ask the human to accept the result or provide follow-up changes
 
@@ -376,8 +376,8 @@ When using this skill in a live task:
 3. create the run folder under `<project-root>/workflow/runs/<YYYY-MM-DD>-<slug>/`
 4. create or update `delivery-workflow-state.md`
 5. write `01-delivery-requirements.md` in Chinese
-4. ask the human to confirm or revise `01-delivery-requirements.md`, then stop
-5. if revisions are requested, update `01-delivery-requirements.md` and repeat the confirmation gate
+6. ask the human to confirm or revise `01-delivery-requirements.md`, then stop
+7. if revisions are requested, update `01-delivery-requirements.md` and repeat the confirmation gate
 6. after explicit approval, evaluate the architecture gate
 7. if architecture triggers apply, write `02-delivery-architecture.md` in Chinese, ask the human to confirm or revise it, then stop
 8. if architecture revisions are requested, update `02-delivery-architecture.md` and repeat the confirmation gate

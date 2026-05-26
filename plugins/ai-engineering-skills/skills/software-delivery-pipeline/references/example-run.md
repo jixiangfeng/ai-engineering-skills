@@ -4,7 +4,7 @@
 
 `<project-root>/workflow/runs/2026-05-21-fix-login-timeout/`
 
-文件：
+文件（简单任务、无独立架构文档时）：
 
 - `01-delivery-requirements.md`
 - `02-delivery-plan.md`

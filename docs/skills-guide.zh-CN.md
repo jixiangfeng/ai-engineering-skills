@@ -304,16 +304,16 @@ delivery-workflow-state.md
 03-delivery-implementation.md
 04-delivery-implementation.md
 04-delivery-debugging.md
-05-delivery-debugging.md
 05-delivery-change-review.md
 05-delivery-verification.md
-06-delivery-verification.md
+06-delivery-debugging.md
 06-delivery-summary.md
-07-delivery-summary.md
+07-delivery-verification.md
+08-delivery-summary.md
 ```
 
-简单任务可能使用较短编号，例如没有架构门禁时使用 `02-delivery-plan.md`。
-复杂任务会使用顺延编号，例如有架构门禁时使用 `03-delivery-plan.md`。
+简单任务可能使用较短编号，例如没有架构门禁时使用 `02-delivery-plan.md`、`03-delivery-implementation.md`、`05-delivery-verification.md`、`06-delivery-summary.md`。
+复杂任务会使用顺延编号，例如有架构门禁时使用 `03-delivery-plan.md`、`04-delivery-implementation.md`、`05-delivery-change-review.md`、`06-delivery-debugging.md`、`07-delivery-verification.md`、`08-delivery-summary.md`。
 
 ### Review Handoff 规则
 

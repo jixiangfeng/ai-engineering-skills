@@ -131,13 +131,6 @@ After routing:
 
 The routing response should be short and decisive, not a long meta-discussion.
 
-## Output Behavior
-
-After routing:
-- state which workflow is being used and why
-- proceed into that workflow
-- do not create duplicate parallel workflows for the same request unless the user explicitly asks
-
 ## Recommended Language
 
 A concise routing message is enough, for example:

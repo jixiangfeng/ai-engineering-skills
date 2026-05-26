@@ -30,9 +30,9 @@
 | requirements | `01-delivery-requirements.md` | pending / approved / skipped |  |
 | architecture | `02-delivery-architecture.md` | pending / approved / skipped |  |
 | plan | `02-delivery-plan.md` / `03-delivery-plan.md` | pending / approved / skipped |  |
-| implementation | implementation report | not_allowed / allowed / done |  |
-| verification | verification report | pending / done / blocked |  |
-| delivery | delivery report | pending / done |  |
+| implementation | `03-delivery-implementation.md` / `04-delivery-implementation.md` | not_allowed / allowed / done |  |
+| verification | `05-delivery-verification.md` / `07-delivery-verification.md` | pending / done / blocked |  |
+| delivery | `06-delivery-summary.md` / `08-delivery-summary.md` | pending / done |  |
 
 ## Preflight 记录
 - cwd：
@@ -698,6 +698,167 @@
 | 结论 | 证据位置 | 类型 | 置信度 | 备注 |
 | --- | --- | --- | --- | --- |
 |  | `path/to/file:line` | 事实 / 推断 / 待确认 | 高 / 中 / 低 |  |
+```
+
+---
+
+## 06-delivery-debugging.md
+
+```md
+# 调试记录（复杂路径）
+
+## 文档元信息
+- 项目根目录：
+- 生成时间：
+- 当前分支 / commit：
+- 执行 agent：
+- 来源文档：
+- 文档状态：
+
+## 触发原因
+- 为什么需要进入调试阶段
+
+## 现象
+- 
+
+## 证据
+- 
+
+## 根因
+- 
+
+## 已应用修复
+- 
+
+## 修复后验证
+- 
+
+## 备注
+- 如果本次不需要调试，写：本次执行未进入调试阶段。
+
+## 高风险修复确认
+- 如修复涉及范围扩大、架构、持久化、兼容策略或破坏性操作，记录方案并等待用户确认后继续。
+
+## 证据引用
+| 结论 | 证据位置 | 类型 | 置信度 | 备注 |
+| --- | --- | --- | --- | --- |
+|  | `path/to/file:line` | 事实 / 推断 / 待确认 | 高 / 中 / 低 |  |
+
+## 决策记录
+| 决策项 | 选择 | 不选方案 | 原因 | 确认记录 |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## 变更记录
+| 轮次 | 用户反馈 | 文档更新 | 当前状态 |
+| --- | --- | --- | --- |
+|  |  |  |  |
+```
+
+---
+
+## 07-delivery-verification.md
+
+```md
+# 验证记录（复杂路径）
+
+## 文档元信息
+- 项目根目录：
+- 生成时间：
+- 当前分支 / commit：
+- 执行 agent：
+- 来源文档：
+- 文档状态：
+
+## 已运行检查
+- [ ] tests：
+- [ ] lint：
+- [ ] build：
+- [ ] typecheck：
+- [ ] smoke/manual：
+
+## 结果
+- 
+
+## 证据
+- 命令：
+- 输出摘要：
+
+## 跳过的检查
+- 
+
+## 最终验证状态
+- 通过 | 部分通过 | 失败 | 阻塞
+
+## 验证阻塞确认
+- 如关键验证无法运行，记录阻塞原因，并等待用户决定是否接受风险或补充环境/输入。
+
+## 验证矩阵
+| 验收项 / Finding | 验证方式 | 命令或步骤 | 结果 | 证据 | 未覆盖原因 |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
+## 证据引用
+| 结论 | 证据位置 | 类型 | 置信度 | 备注 |
+| --- | --- | --- | --- | --- |
+|  | `path/to/file:line` | 事实 / 推断 / 待确认 | 高 / 中 / 低 |  |
+```
+
+---
+
+## 08-delivery-summary.md
+
+```md
+# 交付摘要（复杂路径）
+
+## 文档元信息
+- 项目根目录：
+- 生成时间：
+- 当前分支 / commit：
+- 执行 agent：
+- 来源文档：
+- 文档状态：
+
+## 结果
+- 
+
+## 修改文件
+- 
+
+## 验证摘要
+- 
+
+## 剩余风险
+- 
+
+## 后续建议
+- 
+
+## 是否可供人工审查
+- 是 | 否
+
+## 验证矩阵
+| 验收项 / Finding | 验证方式 | 命令或步骤 | 结果 | 证据 | 未覆盖原因 |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+
+## 证据引用
+| 结论 | 证据位置 | 类型 | 置信度 | 备注 |
+| --- | --- | --- | --- | --- |
+|  | `path/to/file:line` | 事实 / 推断 / 待确认 | 高 / 中 / 低 |  |
+
+## 决策记录
+| 决策项 | 选择 | 不选方案 | 原因 | 确认记录 |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## 用户验收
+- 待用户确认是否接受交付结果，或提出后续修改。
+
+## Review 回写
+- 来源 review run：
+- review-delivery-result.md：
+- 已回写 Findings 状态：
 ```
 
 ---

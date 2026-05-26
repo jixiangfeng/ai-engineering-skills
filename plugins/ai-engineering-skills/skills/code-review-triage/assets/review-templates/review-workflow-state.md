@@ -16,12 +16,12 @@
 ## 阶段状态
 | 阶段 | 文档 | 状态 | 确认记录 |
 | --- | --- | --- | --- |
-| review_scope | `01-review_scope.md` | pending / approved / skipped |  |
-| architecture | `02-delivery-architecture.md` | pending / approved / skipped |  |
-| plan | `02-delivery-plan.md` / `03-delivery-plan.md` | pending / approved / skipped |  |
-| implementation | implementation report | not_allowed / allowed / done |  |
-| verification | verification report | pending / done / blocked |  |
-| delivery | delivery report | pending / done |  |
+| review_scope | `01-review-scope.md` | pending / approved / skipped |  |
+| findings | `02-review-findings.md` | pending / approved / skipped |  |
+| fix_selection | `03-review-fix-selection.md` | pending / approved / skipped |  |
+| fix_plan | `04-review-fix-plan.md` | pending / approved / skipped |  |
+| handoff_or_closure | `review-to-delivery-handoff.md` / `07-review-summary.md` | pending / done / blocked |  |
+| in_skill_implementation | `05-review-implementation.md` / `06-review-verification.md` | not_allowed / allowed / done |  |
 
 ## Preflight 记录
 - cwd：
