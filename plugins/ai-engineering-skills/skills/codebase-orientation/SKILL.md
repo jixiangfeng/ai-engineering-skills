@@ -27,12 +27,28 @@ Prefer another skill when:
 - `data-migration-planning`: the focus is schema or persisted data changes
 - `software-delivery-pipeline`: the user asks to implement an approved change
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — 只读熟悉任务拆分
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整熟悉产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — orientation 到 review / delivery 的交接
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 保持只读，不做无关改动
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 证据覆盖和 analysis-only 判断
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` when a project or module is broad enough to split into structure, business flow, data contract, and risk analysis.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before the final summary. Orientation completion is normally `analysis-only` unless verified by explicit evidence coverage.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Orientation mode is read-only. Do not modify code, configs, generated files, or docs unless the user explicitly changes the task.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - Prefer code, config, tests, routes, schemas, logs, and docs as evidence. Do not infer from framework conventions when files can verify the fact.
@@ -206,5 +222,3 @@ Actions:
 Read when doing actual orientation:
 - `references/orientation-guidelines.md` — evidence, fact/inference labels, and output quality rules
 - `examples/standard-run.md` — canonical miniature run shape for state, summary, and optional handoff output
-- `docs/prompt-modules/task-decomposition.zh-CN.md` — read-only task decomposition rules
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

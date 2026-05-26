@@ -1,3 +1,14 @@
+---
+workflow: <workflow>
+runId: <YYYYMMDD-slug>
+runPath: workflow/<run>
+executionMode: standard
+stage: stage
+status: draft
+source: template
+allowsCodeEdit: false
+nextAction: continue_workflow
+---
 # <NN-Workflow-Stage>
 
 ## 文档元信息

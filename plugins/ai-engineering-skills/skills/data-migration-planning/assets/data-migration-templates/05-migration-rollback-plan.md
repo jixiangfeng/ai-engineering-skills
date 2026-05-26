@@ -1,3 +1,14 @@
+---
+workflow: data-migration-planning
+runId: <YYYYMMDD-slug>
+runPath: workflow/data-migrations/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: plan
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: confirm_plan
+---
 # 回滚 / 恢复计划
 
 ## 文档元信息

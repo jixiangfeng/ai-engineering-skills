@@ -1,3 +1,14 @@
+---
+workflow: debug-root-cause
+runId: <YYYYMMDD-slug>
+runPath: workflow/debug/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: state
+status: in_progress
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_current_stage
+---
 # Debug Workflow State
 
 ## 文档元信息
@@ -6,6 +17,12 @@
 - 当前分支 / commit：
 - 执行 agent：
 - Run 目录：
+
+## Execution Mode
+- executionMode：lightweight | standard | full
+- 模式选择理由：
+- 本模式产物：
+- 本模式跳过的产物：
 
 ## 当前状态
 - 当前阶段：

@@ -1,14 +1,16 @@
+---
+workflow: data-migration-planning
+runId: 2026-05-26-order-status
+runPath: workflow/data-migrations/2026-05-26-order-status
+executionMode: full
+stage: summary
+status: handoff_ready
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # Data Migration Planning Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: data-migration-planning
-  run_path: workflow/data-migrations/2026-05-26-order-status
-  mode: full
-  status: handoff_ready
-  code_edits_allowed: false
-```
 
 ## Migration Package
 

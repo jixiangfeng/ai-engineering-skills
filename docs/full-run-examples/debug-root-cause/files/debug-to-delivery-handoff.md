@@ -1,14 +1,20 @@
+---
+workflow: debug-root-cause
+runId: 2026-05-26-debug-root-cause
+runPath: workflow/example-runs/2026-05-26-debug-root-cause
+executionMode: full
+stage: handoff
+status: completed
+source: example
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: debug-root-cause
+toWorkflow: software-delivery-pipeline
+selectedItems: [example-item]
+verificationRequired: true
+---
 # debug-to-delivery-handoff
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: debug-root-cause
-  run_path: workflow/example-runs/2026-05-26-debug-root-cause
-  mode: full
-  status: completed
-  code_edits_allowed: false
-```
 
 ## 内容
 - 示例内容，展示完整 run 的该阶段产物形态。

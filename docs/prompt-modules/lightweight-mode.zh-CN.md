@@ -1,0 +1,39 @@
+# Lightweight Mode 模块
+
+本模块用于控制 workflow 产物数量，避免小任务生成完整阶段文档。
+
+## 模式选择
+
+- `lightweight`: 小改、快速看下、简单修复、轻量问答后的最小 workflow；只生成 `workflow-state.json` 和 summary。
+- `standard`: 普通 review/debug/design/planning/delivery；生成关键阶段文档。
+- `full`: 用户要求完整、深度、形成文档、handoff、可恢复，或任务风险较高；生成完整阶段链路。
+
+## 执行规则
+
+1. 每个 workflow 开始前必须选择并记录 `executionMode`。
+2. 小任务默认 `lightweight`，除非证据、风险或用户要求需要升级。
+3. `lightweight` 不等于无状态；仍必须有机器可读 state 和 summary。
+4. 任务扩大、出现 handoff、需要恢复或需要审计时，先说明原因，再升级为 `standard` 或 `full`。
+5. summary 必须记录已生成和已跳过的产物。
+
+## 输出要求
+
+```md
+## Execution Mode
+
+- executionMode: lightweight / standard / full
+- Reason:
+- Produced artifacts:
+- Skipped artifacts:
+- Upgrade condition:
+```
+
+## 正例
+
+- “简单修复一个文案”使用 `lightweight`，只产出 state 和 summary。
+- “深度 review 并形成文档”使用 `full`。
+
+## 反例
+
+- 小改也默认生成 01-07 全部阶段文档。
+- 跳过阶段文档但不记录跳过原因。

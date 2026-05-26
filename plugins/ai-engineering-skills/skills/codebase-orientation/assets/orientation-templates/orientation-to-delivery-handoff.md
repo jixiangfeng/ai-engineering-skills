@@ -1,3 +1,18 @@
+---
+workflow: codebase-orientation
+runId: <YYYYMMDD-slug>
+runPath: workflow/orientation/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: handoff
+status: handoff_ready
+source: workflow-handoff
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: codebase-orientation
+toWorkflow: software-delivery-pipeline
+selectedItems: []
+verificationRequired: true
+---
 # 熟悉结果到交付流程交接单
 
 ## 文档元信息

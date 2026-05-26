@@ -27,13 +27,29 @@ Prefer another skill when:
 - `code-review-triage`: the user wants to audit data code before choosing fixes
 - `software-delivery-pipeline`: the migration plan is confirmed and ready to implement
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — 迁移到实现的计划结构
+- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — 高风险迁移的隔离建议
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整迁移规划产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — migration 到 delivery 的交接
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 默认不执行迁移、不扩大数据范围
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 迁移校验、回滚和残余风险 Verification
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/implementation-plan.zh-CN.md` when producing a migration-to-delivery handoff that will require code, SQL, or script changes.
-- Follow `docs/prompt-modules/worktree-recommendation.zh-CN.md` for high-risk migrations, dirty worktrees, multi-module changes, or long-running migration work.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Migration planning is a design gate before implementation.
 - Never assume production data shape; inspect schema, entities, queries, and migration history when available.
 - Always define rollback or recovery strategy, even if rollback is manual.
@@ -188,6 +204,3 @@ Read when doing actual migration planning:
 - `references/data-migration-document-contracts.md` — artifact minimums and handoff expectations
 - `references/data-migration-guidelines.md` — schema evidence, rollback, validation, and output quality rules
 - `examples/standard-run.md` — canonical miniature run shape for migration plan, rollback, validation, state, and handoff output
-- `docs/prompt-modules/implementation-plan.zh-CN.md` — migration implementation handoff plan structure
-- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — worktree recommendation rules
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

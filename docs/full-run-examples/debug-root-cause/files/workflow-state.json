@@ -3,6 +3,7 @@
   "workflow": "debug-root-cause",
   "runPath": "workflow/example-runs/2026-05-26-example",
   "sourceArtifact": null,
+  "executionMode": "full",
   "status": "completed",
   "currentStage": "summary",
   "latestDocument": null,

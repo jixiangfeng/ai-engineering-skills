@@ -1,3 +1,14 @@
+---
+workflow: software-delivery-pipeline
+runId: <YYYYMMDD-slug>
+runPath: workflow/runs/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: summary
+status: draft
+source: user-request
+allowsCodeEdit: true
+nextAction: wait_for_user_acceptance
+---
 # 交付摘要
 
 ## 文档元信息
@@ -7,6 +18,12 @@
 - 执行 agent：
 - 来源文档：
 - 文档状态：
+
+## Execution Mode
+- executionMode：lightweight | standard | full
+- 模式选择理由：
+- 已生成产物：
+- 已跳过产物及原因：
 
 ## 结果
 -

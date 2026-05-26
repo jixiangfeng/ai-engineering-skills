@@ -1,3 +1,14 @@
+---
+workflow: code-review-triage
+runId: <YYYYMMDD-slug>
+runPath: workflow/reviews/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: summary
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: wait_for_user_acceptance
+---
 # Review 修复交付摘要
 
 ## 文档元信息
@@ -10,6 +21,12 @@
 
 ## 交付类型
 - 仅审查无修复 | 已修复选中 Findings
+
+## Execution Mode
+- executionMode：lightweight | standard | full
+- 模式选择理由：
+- 已生成产物：
+- 已跳过产物及原因：
 
 ## 结果
 -

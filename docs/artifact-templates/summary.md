@@ -1,3 +1,14 @@
+---
+workflow: <workflow>
+runId: <YYYYMMDD-slug>
+runPath: workflow/<run>
+executionMode: standard
+stage: summary
+status: draft
+source: template
+allowsCodeEdit: false
+nextAction: wait_for_user_acceptance
+---
 # <Workflow> Summary
 
 ## 文档元信息
@@ -9,6 +20,12 @@
 - Run 目录：
 - Source artifact：
 - 当前状态：
+
+## Execution Mode
+- executionMode：lightweight | standard | full
+- 模式选择理由：
+- 已生成产物：
+- 已跳过产物及原因：
 
 ## 当前结论
 

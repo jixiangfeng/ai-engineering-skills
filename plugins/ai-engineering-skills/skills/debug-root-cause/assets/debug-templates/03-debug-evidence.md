@@ -1,3 +1,14 @@
+---
+workflow: debug-root-cause
+runId: <YYYYMMDD-slug>
+runPath: workflow/debug/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: findings
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_analysis
+---
 # 证据收集
 
 ## 文档元信息

@@ -1,3 +1,14 @@
+---
+workflow: api-contract-design
+runId: <YYYYMMDD-slug>
+runPath: workflow/api-contracts/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: plan
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: confirm_plan
+---
 # 兼容性策略
 
 ## 文档元信息

@@ -73,7 +73,10 @@ for prompt_module in \
   review-loop.zh-CN.md \
   worktree-recommendation.zh-CN.md \
   task-decomposition.zh-CN.md \
-  finish-checklist.zh-CN.md; do
+  finish-checklist.zh-CN.md \
+  handoff.zh-CN.md \
+  lightweight-mode.zh-CN.md \
+  minimal-change.zh-CN.md; do
   require_file "${REPO_ROOT}/docs/prompt-modules/${prompt_module}"
 done
 
@@ -150,11 +153,25 @@ for term in '--ci' '--no-smoke' '--skip-dry-run'; do
   rg -q -- "${term}" "${REPO_ROOT}/scripts/README.md" || fail "scripts README missing release option: ${term}"
 done
 rg -q -- '--strict-jsonschema' "${REPO_ROOT}/scripts/validate-workflow-state.py" || fail "workflow state validator missing strict jsonschema option"
+rg -q 'executionMode' "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing executionMode"
+rg -q -- '--execution-mode' "${REPO_ROOT}/scripts/generate-workflow-state.py" || fail "workflow state generator missing execution mode option"
+for mode in lightweight standard full; do
+  rg -q "${mode}" "${REPO_ROOT}/docs/workflow-contracts.zh-CN.md" || fail "workflow contract missing execution mode: ${mode}"
+  rg -q "${mode}" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing execution mode: ${mode}"
+done
 rg -q 'artifact-metadata-schema' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should use schema"
+rg -q 'extract_front_matter' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should parse YAML front matter"
+rg -q 'REQUIRED_HANDOFF_KEYS' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should enforce handoff metadata"
+rg -q 'docs/artifact-templates' "${REPO_ROOT}/scripts/release-check.sh" || fail "release check should validate artifact templates"
+rg -q 'assets/.\\*-templates' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs should include artifact template metadata check"
 rg -q -- '--runtime-command' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing harness missing runtime command mode"
 rg -q -- '--strict-jsonschema' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs missing strict jsonschema option"
 rg -q '自动化 Harness' "${REPO_ROOT}/docs/bootstrap-examples.zh-CN.md" || fail "bootstrap examples missing automation harness"
 rg -q '真实 agent harness' "${REPO_ROOT}/docs/bootstrap-examples.zh-CN.md" || fail "bootstrap examples missing real agent harness boundary"
+rg -q 'NO_WORKFLOW_INTENTS' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing should use no-workflow intent rules"
+rg -q 'WORKFLOW_ACTIONS' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing should use workflow action rules"
+rg -q 'review 后修复' "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv" || fail "bootstrap routing cases should cover review-first conflict"
+rg -q '解释一下这个问题' "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv" || fail "bootstrap routing cases should cover no-workflow Q&A intent"
 rg -q '不默认维护完整 01-07/08 示例' "${REPO_ROOT}/docs/examples-policy.zh-CN.md" || fail "examples policy missing full-run decision"
 rg -q '用户自主决策原则' "${REPO_ROOT}/docs/compatibility.zh-CN.md" || fail "compatibility docs missing user decision principle"
 rg -q 'Full Run 示例' "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md" || fail "full-run examples README missing title"
@@ -202,6 +219,13 @@ for skill in "${expected_skills[@]}"; do
   rg -q 'Use when' "${skill_dir}/SKILL.md" || fail "skill missing Use when boundary: ${skill}"
   rg -q 'Do not use when' "${skill_dir}/SKILL.md" || fail "skill missing Do not use when boundary: ${skill}"
   rg -q 'Prefer another skill when' "${skill_dir}/SKILL.md" || fail "skill missing Prefer another skill when boundary: ${skill}"
+  rg -q 'Execution Mode Selection' "${skill_dir}/SKILL.md" || fail "skill missing execution mode selection section: ${skill}"
+  rg -q 'Prompt Modules' "${skill_dir}/SKILL.md" || fail "skill missing Prompt Modules section: ${skill}"
+  rg -q 'lightweight-mode.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing lightweight mode prompt module: ${skill}"
+  rg -q 'minimal-change.zh-CN.md' "${skill_dir}/SKILL.md" || fail "skill missing minimal change prompt module: ${skill}"
+  for mode in lightweight standard full; do
+    rg -q "${mode}" "${skill_dir}/SKILL.md" || fail "skill missing execution mode ${mode}: ${skill}"
+  done
   if ! rg -q 'verification-gate.zh-CN.md' "${skill_dir}/SKILL.md" && ! rg -q 'Verification' "${skill_dir}/SKILL.md"; then
     fail "skill missing Verification gate reference: ${skill}"
   fi
@@ -221,6 +245,13 @@ for skill in "${expected_skills[@]}"; do
 done
 
 rg -q 'clarification.zh-CN.md' "${SKILLS_DIR}/workflow-bootstrap/SKILL.md" || fail "workflow-bootstrap missing clarification prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/workflow-bootstrap/SKILL.md" || fail "workflow-bootstrap missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/code-review-triage/SKILL.md" || fail "review skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/debug-root-cause/SKILL.md" || fail "debug skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/api-contract-design/SKILL.md" || fail "api contract skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/data-migration-planning/SKILL.md" || fail "migration skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/codebase-orientation/SKILL.md" || fail "orientation skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing handoff prompt module"
 rg -q 'Implementation Plan' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Implementation Plan"
 rg -q 'Implementation Strategy' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Implementation Strategy"
 rg -q 'Task Decomposition' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Task Decomposition"
@@ -317,8 +348,21 @@ for state_template in \
   "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/api-contract-workflow-state.md" \
   "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-workflow-state.md"; do
   require_file "${state_template}"
+  rg -q 'executionMode' "${state_template}" || fail "state template missing executionMode: ${state_template}"
   rg -q 'workflow-state.json' "${state_template}" || fail "state template missing workflow-state.json reference: ${state_template}"
   rg -q 'workflow/index.md' "${state_template}" || fail "state template missing workflow index reference: ${state_template}"
+done
+
+for summary_template in \
+  "${SKILLS_DIR}/codebase-orientation/assets/orientation-templates/07-orientation-summary.md" \
+  "${SKILLS_DIR}/code-review-triage/assets/review-templates/07-review-summary.md" \
+  "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/06-delivery-summary.md" \
+  "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/08-delivery-summary.md" \
+  "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/08-debug-summary.md" \
+  "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/07-api-summary.md" \
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/07-migration-summary.md"; do
+  require_file "${summary_template}"
+  rg -q 'executionMode' "${summary_template}" || fail "summary template missing executionMode: ${summary_template}"
 done
 
 for term in "Shared Artifact Templates" "Stop and Confirmation Contract" "Execution Mode Contract" "State File Contract" "Machine-Readable State Contract" "Workflow Index Contract" "Summary Contract" "Handoff Contract" "Handoff Flow Contract" "Documentation Boundary Contract" "Naming Contract" "Resume Contract"; do

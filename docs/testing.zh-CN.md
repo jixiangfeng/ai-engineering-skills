@@ -12,7 +12,7 @@ bash scripts/check-consistency.sh
 
 ```bash
 python3 scripts/check-markdown.py README.md docs plugins/ai-engineering-skills/skills
-python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/full-run-examples tests/artifact-metadata/valid-artifact.md
+python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/artifact-templates plugins/ai-engineering-skills/skills/*/assets/*-templates docs/full-run-examples tests/artifact-metadata/valid-artifact.md
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv
 python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv --runtime-command tests/bootstrap-routing/fake-agent-runtime.py
 ```
@@ -73,6 +73,7 @@ bash scripts/check-workflow-index.sh
 - 本地安装冒烟脚本存在、可执行，并使用临时目录隔离 Codex/Claude 安装目标
 - 仓库根目录没有重新引入 `skills/` 源码副本
 - `workflow-state.json` schema 能接受有效样例并拒绝无效样例
+- `workflow-state.json` 必须包含 `executionMode`
 
 ## 何时运行
 
@@ -107,6 +108,7 @@ bash scripts/check-workflow-index.sh
 - `tests/workflow-state/valid-state.json` 必须通过
 - `tests/workflow-state/invalid-state.json` 必须失败
 - 生成器输出必须匹配 `tests/workflow-state/generated-state.expected.json`
+- `executionMode` 必须是 `lightweight`、`standard` 或 `full`
 
 也可以手工验证真实 workflow state：
 

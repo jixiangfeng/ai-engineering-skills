@@ -1,3 +1,14 @@
+---
+workflow: code-review-triage
+runId: <YYYYMMDD-slug>
+runPath: workflow/reviews/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: verification
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: run_or_record_verification
+---
 # 修复验证记录
 
 ## 文档元信息

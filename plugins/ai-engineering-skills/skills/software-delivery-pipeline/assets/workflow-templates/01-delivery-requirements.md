@@ -1,3 +1,14 @@
+---
+workflow: software-delivery-pipeline
+runId: <YYYYMMDD-slug>
+runPath: workflow/runs/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: scope
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: confirm_scope
+---
 # 需求确认
 
 ## 文档元信息

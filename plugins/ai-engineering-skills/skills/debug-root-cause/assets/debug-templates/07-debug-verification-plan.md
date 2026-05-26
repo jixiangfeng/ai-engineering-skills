@@ -1,3 +1,14 @@
+---
+workflow: debug-root-cause
+runId: <YYYYMMDD-slug>
+runPath: workflow/debug/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: verification
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: run_or_record_verification
+---
 # 验证计划
 
 ## 文档元信息

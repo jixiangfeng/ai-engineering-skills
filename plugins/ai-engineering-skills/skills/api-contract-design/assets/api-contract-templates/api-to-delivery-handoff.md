@@ -1,3 +1,18 @@
+---
+workflow: api-contract-design
+runId: <YYYYMMDD-slug>
+runPath: workflow/api-contracts/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: handoff
+status: handoff_ready
+source: workflow-handoff
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: api-contract-design
+toWorkflow: software-delivery-pipeline
+selectedItems: []
+verificationRequired: true
+---
 # API 契约到交付流程交接单
 
 ## 文档元信息

@@ -1,14 +1,16 @@
+---
+workflow: codebase-orientation
+runId: 2026-05-26-order-module
+runPath: workflow/orientation/2026-05-26-order-module
+executionMode: full
+stage: summary
+status: completed
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # Codebase Orientation Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: codebase-orientation
-  run_path: workflow/orientation/2026-05-26-order-module
-  mode: full
-  status: completed
-  code_edits_allowed: false
-```
 
 ## Stage Documents
 

@@ -1,14 +1,16 @@
+---
+workflow: code-review-triage
+runId: 2026-05-26-order-review
+runPath: workflow/reviews/2026-05-26-order-review
+executionMode: full
+stage: summary
+status: handoff_ready
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # Code Review Triage Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: code-review-triage
-  run_path: workflow/reviews/2026-05-26-order-review
-  mode: full
-  status: handoff_ready
-  code_edits_allowed: false
-```
 
 ## Review Findings
 

@@ -1,3 +1,14 @@
+---
+workflow: debug-root-cause
+runId: <YYYYMMDD-slug>
+runPath: workflow/debug/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: stage
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_workflow
+---
 # 修复选项
 
 ## 文档元信息

@@ -1,3 +1,14 @@
+---
+workflow: api-contract-design
+runId: <YYYYMMDD-slug>
+runPath: workflow/api-contracts/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: scope
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: confirm_scope
+---
 # API 契约范围
 
 ## 文档元信息

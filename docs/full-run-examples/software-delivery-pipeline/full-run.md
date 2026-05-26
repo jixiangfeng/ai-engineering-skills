@@ -1,15 +1,17 @@
+---
+workflow: software-delivery-pipeline
+runId: 2026-05-26-order-idempotency
+runPath: workflow/runs/2026-05-26-order-idempotency
+executionMode: full
+stage: summary
+status: completed
+source: example
+allowsCodeEdit: true
+nextAction: none
+sourceArtifact: workflow/reviews/2026-05-26-order-review/review-to-delivery-handoff.md
+---
 # Software Delivery Pipeline Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: software-delivery-pipeline
-  run_path: workflow/runs/2026-05-26-order-idempotency
-  mode: full
-  status: completed
-  code_edits_allowed: true
-  source_artifact: workflow/reviews/2026-05-26-order-review/review-to-delivery-handoff.md
-```
 
 ## delivery-workflow-state.md
 

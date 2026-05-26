@@ -4,20 +4,20 @@
   "title": "AI Engineering Skills Artifact Metadata",
   "type": "object",
   "required": [
-    "schema",
     "workflow",
-    "run_path",
-    "mode",
+    "runId",
+    "executionMode",
+    "stage",
     "status",
-    "code_edits_allowed"
+    "source",
+    "allowsCodeEdit",
+    "nextAction"
   ],
   "additionalProperties": false,
   "properties": {
-    "schema": {
-      "const": "ai-engineering-skills.artifact.v1"
-    },
     "workflow": {
       "enum": [
+        "<workflow>",
         "workflow-bootstrap",
         "codebase-orientation",
         "code-review-triage",
@@ -27,16 +27,25 @@
         "software-delivery-pipeline"
       ]
     },
-    "run_path": {
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runPath": {
       "type": "string",
       "minLength": 1,
       "pattern": "^workflow/"
     },
-    "mode": {
-      "enum": ["lightweight", "full"]
+    "executionMode": {
+      "enum": ["lightweight", "standard", "full"]
+    },
+    "stage": {
+      "type": "string",
+      "minLength": 1
     },
     "status": {
       "enum": [
+        "draft",
         "not_started",
         "in_progress",
         "blocked",
@@ -46,11 +55,34 @@
         "abandoned"
       ]
     },
-    "code_edits_allowed": {
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowsCodeEdit": {
       "type": "boolean"
     },
-    "source_artifact": {
-      "type": ["string", "null"]
+    "nextAction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fromWorkflow": {
+      "type": "string",
+      "minLength": 1
+    },
+    "toWorkflow": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedItems": {
+      "type": "array"
+    },
+    "verificationRequired": {
+      "type": "boolean"
+    },
+    "sourceArtifact": {
+      "type": "string",
+      "minLength": 1
     }
   }
 }

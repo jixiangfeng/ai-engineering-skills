@@ -1,3 +1,14 @@
+---
+workflow: data-migration-planning
+runId: <YYYYMMDD-slug>
+runPath: workflow/data-migrations/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: verification
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: run_or_record_verification
+---
 # 验证 SQL / 检查项
 
 ## 文档元信息

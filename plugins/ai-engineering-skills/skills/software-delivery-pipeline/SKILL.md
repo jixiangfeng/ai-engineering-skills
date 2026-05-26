@@ -38,18 +38,34 @@ Prefer another skill when:
 - `api-contract-design`: request/response/DTO/error behavior is not yet agreed
 - `data-migration-planning`: schema, persisted data, rollback, or backfill needs planning first
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/clarification.zh-CN.md` — 需求澄清
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — Implementation Plan
+- `docs/prompt-modules/execution-discipline.zh-CN.md` — 按计划执行和 Execution Status
+- `docs/prompt-modules/test-strategy.zh-CN.md` — Implementation Strategy
+- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — worktree 隔离建议
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — 复杂任务拆分
+- `docs/prompt-modules/finish-checklist.zh-CN.md` — 交付收尾检查
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整交付产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — 上游 handoff 输入和结果回写
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 最小改动和 scope guard
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 完成前验证
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/clarification.zh-CN.md` when requirements are unclear.
-- Follow `docs/prompt-modules/implementation-plan.zh-CN.md`; no code edits may start without an approved `Implementation Plan`, even when the user asks to "直接改".
-- Follow `docs/prompt-modules/execution-discipline.zh-CN.md` during implementation and fix work.
-- Follow `docs/prompt-modules/test-strategy.zh-CN.md` before choosing test-first, minimal patch, or exploratory fix.
-- Follow `docs/prompt-modules/worktree-recommendation.zh-CN.md` for high-risk, dirty, multi-module, or long-running tasks.
-- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` for complex work; read-only subtasks may be parallel, code edits are not parallel by default.
-- Follow `docs/prompt-modules/finish-checklist.zh-CN.md` before delivery summary.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before claiming completion.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Treat each stage as a separate checkpoint.
 - Every stage must write its output document before the next stage starts.
 - Stage 1 has a mandatory human review gate: after writing `01-delivery-requirements.md`, stop and ask the human to confirm or revise it before Stage 2.
@@ -77,97 +93,19 @@ Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whet
 
 ## Implementation Strategy
 
-Before code edits, choose and record one strategy:
-
-```md
-## Implementation Strategy
-
-- Strategy: test_first / minimal_patch / exploratory_fix
-- Reason:
-- Expected behavior:
-- Test / verification cases:
-```
-
-Use `test_first` for bug fixes, state machines, complex business rules, data transformations, API compatibility, migration checks, or code with good existing test coverage.
-Use `minimal_patch` for small deterministic edits, copy/enum/config changes, or tasks where manual verification is the right surface.
-Use `exploratory_fix` only when root cause is not fully confirmed and a minimal reproduction or observation step is required.
+Use `docs/prompt-modules/test-strategy.zh-CN.md` to choose and record `test_first`, `minimal_patch`, or `exploratory_fix` before code edits.
 
 ## Implementation Plan
 
-The active plan document must include:
-
-```md
-## Implementation Plan
-
-### 1. 修改目标
-- ...
-
-### 2. 修改范围
-- 涉及模块：
-- 涉及文件：
-- 不修改范围：
-
-### 3. 执行步骤
-1. ...
-
-### 4. 数据 / 配置影响
-- 数据库：
-- Redis：
-- MQ：
-- 配置项：
-- 外部接口：
-
-### 5. 风险点
-- ...
-
-### 6. 验证方式
-- 单元测试：
-- 集成测试：
-- 手工验证：
-- 回归范围：
-
-### 7. 回滚方式
-- ...
-```
-
-No implementation begins until this plan is written, scope-locked, and approved.
+Use `docs/prompt-modules/implementation-plan.zh-CN.md`. No implementation begins until the plan is written, scope-locked, and approved.
 
 ## Task Decomposition
 
-For complex tasks, record:
-
-```md
-## Task Decomposition
-
-### 是否需要拆分
-- yes / no
-
-### 子任务
-| 子任务 | 类型 | 是否可并行 | 输出 |
-| --- | --- | --- | --- |
-| 代码结构分析 | read-only | yes | findings |
-| 数据契约分析 | read-only | yes | contract notes |
-| 风险点分析 | read-only | yes | risk list |
-| 实现修改 | write | no | patch |
-```
-
-Only read-only analysis should be parallelized. Code edits that touch the same files or same behavior are not parallel.
+Use `docs/prompt-modules/task-decomposition.zh-CN.md` for complex work. Only read-only analysis may be parallelized; code edits are not parallel by default.
 
 ## Finish Checklist
 
-Before writing the delivery summary, complete or explicitly mark skipped:
-
-```md
-## Finish Checklist
-
-- [ ] 已检查 git diff
-- [ ] 已检查无关改动
-- [ ] 已运行必要测试
-- [ ] 已更新必要文档
-- [ ] 已说明未验证项
-- [ ] 已给出回滚方式
-- [ ] 已给出 PR / merge 建议
-```
+Use `docs/prompt-modules/finish-checklist.zh-CN.md` before writing the delivery summary.
 
 ## Execution Modes
 
@@ -197,32 +135,7 @@ Default principle:
 
 ## Workspace Isolation Guidance
 
-Strongly consider using a dedicated branch or git worktree when:
-- the current worktree already has local changes
-- the task spans multiple modules
-- the change is high-risk or long-running
-- multiple agents may work in parallel
-- the main workspace should remain stable
-
-If isolated workspace is not used for a risky task, record the reason and risk in `01-delivery-requirements.md`.
-
-Record the decision in this format:
-
-```md
-## Worktree Recommendation
-
-当前任务建议使用独立 worktree：yes / no
-
-原因：
-- ...
-
-建议命令：
-```bash
-git worktree add ../<repo>-<task-slug> -b <branch-name>
-```
-```
-
-This is a recommendation only. Do not create a worktree unless the human explicitly asks.
+Use `docs/prompt-modules/worktree-recommendation.zh-CN.md`. Worktree creation is only a recommendation unless the human explicitly asks.
 
 ## Review Handoff Input
 
@@ -553,11 +466,3 @@ Read these only when needed:
 - `references/stage-playbook.md` — how to execute each stage with the right discipline
 - `references/example-run.md` — example of a completed workflow run
 - `examples/standard-run.md` — canonical miniature run shape for state, stages, verification, and summary
-- `docs/prompt-modules/clarification.zh-CN.md` — requirements clarification rules
-- `docs/prompt-modules/implementation-plan.zh-CN.md` — Implementation Plan structure
-- `docs/prompt-modules/execution-discipline.zh-CN.md` — scope and execution status rules
-- `docs/prompt-modules/test-strategy.zh-CN.md` — implementation strategy selection
-- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — worktree recommendation rules
-- `docs/prompt-modules/task-decomposition.zh-CN.md` — task decomposition and parallelism boundaries
-- `docs/prompt-modules/finish-checklist.zh-CN.md` — delivery finish checklist
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

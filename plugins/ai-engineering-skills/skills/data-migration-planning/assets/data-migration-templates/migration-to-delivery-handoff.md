@@ -1,3 +1,18 @@
+---
+workflow: data-migration-planning
+runId: <YYYYMMDD-slug>
+runPath: workflow/data-migrations/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: handoff
+status: handoff_ready
+source: workflow-handoff
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: data-migration-planning
+toWorkflow: software-delivery-pipeline
+selectedItems: []
+verificationRequired: true
+---
 # 数据迁移到交付流程交接单
 
 ## 文档元信息

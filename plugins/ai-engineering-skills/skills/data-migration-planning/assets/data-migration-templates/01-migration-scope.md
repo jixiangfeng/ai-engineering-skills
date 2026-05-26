@@ -1,3 +1,14 @@
+---
+workflow: data-migration-planning
+runId: <YYYYMMDD-slug>
+runPath: workflow/data-migrations/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: scope
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: confirm_scope
+---
 # 数据迁移范围
 
 ## 文档元信息

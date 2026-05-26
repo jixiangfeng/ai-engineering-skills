@@ -11,10 +11,28 @@ from pathlib import Path
 REQUIRED_KEYS = {
     "schema",
     "workflow",
-    "run_path",
-    "mode",
+    "runId",
+    "stage",
     "status",
-    "code_edits_allowed",
+    "nextAction",
+}
+
+REQUIRED_FRONT_MATTER_KEYS = {
+    "workflow",
+    "runId",
+    "executionMode",
+    "stage",
+    "status",
+    "source",
+    "allowsCodeEdit",
+    "nextAction",
+}
+
+REQUIRED_HANDOFF_KEYS = {
+    "fromWorkflow",
+    "toWorkflow",
+    "selectedItems",
+    "verificationRequired",
 }
 
 ALLOWED_WORKFLOWS = {
@@ -54,6 +72,55 @@ def extract_artifact_block(text: str) -> dict[str, object] | None:
     return result
 
 
+def parse_list(value: str) -> list[str]:
+    cleaned = value.strip()
+    if cleaned == "[]":
+        return []
+    if cleaned.startswith("[") and cleaned.endswith("]"):
+        inner = cleaned[1:-1].strip()
+        if not inner:
+            return []
+        return [item.strip().strip('"') for item in inner.split(",")]
+    return [cleaned]
+
+
+def extract_front_matter(text: str) -> dict[str, object] | None:
+    if not text.startswith("---\n"):
+        return None
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        return None
+    result: dict[str, object] = {}
+    for line in text[4:end].splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        key, sep, value = line.partition(":")
+        if not sep:
+            continue
+        key = key.strip()
+        value = value.strip()
+        result[key] = parse_list(value) if value.startswith("[") else parse_scalar(value)
+    return result
+
+
+def normalize_legacy_block(block: dict[str, object]) -> dict[str, object]:
+    normalized = dict(block)
+    if "run_path" in normalized and "runId" not in normalized:
+        run_path = str(normalized["run_path"])
+        normalized["runId"] = run_path.rstrip("/").split("/")[-1]
+    if "mode" in normalized and "executionMode" not in normalized:
+        normalized["executionMode"] = normalized["mode"]
+    if "code_edits_allowed" in normalized and "allowsCodeEdit" not in normalized:
+        normalized["allowsCodeEdit"] = normalized["code_edits_allowed"]
+    if "stage" not in normalized:
+        normalized["stage"] = "example"
+    if "source" not in normalized:
+        normalized["source"] = "example"
+    if "nextAction" not in normalized:
+        normalized["nextAction"] = "none"
+    return normalized
+
+
 def validate_with_schema(block: dict[str, object], schema: dict[str, object]) -> list[str]:
     errors: list[str] = []
     for key in schema.get("required", []):
@@ -88,15 +155,51 @@ def validate_with_schema(block: dict[str, object], schema: dict[str, object]) ->
     return errors
 
 
+def validate_required_metadata(block: dict[str, object], path: Path, require_front_matter: bool) -> list[str]:
+    errors: list[str] = []
+    required = REQUIRED_FRONT_MATTER_KEYS if require_front_matter else REQUIRED_KEYS
+    for key in required:
+        if key not in block:
+            errors.append(f"missing artifact key: {key}")
+    if block.get("workflow") not in ALLOWED_WORKFLOWS and block.get("workflow") != "<workflow>":
+        errors.append(f"workflow has invalid value: {block.get('workflow')}")
+    if "runId" in block and not isinstance(block["runId"], str):
+        errors.append("runId must be string")
+    if "nextAction" in block and not isinstance(block["nextAction"], str):
+        errors.append("nextAction must be string")
+    if "allowsCodeEdit" in block and not isinstance(block["allowsCodeEdit"], bool):
+        errors.append("allowsCodeEdit must be boolean")
+    if "verificationRequired" in block and not isinstance(block["verificationRequired"], bool):
+        errors.append("verificationRequired must be boolean")
+
+    is_handoff = "handoff" in path.name or block.get("stage") == "handoff"
+    if is_handoff:
+        for key in REQUIRED_HANDOFF_KEYS:
+            if key not in block:
+                errors.append(f"missing handoff artifact key: {key}")
+        if "selectedItems" in block and not isinstance(block["selectedItems"], list):
+            errors.append("selectedItems must be list")
+    return errors
+
+
 def check_file(path: Path, schema: dict[str, object], require_verification: bool) -> list[str]:
     text = path.read_text(encoding="utf-8")
-    block = extract_artifact_block(text)
+    block = extract_front_matter(text)
+    has_front_matter = block is not None
+    if block is None:
+        block = extract_artifact_block(text)
+        if block is not None:
+            block = normalize_legacy_block(block)
     if block is None:
         if path.name.upper().startswith("README"):
             return []
-        return ["missing artifact YAML block"]
+        return ["missing artifact YAML front matter"]
 
-    errors = validate_with_schema(block, schema)
+    errors = validate_required_metadata(block, path, has_front_matter)
+    is_template = any(part.endswith("templates") for part in path.parts)
+    if not has_front_matter and is_template:
+        errors.append("template must use YAML front matter")
+    errors.extend(validate_with_schema(block, schema))
     if require_verification and "## Verification" not in text:
         errors.append("missing Verification section")
     return errors

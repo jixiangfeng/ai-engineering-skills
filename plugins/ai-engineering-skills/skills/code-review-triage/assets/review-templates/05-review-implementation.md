@@ -1,3 +1,14 @@
+---
+workflow: code-review-triage
+runId: <YYYYMMDD-slug>
+runPath: workflow/reviews/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: implementation
+status: in_progress
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_implementation
+---
 # 修复实施记录
 
 ## 文档元信息

@@ -27,13 +27,29 @@ Prefer another skill when:
 - `data-migration-planning`: the cause or fix requires schema/data migration
 - `software-delivery-pipeline`: the fix option is confirmed and ready to implement
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/debug-discipline.zh-CN.md` — 证据优先 Debug Analysis
+- `docs/prompt-modules/test-strategy.zh-CN.md` — 复现、test-first、minimal patch、exploratory fix
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整 debug 产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — debug 到 delivery 的交接
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 最小修复点和不扩大排查范围
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 根因、修复建议和验证判断
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/debug-discipline.zh-CN.md` for `Debug Analysis` structure and evidence-first root-cause rules.
-- Follow `docs/prompt-modules/test-strategy.zh-CN.md` when choosing reproduction, test-first confirmation, or exploratory fix strategy.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Debugging starts read-first and evidence-first. Do not patch code until root cause and fix direction are confirmed or the user explicitly asks for immediate repair.
 - Reproduce before explaining when practical. If reproduction is blocked, record the blocker and use available evidence.
 - Do not guess fixes from symptoms. Trace data/control flow back to the source.
@@ -179,6 +195,3 @@ If the same issue has already gone through two or three failed fix attempts:
 
 Read when doing actual debugging:
 - `examples/standard-run.md` — canonical miniature run shape for reproduction, evidence, root cause, state, and handoff output
-- `docs/prompt-modules/debug-discipline.zh-CN.md` — evidence-first Debug Analysis structure
-- `docs/prompt-modules/test-strategy.zh-CN.md` — test-first, minimal patch, and exploratory fix strategy
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

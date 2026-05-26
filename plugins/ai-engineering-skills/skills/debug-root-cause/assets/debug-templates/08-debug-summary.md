@@ -1,3 +1,14 @@
+---
+workflow: debug-root-cause
+runId: <YYYYMMDD-slug>
+runPath: workflow/debug/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: summary
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: wait_for_user_acceptance
+---
 # Debug 总结
 
 ## 文档元信息
@@ -7,6 +18,12 @@
 - 执行 agent：
 - 来源文档：
 - 文档状态：
+
+## Execution Mode
+- executionMode：lightweight | standard | full
+- 模式选择理由：
+- 已生成产物：
+- 已跳过产物及原因：
 
 ## 结论
 -

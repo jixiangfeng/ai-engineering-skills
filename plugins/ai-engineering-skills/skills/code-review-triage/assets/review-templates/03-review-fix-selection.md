@@ -1,3 +1,14 @@
+---
+workflow: code-review-triage
+runId: <YYYYMMDD-slug>
+runPath: workflow/reviews/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: selection
+status: pending_human_confirmation
+source: user-request
+allowsCodeEdit: false
+nextAction: wait_for_user_selection
+---
 # 修复项选择
 
 ## 文档元信息

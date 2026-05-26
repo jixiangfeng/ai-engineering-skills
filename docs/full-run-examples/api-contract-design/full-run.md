@@ -1,14 +1,16 @@
+---
+workflow: api-contract-design
+runId: 2026-05-26-order-current
+runPath: workflow/api-contracts/2026-05-26-order-current
+executionMode: full
+stage: summary
+status: handoff_ready
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # API Contract Design Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: api-contract-design
-  run_path: workflow/api-contracts/2026-05-26-order-current
-  mode: full
-  status: handoff_ready
-  code_edits_allowed: false
-```
 
 ## Contract Package
 

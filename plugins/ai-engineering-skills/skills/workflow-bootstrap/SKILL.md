@@ -43,10 +43,26 @@ It helps decide whether the task should begin with:
 - `data-migration-planning`
 - `software-delivery-pipeline`
 
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/clarification.zh-CN.md` — 需求澄清、任务大小判断和路由假设
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — executionMode 选择和轻量产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — 已有 run / handoff 的恢复和流转判断
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 路由阶段不扩大 scope、不引入无关变更
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 路由结果和停止条件的 Verification
+
+
 ## Core Rules
 
-- Follow `docs/prompt-modules/clarification.zh-CN.md` before routing implementation, design, refactor, migration, review, or debug requests.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` for routing-result closure: verify the chosen workflow against user intent, ambiguity, handoff priority, and stop conditions.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Apply the shared engineering principles before routing: clarify assumptions, prefer simple scope, avoid unrelated changes, and require verifiable completion criteria.
 - If the task clearly matches one of the workflow skills, route to that workflow before acting.
 - Do not jump directly into code edits when a design, review, debugging, or orientation workflow should happen first.
@@ -88,14 +104,20 @@ If missing information would change routing, scope, data/API behavior, verificat
 
 ## Routing Priority
 
+First decide whether the user is asking for a workflow action or only asking a question:
+
+- Open a workflow only when the user asks to modify, debug, review, design, migrate, orient, implement, or continue a confirmed workflow/handoff.
+- Do not open a workflow for concept explanation, status lookup, comparison, summary, or lightweight recommendation unless the user explicitly asks to execute repository work.
+- Negative Q&A intent must not override explicit action intent. For example, “排查这个报错” enters `debug-root-cause`; “这个报错是什么意思” can be answered directly.
+
 When multiple workflows could apply and the user has not already made the sequence explicit, prefer this order:
 
-1. `debug-root-cause`
-2. `api-contract-design`
-3. `data-migration-planning`
-4. `code-review-triage`
-5. `codebase-orientation`
-6. `software-delivery-pipeline`
+1. `code-review-triage` when the wording is review-first, such as “review 后修复”, “先 review 再改”, or “审查后修复”.
+2. `debug-root-cause` for failures, exceptions, startup issues, broken tests, regressions, or root-cause work.
+3. `api-contract-design` for interface, DTO/VO, field placement, response shape, validation, or compatibility contracts.
+4. `data-migration-planning` for schema, stored data, backfill, cleanup, compatibility, rollout, or rollback.
+5. `software-delivery-pipeline` for implementation-ready work or an explicitly confirmed handoff.
+6. `codebase-orientation` for project/module understanding, call paths, maps, and read-only familiarization.
 
 Use the more specific workflow before the more general one.
 
@@ -155,7 +177,7 @@ Use these rules when the task could fit more than one workflow:
 - If the user mentions a failure, exception, or broken behavior, start with `debug-root-cause` before implementation.
 - If the user wants to change an API shape or data contract, start with `api-contract-design` before implementation.
 - If the user wants to change schema or stored data behavior, start with `data-migration-planning` before implementation.
-- If the user asks to “review and then fix”, start with `code-review-triage`.
+- If the user asks to “review and then fix”, “review 后修复”, or “先 review 再改”, start with `code-review-triage`; only enter delivery after accepted scope is confirmed.
 - If the user asks to “先熟悉一下”, start with `codebase-orientation`.
 - If the task is already well-defined implementation work with no missing design/debugging/review gate, use `software-delivery-pipeline`.
 
@@ -201,5 +223,3 @@ A concise routing message is enough, for example:
 ## References
 
 - `docs/engineering-principles.zh-CN.md` — shared engineering behavior guardrails for all workflows
-- `docs/prompt-modules/clarification.zh-CN.md` — demand clarification, task-size classification, and routing assumptions
-- `docs/prompt-modules/verification-gate.zh-CN.md` — routing-result Verification output contract

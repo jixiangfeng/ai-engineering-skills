@@ -69,6 +69,13 @@ echo
 echo "== Artifact metadata =="
 python3 "${REPO_ROOT}/scripts/check-artifact-metadata.py" \
   --schema "${REPO_ROOT}/docs/artifact-metadata-schema.json" \
+  "${REPO_ROOT}/docs/artifact-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/api-contract-design/assets/api-contract-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/code-review-triage/assets/review-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates" \
   "${REPO_ROOT}/docs/full-run-examples" \
   "${REPO_ROOT}/tests/artifact-metadata/valid-artifact.md"
 

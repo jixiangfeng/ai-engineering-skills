@@ -1,3 +1,14 @@
+---
+workflow: codebase-orientation
+runId: <YYYYMMDD-slug>
+runPath: workflow/orientation/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: findings
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_analysis
+---
 # 业务流程理解
 
 ## 文档元信息

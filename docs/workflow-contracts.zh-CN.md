@@ -44,27 +44,28 @@
 
 ## Execution Mode Contract
 
-workflow 可以按任务风险选择轻量模式或完整模式，但必须在 state 和 summary 中记录选择理由。
+所有 workflow 必须在开始时识别 `executionMode`，并在 state、`workflow-state.json` 和 summary 中记录选择理由。
 
-轻量模式适用于：
+支持三档模式：
 
-- scope 很小，且用户不需要完整阶段产物。
-- 不涉及代码编辑，或只需要 orientation / review / debug / contract 的结论摘要。
-- 不涉及跨模块改动、数据迁移、接口兼容、生产风险或多个修复方向。
+| executionMode | 适用场景 | 最小产物 | 不应做的事 |
+| --- | --- | --- | --- |
+| `lightweight` | “小改一下 / 快速看下 / 简单修复 / 帮我看一眼”等小任务；scope 很小；用户不需要完整阶段文档 | `workflow-state.json` + summary 文件；如需要人类可读 state，可补 `*-workflow-state.md` | 不生成完整 `01-*` 阶段文档，不默认 handoff |
+| `standard` | 中等任务；需要少量关键文档支撑判断、计划或验证 | `workflow-state.json` + `*-workflow-state.md` + summary + 关键阶段文档 | 不展开所有阶段，不生成无必要 handoff |
+| `full` | “完整熟悉 / 深度 review / 形成文档 / 可交付 / handoff / 后续恢复”等明确需要可审计全流程的任务；高风险、多阶段、跨 workflow | 对应 workflow 的完整 required files、handoff、verification、必要时更新 `workflow/index.md` | 不省略确认门禁和验证记录 |
 
-轻量模式至少产出：
+默认选择规则：
 
-- `*-workflow-state.md`
-- `workflow-state.json`
-- summary 或当前阶段结论文档
+- 用户说“小改一下 / 快速看下 / 简单修复 / 帮我看一眼 / 简单看下”时，默认 `lightweight`。
+- 用户只说普通“review / 排查 / 设计 / 规划 / 实现”，且任务不明显高风险时，默认 `standard`。
+- 用户说“完整 / 深度 / 形成文档 / 可交付 / handoff / 后续恢复 / 全链路 / 审计”时，默认 `full`。
+- 任务涉及生产风险、数据迁移、接口兼容、跨模块改造、多个修复方向或需要 handoff 时，即使用户未说“完整”，也应升级到 `standard` 或 `full`，并说明原因。
 
-完整模式适用于：
+模式升级与降级：
 
-- 需要实现、修复、迁移、接口契约落地或跨 workflow handoff。
-- 用户要求完整流程、可审计产物或后续恢复。
-- 任务有较高风险、多个阶段门禁、多个可行方向或验证成本。
-
-完整模式应按对应 workflow 的 required files 产出阶段文档。用户没有明确要求“轻量”时，review、debug、contract、migration、delivery 默认按完整模式推进；orientation 可以先轻量熟悉，必要时再补完整阶段。
+- 如果 `lightweight` 过程中发现 scope 变大、风险升高或需要 handoff，必须先说明原因，再升级到 `standard` 或 `full`。
+- 如果用户明确要求“不要生成太多文档”，不得自动进入 `full`；除非存在安全或恢复风险，并需说明取舍。
+- 如果用户要求完整文档，不能用 `lightweight` 代替。
 
 ## State File Contract
 
@@ -77,6 +78,8 @@ workflow 可以按任务风险选择轻量模式或完整模式，但必须在 s
 
 每个 state 文件至少应包含：
 
+- `executionMode`: `lightweight` / `standard` / `full`
+- 模式选择理由
 - 当前阶段
 - 当前状态
 - 下一步
@@ -97,6 +100,7 @@ workflow 可以按任务风险选择轻量模式或完整模式，但必须在 s
 - `workflow`: workflow 名称，例如 `codebase-orientation`
 - `runPath`: 当前 run 路径
 - `sourceArtifact`: 上游输入文档或 `null`
+- `executionMode`: `lightweight` / `standard` / `full`
 - `status`: `not_started` / `in_progress` / `blocked` / `pending_human_confirmation` / `handoff_ready` / `completed` / `abandoned`
 - `currentStage`: 当前阶段
 - `latestDocument`: 最新阶段文档或 `null`

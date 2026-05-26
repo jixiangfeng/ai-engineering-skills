@@ -70,7 +70,17 @@ Use the data-migration-planning skill to plan this migration.
 
 简单概念问答不强制进入 workflow。
 
-## 四、核心理念
+## 四、执行模式
+
+所有 workflow 都必须先识别 `executionMode`，再决定产物规模：
+
+- `lightweight`：小任务默认，例如“小改一下 / 快速看下 / 简单修复 / 帮我看一眼”。只产出 `workflow-state.json` 和 summary，避免生成大量 `01-*` 阶段文档。
+- `standard`：普通 review、debug、contract、migration、delivery 的默认中间模式。产出 state、summary 和关键阶段文档。
+- `full`：用户要求“完整 / 深度 / 形成文档 / handoff / 可交付 / 后续恢复”，或任务高风险、跨模块、需要审计时使用。产出完整阶段文档、handoff 和 verification。
+
+如果任务从 `lightweight` 变复杂，agent 必须先说明原因并升级模式，不能静默铺开大量文档。
+
+## 五、核心理念
 
 ### 1. 先分流，再理解，再审查，再实现
 

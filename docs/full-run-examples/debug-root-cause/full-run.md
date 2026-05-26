@@ -1,14 +1,16 @@
+---
+workflow: debug-root-cause
+runId: 2026-05-26-submit-timeout
+runPath: workflow/debug/2026-05-26-submit-timeout
+executionMode: full
+stage: summary
+status: handoff_ready
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # Debug Root Cause Full Run
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: debug-root-cause
-  run_path: workflow/debug/2026-05-26-submit-timeout
-  mode: full
-  status: handoff_ready
-  code_edits_allowed: false
-```
 
 ## Debug Analysis
 

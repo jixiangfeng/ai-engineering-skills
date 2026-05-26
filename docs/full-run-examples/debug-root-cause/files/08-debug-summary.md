@@ -1,14 +1,16 @@
+---
+workflow: debug-root-cause
+runId: 2026-05-26-debug-root-cause
+runPath: workflow/example-runs/2026-05-26-debug-root-cause
+executionMode: full
+stage: summary
+status: completed
+source: example
+allowsCodeEdit: false
+nextAction: none
+---
 # 08-debug-summary
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: debug-root-cause
-  run_path: workflow/example-runs/2026-05-26-debug-root-cause
-  mode: full
-  status: completed
-  code_edits_allowed: false
-```
 
 ## 内容
 - 示例内容，展示完整 run 的该阶段产物形态。

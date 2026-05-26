@@ -3,6 +3,7 @@
   "workflow": "software-delivery-pipeline",
   "runPath": "workflow/runs/2026-05-26-generated",
   "sourceArtifact": "workflow/reviews/2026-05-26-review/review-to-delivery-handoff.md",
+  "executionMode": "standard",
   "status": "in_progress",
   "currentStage": "requirements",
   "latestDocument": "01-delivery-requirements.md",

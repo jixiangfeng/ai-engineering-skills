@@ -1,3 +1,14 @@
+---
+workflow: software-delivery-pipeline
+runId: <YYYYMMDD-slug>
+runPath: workflow/runs/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: verification
+status: draft
+source: user-request
+allowsCodeEdit: true
+nextAction: run_or_record_verification
+---
 # 验证记录
 
 ## 文档元信息

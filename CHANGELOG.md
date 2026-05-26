@@ -43,7 +43,7 @@
 - Artifact metadata JSON Schema：`docs/artifact-metadata-schema.json`。
 - Markdown、artifact metadata、bootstrap routing harness 检查脚本：`scripts/check-markdown.py`、`scripts/check-artifact-metadata.py`、`scripts/check-bootstrap-routing.py`。
 - 统一停止与确认契约：`Stop and Confirmation Contract` 与 `docs/artifact-templates/stop-record.md`。
-- 统一执行模式契约：`Execution Mode Contract`，区分轻量模式与完整模式。
+- 统一执行模式契约：`Execution Mode Contract`，区分 `lightweight`、`standard`、`full` 三档模式。
 - 各 workflow 标准 run 示例：`examples/standard-run.md`。
 - 统一 handoff 流转契约：`Handoff Flow Contract`。
 - README / docs / SKILL.md 职责边界契约：`Documentation Boundary Contract`。
@@ -62,6 +62,7 @@
 - `release-check.sh` 接入 markdown、artifact metadata 和 bootstrap routing harness 检查。
 - `check-bootstrap-routing.py` 支持 `--runtime-command`，可接外部 Codex/Claude routing wrapper 做真实运行时验收。
 - `docs/full-run-examples/<workflow>/files/` 展开每个 workflow 的完整阶段文件示例。
+- `Execution Mode Contract` 升级为 `lightweight`、`standard`、`full` 三档，并要求 `workflow-state.json` 记录 `executionMode`。
 - 各 workflow state 模板增加 `workflow-state.json` 和 `workflow/index.md` 同步要求。
 - 一致性检查强化 plugin-only layout、manifest/marketplace 路径、命名契约和 release checklist 校验。
 - 一致性检查接入 `workflow-state.json` schema 校验。

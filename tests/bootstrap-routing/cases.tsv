@@ -1,16 +1,33 @@
 prompt	expected_workflow	expect_workflow_run
 熟悉下当前项目	codebase-orientation	yes
 看下 healthplan 模块怎么跑的	codebase-orientation	yes
+梳理这个模块调用链	codebase-orientation	yes
+画一下项目地图	codebase-orientation	yes
 review 下整体逻辑，先列问题	code-review-triage	yes
 找出这个接口链路里需要处理的问题	code-review-triage	yes
+review 后修复这些问题	code-review-triage	yes
+先 review 再改代码	code-review-triage	yes
 排查这个启动失败	debug-root-cause	yes
 这个测试为什么失败	debug-root-cause	yes
+排查这个报错并修复	debug-root-cause	yes
+启动不了，先找根因	debug-root-cause	yes
 设计这个接口的请求响应契约	api-contract-design	yes
 这个返回字段要放到 days[] 上	api-contract-design	yes
+设计接口后落地	api-contract-design	yes
+这个响应结构怎么兼容前端	api-contract-design	yes
 规划这次表结构和数据迁移	data-migration-planning	yes
 这个字段要回填历史数据	data-migration-planning	yes
+表结构迁移并实现	data-migration-planning	yes
+schema 兼容和回滚方案	data-migration-planning	yes
 按这个 handoff 落地	software-delivery-pipeline	yes
 修复选中的 findings	software-delivery-pipeline	yes
+按已确认 handoff 落地	software-delivery-pipeline	yes
+实现这个小改动	software-delivery-pipeline	yes
 解释一下 DTO 是什么	none	no
+解释一下这个问题	none	no
+总结一下上面的内容	none	no
+这两个方案哪个好	none	no
+DTO 和 VO 有什么区别	none	no
+这个报错是什么意思	none	no
 这个项目适合用哪个 skill	none	no
 当前 review 产物在哪里	none	no

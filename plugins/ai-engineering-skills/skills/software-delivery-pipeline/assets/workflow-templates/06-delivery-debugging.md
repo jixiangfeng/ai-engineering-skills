@@ -1,3 +1,14 @@
+---
+workflow: software-delivery-pipeline
+runId: <YYYYMMDD-slug>
+runPath: workflow/runs/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: stage
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: continue_workflow
+---
 # 调试记录（复杂路径）
 
 ## 文档元信息

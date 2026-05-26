@@ -1,3 +1,14 @@
+---
+workflow: api-contract-design
+runId: <YYYYMMDD-slug>
+runPath: workflow/api-contracts/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: verification
+status: draft
+source: user-request
+allowsCodeEdit: false
+nextAction: run_or_record_verification
+---
 # 校验与错误设计
 
 ## 文档元信息

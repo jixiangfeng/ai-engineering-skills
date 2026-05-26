@@ -27,13 +27,29 @@ Prefer another skill when:
 - `data-migration-planning`: contract changes require persisted data/schema changes
 - `software-delivery-pipeline`: the contract is confirmed and ready to implement
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/clarification.zh-CN.md` — 契约目标、调用方和兼容边界澄清
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — 契约到实现的计划结构
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整契约产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — API 契约到 delivery 的交接
+- `docs/prompt-modules/minimal-change.zh-CN.md` — 只调整契约范围内字段和行为
+- `docs/prompt-modules/verification-gate.zh-CN.md` — 契约覆盖 UI/异常/兼容状态的 Verification
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/clarification.zh-CN.md` before contract design when goal, caller, compatibility boundary, or acceptance criteria is unclear.
-- Follow `docs/prompt-modules/implementation-plan.zh-CN.md` when producing a contract-to-delivery handoff that will require code changes.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Contract design is a confirmation gate before implementation.
 - Preserve exact response shape unless the user explicitly approves a change.
 - Prefer typed DTOs and explicit fields over loose containers.
@@ -194,6 +210,3 @@ Read when doing actual contract design:
 - `references/api-contract-document-contracts.md` — artifact minimums and handoff expectations
 - `references/api-contract-guidelines.md` — contract evidence, compatibility, and output quality rules
 - `examples/standard-run.md` — canonical miniature run shape for contract proposal, examples, state, and handoff output
-- `docs/prompt-modules/clarification.zh-CN.md` — contract clarification rules
-- `docs/prompt-modules/implementation-plan.zh-CN.md` — implementation handoff plan structure
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

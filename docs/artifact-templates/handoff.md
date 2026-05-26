@@ -1,3 +1,18 @@
+---
+workflow: <workflow>
+runId: <YYYYMMDD-slug>
+runPath: workflow/<run>
+executionMode: standard
+stage: handoff
+status: handoff_ready
+source: workflow-handoff
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: <source-workflow>
+toWorkflow: <target-workflow>
+selectedItems: []
+verificationRequired: true
+---
 # <Source Workflow> to <Target Workflow> Handoff
 
 ## 文档元信息

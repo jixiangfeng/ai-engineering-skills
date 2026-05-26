@@ -1,3 +1,14 @@
+---
+workflow: <workflow>
+runId: <YYYYMMDD-slug>
+runPath: workflow/<run>
+executionMode: standard
+stage: stop
+status: pending_human_confirmation
+source: template
+allowsCodeEdit: false
+nextAction: wait_for_user_confirmation
+---
 # Stop / Confirmation Record
 
 ## 文档元信息

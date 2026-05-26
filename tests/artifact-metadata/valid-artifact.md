@@ -1,14 +1,16 @@
-# Valid Artifact
+---
+workflow: software-delivery-pipeline
+runId: 20260526-valid
+runPath: workflow/runs/2026-05-26-valid
+executionMode: full
+stage: summary
+status: completed
+source: test-fixture
+allowsCodeEdit: false
+nextAction: none
+---
 
-```yaml
-artifact:
-  schema: ai-engineering-skills.artifact.v1
-  workflow: software-delivery-pipeline
-  run_path: workflow/runs/2026-05-26-valid
-  mode: full
-  status: completed
-  code_edits_allowed: false
-```
+# Valid Artifact
 
 ## Verification
 

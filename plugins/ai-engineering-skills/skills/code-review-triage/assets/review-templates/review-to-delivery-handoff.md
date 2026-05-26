@@ -1,3 +1,18 @@
+---
+workflow: code-review-triage
+runId: <YYYYMMDD-slug>
+runPath: workflow/reviews/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: handoff
+status: handoff_ready
+source: workflow-handoff
+allowsCodeEdit: false
+nextAction: start_target_workflow
+fromWorkflow: code-review-triage
+toWorkflow: software-delivery-pipeline
+selectedItems: []
+verificationRequired: true
+---
 # Review 到交付流程交接单
 
 ## 文档元信息

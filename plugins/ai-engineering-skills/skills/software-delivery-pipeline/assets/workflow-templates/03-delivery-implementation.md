@@ -1,3 +1,14 @@
+---
+workflow: software-delivery-pipeline
+runId: <YYYYMMDD-slug>
+runPath: workflow/runs/<YYYY-MM-DD>-<slug>
+executionMode: standard
+stage: implementation
+status: in_progress
+source: user-request
+allowsCodeEdit: true
+nextAction: continue_implementation
+---
 # 实施记录
 
 ## 文档元信息

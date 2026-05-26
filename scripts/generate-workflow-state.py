@@ -29,6 +29,8 @@ STATUSES = (
     "abandoned",
 )
 
+EXECUTION_MODES = ("lightweight", "standard", "full")
+
 
 def fail(message: str) -> None:
     print(f"ERROR: {message}", file=sys.stderr)
@@ -57,6 +59,7 @@ def main() -> int:
     parser.add_argument("--run-path", required=True)
     parser.add_argument("--output", required=True, help="Output workflow-state.json path.")
     parser.add_argument("--status", default="in_progress", choices=STATUSES)
+    parser.add_argument("--execution-mode", default="standard", choices=EXECUTION_MODES)
     parser.add_argument("--current-stage", default="scope")
     parser.add_argument("--latest-document", default=None)
     parser.add_argument("--next-action", default="Continue from current workflow state.")
@@ -78,6 +81,7 @@ def main() -> int:
         "workflow": args.workflow,
         "runPath": args.run_path,
         "sourceArtifact": nullable(args.source_artifact),
+        "executionMode": args.execution_mode,
         "status": args.status,
         "currentStage": args.current_stage,
         "latestDocument": nullable(args.latest_document),

@@ -27,13 +27,29 @@ Prefer another skill when:
 - `data-migration-planning`: findings require schema/data migration planning before fixes
 - `software-delivery-pipeline`: selected findings and fix plan are already confirmed
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+
+
+## Execution Mode Selection
+
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+
+## Prompt Modules
+
+This skill keeps workflow-specific rules here and delegates shared execution discipline to:
+
+- `docs/prompt-modules/review-loop.zh-CN.md` — Review Findings、accepted scope 和 fix handoff
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — 复杂 review 的只读并行拆分
+- `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整 review 产物边界
+- `docs/prompt-modules/handoff.zh-CN.md` — review 到 delivery 的交接
+- `docs/prompt-modules/minimal-change.zh-CN.md` — review 默认只读，修复不扩大 scope
+- `docs/prompt-modules/verification-gate.zh-CN.md` — review 结论和修复闭环 Verification
+
 
 ## Core Rules
 
-- Follow `docs/prompt-modules/review-loop.zh-CN.md` for `Review Findings`, accepted scope, excluded scope, and fix handoff structure.
-- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` when a review has separable read-only tracks.
-- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before any review summary or in-skill implementation closure.
+- Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
+
 - Review mode is read-only until the human confirms selected findings and an implementation plan.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - Findings must be evidence-based: include file path, line number when available, code path, behavior, impact, and suggested fix direction.
@@ -255,6 +271,3 @@ If the task becomes a normal feature/bugfix after findings are selected, chain i
 Read when doing an actual review:
 - `references/review-guidelines.md` — finding quality, severity, and response rules
 - `examples/standard-run.md` — canonical miniature run shape for findings, selection, plan, state, and handoff output
-- `docs/prompt-modules/review-loop.zh-CN.md` — review findings and fix handoff structure
-- `docs/prompt-modules/task-decomposition.zh-CN.md` — read-only review decomposition rules
-- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract
