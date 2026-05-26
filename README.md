@@ -4,9 +4,22 @@
 
 ## 文档
 
+- [CHANGELOG](./CHANGELOG.md)：记录 skill、workflow contract、产物路径、触发规则和安装流程变化。
 - [完整中文使用说明](./docs/skills-guide.zh-CN.md)：所有 skill 的定位、使用方式、产物、联动和防误用规则。
 - [仓库结构说明](./docs/repository-layout.md)：说明 plugin 内 `skills/` 和 marketplace 元数据之间的关系。
+- [版本管理规则](./docs/versioning.zh-CN.md)：说明版本号、CHANGELOG 和 manifest 同步规则。
+- [工程行为原则](./docs/engineering-principles.zh-CN.md)：跨 workflow 的澄清、简单、精准修改和验证底线。
+- [Superpowers 方法论吸收说明](./docs/superpowers-inspired-rules.zh-CN.md)：把澄清、计划、测试、debug、review、验证和收尾纪律改造成中文 workflow 规则。
+- [Workflow 契约](./docs/workflow-contracts.zh-CN.md)：统一 state、summary、handoff、恢复、执行模式和文档职责边界。
+- [Bootstrap 路由示例](./docs/bootstrap-examples.zh-CN.md)：典型中文提示词到 workflow 的期望路由。
+- [示例维护策略](./docs/examples-policy.zh-CN.md)：说明 `examples/standard-run.md` 的边界和完整示例取舍。
+- [Full Run 示例](./docs/full-run-examples/README.zh-CN.md)：展示完整阶段产物、机器可读元数据和 Verification 形态。
+- [兼容说明](./docs/compatibility.zh-CN.md)：说明与其他 skill 套件同装时由用户自主决策。
+- [安装冒烟验证](./docs/install-smoke-test.zh-CN.md)：本地安装、覆盖策略和安装后路由验证步骤。
+- [发布前检查清单](./docs/release-checklist.zh-CN.md)：发布或真实安装前的检查步骤。
+- [维护者指南](./docs/maintainer-guide.zh-CN.md)：仓库结构、常见维护任务和检查命令。
 - [Skill 一致性清单](./docs/skill-consistency-checklist.md)：新增或修改 skill 时的仓库级自检标准。
+- [测试与一致性检查](./docs/testing.zh-CN.md)：说明如何检查 skill、模板、文档和 plugin metadata 是否漂移。
 
 ## Skills
 
@@ -30,6 +43,8 @@
 - 功能实现 / 修复交付 → `software-delivery-pipeline`
 
 简单概念问答不强制进入 workflow。
+
+所有 workflow 都应遵守 [工程行为原则](./docs/engineering-principles.zh-CN.md)：先澄清关键假设，保持方案简单，只做可追溯的精准修改，并用实际验证结果支撑完成声明。
 
 ## 目录结构
 
@@ -101,11 +116,7 @@ Use the data-migration-planning skill...
 
 ## 工作流关系
 
-设计哲学：
-
-- 先分流，再执行
-- 先证据，再结论
-- 先确认，再改代码
+详细 workflow 契约、handoff 流转、状态文件、索引、命名和恢复规则见 [Workflow 契约](./docs/workflow-contracts.zh-CN.md)。README 只保留入口说明，避免和 `docs/` / `SKILL.md` 重复。
 
 典型链路：
 
@@ -125,3 +136,36 @@ Use the data-migration-planning skill...
 - `workflow-bootstrap` → `api-contract-design` → `software-delivery-pipeline`
 - `workflow-bootstrap` → `data-migration-planning` → `software-delivery-pipeline`
 - 对于已经范围明确的实现任务，也可以由 `workflow-bootstrap` 直接路由到 `software-delivery-pipeline`
+
+## 自检
+
+修改 skill、模板、reference、README、workflow contract 或 plugin metadata 后，建议运行：
+
+```bash
+bash scripts/check-consistency.sh
+```
+
+修改安装脚本或发布前，再运行：
+
+```bash
+bash scripts/smoke-install-local.sh
+```
+
+发布或真实安装前可直接运行：
+
+```bash
+bash scripts/release-check.sh
+```
+
+维护任务入口见 [维护者指南](./docs/maintainer-guide.zh-CN.md) 和 [脚本说明](./scripts/README.md)。
+
+发布或真实安装前按 [发布前检查清单](./docs/release-checklist.zh-CN.md) 逐项确认。
+
+安装后可用 [Bootstrap 路由示例](./docs/bootstrap-examples.zh-CN.md) 中的提示词做冒烟测试。
+
+本地安装前建议先运行：
+
+```bash
+bash scripts/install-codex-skills.sh --dry-run
+bash scripts/install-claude-plugin.sh --dry-run
+```

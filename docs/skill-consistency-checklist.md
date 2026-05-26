@@ -87,3 +87,18 @@
 - 与仓库整体 naming / workflow / docs 体系一致
 
 如果不能同时满足这些点，至少要在文档中明确说明为什么例外，而不是静默缺失。
+
+## 11. 自动化自检
+
+修改 skill、模板、reference、README、workflow contract 或 plugin metadata 后，运行：
+
+```bash
+bash scripts/check-consistency.sh
+```
+
+该检查不能替代人工 review，但可以提前发现：
+
+- README / 使用说明中列出的 skill 与实际目录不一致
+- `SKILL.md` 声明的 required files 缺少模板
+- plugin manifest 指向的 skills 路径不存在
+- workflow contract 的关键章节丢失

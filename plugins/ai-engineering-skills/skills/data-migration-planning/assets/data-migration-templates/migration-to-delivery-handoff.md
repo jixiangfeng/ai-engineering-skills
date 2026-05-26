@@ -12,10 +12,17 @@
 - 路径：`workflow/data-migrations/<YYYY-MM-DD>-<slug>/`
 
 ## 已确认迁移方案
-- 
+-
 
 ## 回滚 / 恢复策略
-- 
+-
+
+## Worktree Recommendation
+
+当前任务建议使用独立 worktree：yes | no
+
+原因：
+-
 
 ## 范围锁定
 - 允许修改 / 关注的目录或文件：

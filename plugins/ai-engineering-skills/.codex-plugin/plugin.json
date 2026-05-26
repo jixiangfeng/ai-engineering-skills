@@ -28,9 +28,9 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Use workflow-bootstrap for this software engineering task.",
-      "Use codebase-orientation to understand this project.",
-      "Use code-review-triage to review this module."
+      "Start with workflow-bootstrap for non-trivial software engineering tasks.",
+      "Use workflow-bootstrap before editing when the task could require orientation, review, debugging, API contract design, data migration planning, or delivery.",
+      "Use codebase-orientation to understand a project or module before reviewing or changing it."
     ],
     "brandColor": "#111111",
     "screenshots": []

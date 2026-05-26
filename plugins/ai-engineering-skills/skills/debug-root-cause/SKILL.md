@@ -8,8 +8,32 @@ description: >-
 
 Use this skill when the user asks to investigate an error, failing test, startup failure, runtime exception, bad API behavior, regression, or confusing system behavior.
 
+## Usage Boundary
+
+Use when:
+- the user reports an error, failing test, startup failure, regression, or unexpected runtime behavior
+- the task needs reproduction, evidence, hypotheses, root cause, and fix options before implementation
+- prior fix attempts failed or the real cause is unclear
+
+Do not use when:
+- the user only asks to become familiar with code without a concrete symptom
+- the user asks for broad code review rather than one failure path
+- root cause and fix plan are already confirmed and ready for implementation
+
+Prefer another skill when:
+- `codebase-orientation`: the user needs context before investigating a symptom
+- `code-review-triage`: the user wants multiple findings ranked by severity
+- `api-contract-design`: the failure is primarily an unresolved API contract decision
+- `data-migration-planning`: the cause or fix requires schema/data migration
+- `software-delivery-pipeline`: the fix option is confirmed and ready to implement
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/debug-discipline.zh-CN.md` for `Debug Analysis` structure and evidence-first root-cause rules.
+- Follow `docs/prompt-modules/test-strategy.zh-CN.md` when choosing reproduction, test-first confirmation, or exploratory fix strategy.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
 - Debugging starts read-first and evidence-first. Do not patch code until root cause and fix direction are confirmed or the user explicitly asks for immediate repair.
 - Reproduce before explaining when practical. If reproduction is blocked, record the blocker and use available evidence.
 - Do not guess fixes from symptoms. Trace data/control flow back to the source.
@@ -18,7 +42,49 @@ Use this skill when the user asks to investigate an error, failing test, startup
 - If two or more fix attempts have already failed, explicitly check whether the problem is architectural, contractual, or lifecycle-related rather than continuing incremental patching.
 - Separate environment failures, existing failures, test bugs, product-code bugs, and unclear behavior.
 - All generated documents must be Simplified Chinese, except code identifiers, commands, paths, error text, API names, and quoted user text.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - If a fix is needed, create `debug-to-delivery-handoff.md` for `software-delivery-pipeline` rather than silently expanding into implementation.
+
+## Debug Analysis Format
+
+Every debug run must be able to produce this structure across its stage documents or summary:
+
+```md
+## Debug Analysis
+
+### 1. 现象复述
+- ...
+
+### 2. 影响范围
+- ...
+
+### 3. 已知证据
+- 日志：
+- 代码：
+- 配置：
+- 数据：
+- 复现步骤：
+
+### 4. 初始假设
+| 假设 | 支持证据 | 反证 | 当前状态 |
+| --- | --- | --- | --- |
+
+### 5. 排除过程
+1. ...
+
+### 6. 根因判断
+- Root cause:
+- Confidence: high / medium / low
+- Evidence:
+
+### 7. 最小修复点
+- ...
+
+### 8. 验证方案
+- ...
+```
+
+Forbidden: no evidence-free root cause, no patch without reproduction or evidence, no unrelated multi-point fixes, and no use of “大概/可能/应该” as a substitute for validation.
 
 ## Preflight Checklist
 
@@ -59,10 +125,11 @@ Required files:
 7. `07-debug-verification-plan.md`
 8. `08-debug-summary.md`
 9. `debug-to-delivery-handoff.md` (optional, when implementation is needed)
+10. `workflow-state.json` (machine-readable state, maintained alongside `debug-workflow-state.md`)
 
 Use templates in `assets/debug-templates/`.
 
-After each stage document is written or updated, update `debug-workflow-state.md` with current stage, status, next action, reproduction status, and whether code edits are allowed.
+After each stage document is written or updated, update `debug-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, reproduction status, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Workflow
 
@@ -102,7 +169,16 @@ If the same issue has already gone through two or three failed fix attempts:
 - rejected hypotheses
 - confirmed root cause
 - recommended next workflow
+- `Verification`: reproduction status, evidence checked, unverified assumptions, and completion judgment
 
 ## Handoff
 
 `debug-to-delivery-handoff.md` must include root cause, selected fix option, affected files, scope lock, verification requirements, risks, and unresolved questions.
+
+## References
+
+Read when doing actual debugging:
+- `examples/standard-run.md` — canonical miniature run shape for reproduction, evidence, root cause, state, and handoff output
+- `docs/prompt-modules/debug-discipline.zh-CN.md` — evidence-first Debug Analysis structure
+- `docs/prompt-modules/test-strategy.zh-CN.md` — test-first, minimal patch, and exploratory fix strategy
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

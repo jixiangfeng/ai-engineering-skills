@@ -8,15 +8,44 @@ description: >-
 
 Use this skill when the task involves schema changes, data backfill, cleanup scripts, storage migration, entity changes, data compatibility, or rollback planning.
 
+## Usage Boundary
+
+Use when:
+- the task changes schema, entities, persisted data, migrations, cleanup scripts, or backfills
+- rollout, rollback, validation SQL, compatibility window, or recovery strategy must be planned
+- implementation should wait for a confirmed migration plan
+
+Do not use when:
+- the task only changes in-memory code behavior and no stored data contract changes
+- the user asks for general code review or orientation without migration scope
+- the migration plan is already confirmed and only implementation remains
+
+Prefer another skill when:
+- `codebase-orientation`: current data flow or schema ownership is unclear
+- `debug-root-cause`: the task starts from a concrete data/runtime failure
+- `api-contract-design`: the main decision is API shape, with no storage migration
+- `code-review-triage`: the user wants to audit data code before choosing fixes
+- `software-delivery-pipeline`: the migration plan is confirmed and ready to implement
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/implementation-plan.zh-CN.md` when producing a migration-to-delivery handoff that will require code, SQL, or script changes.
+- Follow `docs/prompt-modules/worktree-recommendation.zh-CN.md` for high-risk migrations, dirty worktrees, multi-module changes, or long-running migration work.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
 - Migration planning is a design gate before implementation.
 - Never assume production data shape; inspect schema, entities, queries, and migration history when available.
 - Always define rollback or recovery strategy, even if rollback is manual.
 - Separate schema change, code compatibility, data backfill, verification, and cleanup phases.
 - All generated documents must be Simplified Chinese, except code identifiers, commands, paths, SQL, error text, API names, and quoted user text.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - Hand off confirmed migration plans to `software-delivery-pipeline` for implementation.
 - If the user provides an existing migration artifact path or asks to continue a prior migration run, resume that run instead of creating a new one unless a reset is explicitly requested.
+
+## Worktree Recommendation
+
+For migrations, explicitly decide whether an isolated worktree or branch should be recommended. Recommend isolation when the migration spans modules, touches core flows, has dirty worktree risk, includes destructive or irreversible steps, or needs multiple strategy experiments. Only recommend; do not run `git worktree add` unless the user explicitly asks.
 
 ## Document Quality Rules
 
@@ -65,10 +94,11 @@ Required files:
 6. `06-migration-validation-sql.md`
 7. `07-migration-summary.md`
 8. `migration-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
+9. `workflow-state.json` (machine-readable state, maintained alongside `migration-workflow-state.md`)
 
 Use the templates in `assets/data-migration-templates/`.
 
-After each stage document is written or updated, update `migration-workflow-state.md` with current stage, status, next action, and whether code edits are allowed.
+After each stage document is written or updated, update `migration-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Stage 1 — Scope
 
@@ -135,6 +165,7 @@ Goal: produce the reusable final migration package and route to delivery when ne
 Actions:
 - write `07-migration-summary.md`
 - summarize current model, target model, migration phases, rollback path, validation strategy, and open questions
+- include `Verification`: inspected schema/read-write paths, validation SQL/checks, rollback evidence, unverified assumptions, and completion judgment
 - if implementation should continue next, write `migration-to-delivery-handoff.md`
 - if unresolved migration-risk conflicts remain, stop and ask for confirmation instead of handing off
 
@@ -156,3 +187,7 @@ Do not invent execution sequencing or destructive operations that were not confi
 Read when doing actual migration planning:
 - `references/data-migration-document-contracts.md` — artifact minimums and handoff expectations
 - `references/data-migration-guidelines.md` — schema evidence, rollback, validation, and output quality rules
+- `examples/standard-run.md` — canonical miniature run shape for migration plan, rollback, validation, state, and handoff output
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — migration implementation handoff plan structure
+- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — worktree recommendation rules
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "workflow": "software-delivery-pipeline",
+  "runPath": "workflow/runs/2026-05-26-generated",
+  "sourceArtifact": "workflow/reviews/2026-05-26-review/review-to-delivery-handoff.md",
+  "status": "in_progress",
+  "currentStage": "requirements",
+  "latestDocument": "01-delivery-requirements.md",
+  "nextAction": "Wait for requirements confirmation.",
+  "codeEditsAllowed": false,
+  "blockers": [
+    "human confirmation"
+  ],
+  "selectedScope": "F-001",
+  "updatedAt": "2026-05-26T00:00:00+08:00"
+}

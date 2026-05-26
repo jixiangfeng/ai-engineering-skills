@@ -8,8 +8,32 @@ description: >-
 
 Use this skill when the work starts with code review rather than a known implementation request. The purpose is to find real issues, let the human choose what to fix, and only then move into implementation.
 
+## Usage Boundary
+
+Use when:
+- the user asks to review code, audit a module, find problems, or assess risk
+- the task should produce evidence-backed findings before any code edit
+- the user wants to choose which findings should be fixed
+
+Do not use when:
+- the user already has a confirmed bug reproduction and needs root-cause debugging
+- the user only wants to understand code structure without findings
+- the implementation plan is already approved and ready to execute
+
+Prefer another skill when:
+- `codebase-orientation`: the user asks for familiarity or architecture mapping first
+- `debug-root-cause`: the primary input is a failure, error log, regression, or reproduction
+- `api-contract-design`: the main decision is API shape or compatibility
+- `data-migration-planning`: findings require schema/data migration planning before fixes
+- `software-delivery-pipeline`: selected findings and fix plan are already confirmed
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/review-loop.zh-CN.md` for `Review Findings`, accepted scope, excluded scope, and fix handoff structure.
+- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` when a review has separable read-only tracks.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before any review summary or in-skill implementation closure.
 - Review mode is read-only until the human confirms selected findings and an implementation plan.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - Findings must be evidence-based: include file path, line number when available, code path, behavior, impact, and suggested fix direction.
@@ -17,12 +41,55 @@ Use this skill when the work starts with code review rather than a known impleme
 - Do not treat style preferences, speculative refactors, or generic best practices as required fixes.
 - If no material issues are found, say so clearly and record residual risks or test gaps.
 - Do not modify code before the human confirms `03-review-fix-selection.md` and `04-review-fix-plan.md`.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - By default, this skill must not implement fixes. After `04-review-fix-plan.md` is approved, generate `review-to-delivery-handoff.md` and stop so `software-delivery-pipeline` can run requirements, architecture, plan, implementation, and verification.
 - Implement inside this skill only if the human explicitly says not to use `software-delivery-pipeline` and explicitly asks this review skill to implement the selected findings.
 - If implementation discovers new issues or requires scope expansion, append the issue to the review artifacts and pause for human confirmation.
 - Fix selection and fix-plan gates are clarification-and-convergence loops: do not treat the human's first selected findings or proposed fix direction as automatically safe or sufficient.
 - If selected findings are insufficient, conflict with each other, require an unselected finding, or imply architecture/scope expansion, explain the issue, update the current review artifact, and ask for confirmation again.
 - If the human provides an existing review artifact path or asks to continue a prior review run, resume that run instead of creating a new one unless a reset is explicitly requested.
+
+## Review Findings Format
+
+Use this minimum structure for every material finding:
+
+```md
+## Review Findings
+
+### Finding 1: 标题
+
+- Severity: critical / high / medium / low / suggestion
+- Evidence:
+- Impact:
+- Suggested fix:
+- Confidence:
+- Requires user decision: yes / no
+```
+
+Do not convert findings into code edits until the accepted scope is confirmed.
+
+## Fix Handoff Format
+
+After the human selects findings and approves the fix plan, produce:
+
+```md
+## Fix Handoff
+
+### Accepted scope
+- ...
+
+### Excluded scope
+- ...
+
+### Files likely affected
+- ...
+
+### Verification focus
+- ...
+
+### Recommended next workflow
+- software-delivery-pipeline
+```
 
 ## Review Does Not Implement
 
@@ -99,8 +166,11 @@ Required files:
 7. `07-review-summary.md` (after explicit no-fix closure, or after an explicitly requested in-skill implementation)
 8. `05-review-implementation.md` (exception only: if the human explicitly refuses `software-delivery-pipeline` and asks this skill to implement)
 9. `06-review-verification.md` (exception only: after in-skill implementation)
+10. `workflow-state.json` (machine-readable state, maintained alongside `review-workflow-state.md`)
 
 Use the templates in `assets/review-templates/`.
+
+After each stage document is written or updated, update `review-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, selected scope when known, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Stage 1 — Review Scope
 
@@ -184,3 +254,7 @@ If the task becomes a normal feature/bugfix after findings are selected, chain i
 
 Read when doing an actual review:
 - `references/review-guidelines.md` — finding quality, severity, and response rules
+- `examples/standard-run.md` — canonical miniature run shape for findings, selection, plan, state, and handoff output
+- `docs/prompt-modules/review-loop.zh-CN.md` — review findings and fix handoff structure
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — read-only review decomposition rules
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

@@ -8,17 +8,54 @@ description: >-
 
 Use this skill when the user asks to become familiar with a project, module, package, endpoint, business flow, or existing implementation before reviewing or changing code.
 
+## Usage Boundary
+
+Use when:
+- the user asks to become familiar with a project, module, endpoint, package, or workflow
+- the goal is read-only understanding before review, debugging, or delivery
+- the output should map business flow, call paths, data contracts, risks, and next-step options
+
+Do not use when:
+- the user asks for a code review with findings and severity
+- there is a concrete bug, failing test, exception, or regression to debug
+- implementation scope is already confirmed and ready for delivery
+
+Prefer another skill when:
+- `code-review-triage`: the user wants issues, risk ranking, or fix selection
+- `debug-root-cause`: the user reports an error or unexpected behavior
+- `api-contract-design`: the focus is request/response/DTO/error contract
+- `data-migration-planning`: the focus is schema or persisted data changes
+- `software-delivery-pipeline`: the user asks to implement an approved change
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` when a project or module is broad enough to split into structure, business flow, data contract, and risk analysis.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before the final summary. Orientation completion is normally `analysis-only` unless verified by explicit evidence coverage.
 - Orientation mode is read-only. Do not modify code, configs, generated files, or docs unless the user explicitly changes the task.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - Prefer code, config, tests, routes, schemas, logs, and docs as evidence. Do not infer from framework conventions when files can verify the fact.
 - Separate confirmed facts from AI inferences. Mark uncertain items as `待确认`.
 - If the user names a module, package, endpoint, or path, stay there first and do not widen scope until necessary.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - Do not produce a shallow file listing. Explain what each important component does in the business and runtime flow.
 - Do not turn suspicious code into review findings inside this skill. Put them under “后续可 review 的线索”.
 - If the user later asks to review or fix issues, hand off to `code-review-triage` or `software-delivery-pipeline` using the orientation artifacts as context.
 - If the human provides an existing orientation artifact path or asks to continue a prior orientation run, continue that run instead of starting a new one unless a reset is explicitly requested.
+
+## Task Decomposition
+
+For complex repositories, split orientation into bounded read-only tracks:
+
+| 子任务 | 类型 | 是否可并行 | 输出 |
+| --- | --- | --- | --- |
+| 代码结构分析 | read-only | yes | project map |
+| 业务流分析 | read-only | yes | business flow notes |
+| 数据契约分析 | read-only | yes | contract notes |
+| 风险线索分析 | read-only | yes | review/debug leads |
+
+Code edits are not allowed in this workflow. If the user asks to implement after orientation, create a handoff and route to the correct downstream workflow.
 
 ## Output Discipline
 
@@ -84,10 +121,11 @@ Required files:
 7. `07-orientation-summary.md`
 8. `orientation-to-review-handoff.md` (optional, when the next step is `code-review-triage`)
 9. `orientation-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
+10. `workflow-state.json` (machine-readable state, maintained alongside `orientation-workflow-state.md`)
 
 Use the templates in `assets/orientation-templates/`.
 
-After each stage document is written or updated, update `orientation-workflow-state.md` with current stage, status, next action, and whether code edits are allowed.
+After each stage document is written or updated, update `orientation-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Stage 1 — Scope
 
@@ -152,6 +190,7 @@ Goal: give the human a concise reusable understanding.
 Actions:
 - write `07-orientation-summary.md`
 - include architecture overview, business flow summary, technical flow summary, key files, risks, and recommended next step
+- include `Verification`: files/evidence read, areas not covered, unverified assumptions, and completion judgment
 - explicitly recommend the next best workflow when appropriate, for example: `code-review-triage`, `software-delivery-pipeline`, `debug-root-cause`, `api-contract-design`, or `data-migration-planning`, and state why
 - if the user wants review next, write `orientation-to-review-handoff.md`
 - if the user wants implementation next, write `orientation-to-delivery-handoff.md`
@@ -166,3 +205,6 @@ Actions:
 
 Read when doing actual orientation:
 - `references/orientation-guidelines.md` — evidence, fact/inference labels, and output quality rules
+- `examples/standard-run.md` — canonical miniature run shape for state, summary, and optional handoff output
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — read-only task decomposition rules
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

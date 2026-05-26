@@ -12,22 +12,42 @@
 - 仅审查无修复 | 已修复选中 Findings
 
 ## 结果
-- 
+-
 
 ## 已修复 Findings
-- 
+-
 
 ## 未修复 Findings
-- 
+-
 
 ## 修改文件
-- 
+-
 
 ## 验证摘要
-- 
+-
+
+## Verification
+
+### 已验证
+-
+
+### 验证方式
+- 命令：
+- 文件：
+- 证据：
+- 结果：
+
+### 未验证
+-
+
+### 未验证原因
+-
+
+### 完成判断
+- completed | analysis-only | blocked | needs-user-confirmation
 
 ## 剩余风险
-- 
+-
 
 ## 验证矩阵
 | 验收项 / Finding | 验证方式 | 命令或步骤 | 结果 | 证据 | 未覆盖原因 |

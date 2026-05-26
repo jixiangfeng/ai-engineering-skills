@@ -12,20 +12,20 @@
 - 路径：`workflow/orientation/<YYYY-MM-DD>-<slug>/`
 
 ## 已确认上下文
-- 
+-
 
 ## 需求/实现约束
-- 
+-
 
 ## 架构门禁建议
 - 是否建议进入 `software-delivery-pipeline` 的架构设计阶段：是 | 否
 - 原因：
 
 ## 待确认问题
-- 
+-
 
 ## 验收建议
-- 
+-
 
 ## 禁止事项 / 不做范围
 -

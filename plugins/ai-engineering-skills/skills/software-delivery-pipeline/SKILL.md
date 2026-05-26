@@ -26,13 +26,30 @@ Use this skill when:
 - the human mainly wants to review documents, not intermediate chatter
 - you want a reusable workflow that survives long tasks and handoffs
 
-Do not use this skill for:
+Do not use when:
 - trivial one-line edits
 - purely conceptual Q&A
 - destructive repo operations without explicit approval
 
+Prefer another skill when:
+- `codebase-orientation`: the user asks to understand unfamiliar code before changing it
+- `code-review-triage`: the user asks to find or rank issues before choosing fixes
+- `debug-root-cause`: a failure needs root cause before implementation
+- `api-contract-design`: request/response/DTO/error behavior is not yet agreed
+- `data-migration-planning`: schema, persisted data, rollback, or backfill needs planning first
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/clarification.zh-CN.md` when requirements are unclear.
+- Follow `docs/prompt-modules/implementation-plan.zh-CN.md`; no code edits may start without an approved `Implementation Plan`, even when the user asks to "直接改".
+- Follow `docs/prompt-modules/execution-discipline.zh-CN.md` during implementation and fix work.
+- Follow `docs/prompt-modules/test-strategy.zh-CN.md` before choosing test-first, minimal patch, or exploratory fix.
+- Follow `docs/prompt-modules/worktree-recommendation.zh-CN.md` for high-risk, dirty, multi-module, or long-running tasks.
+- Follow `docs/prompt-modules/task-decomposition.zh-CN.md` for complex work; read-only subtasks may be parallel, code edits are not parallel by default.
+- Follow `docs/prompt-modules/finish-checklist.zh-CN.md` before delivery summary.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before claiming completion.
 - Treat each stage as a separate checkpoint.
 - Every stage must write its output document before the next stage starts.
 - Stage 1 has a mandatory human review gate: after writing `01-delivery-requirements.md`, stop and ask the human to confirm or revise it before Stage 2.
@@ -45,14 +62,112 @@ Do not use this skill for:
 - Do not begin planning until the requirements document is approved.
 - Do not begin implementation or code edits until required architecture and implementation plan documents are approved.
 - During implementation, debugging, or verification, pause for human confirmation if scope expands, the plan must materially change, verification is blocked, or a destructive/high-risk operation is needed.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - If a stage is incomplete, blocked, or failed, do not silently continue.
 - Prefer tool evidence over assumptions.
 - Do not claim completion until verification has run.
+- Do not summarize a task as complete when verification failed, was skipped without explanation, or only checked unrelated behavior.
+- If verification cannot run, record the blocker, residual risk, and any substitute checks in the verification and summary documents.
 - If implementation fails or behaves unexpectedly, switch to root-cause debugging before more fixes.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - When continuing from `code-review-triage`, use the review handoff files as the source of truth and do not repair unselected findings.
+- When continuing from any upstream handoff, follow `docs/workflow-contracts.zh-CN.md` `Handoff Flow Contract` before writing delivery requirements.
 - Review-originated fixes have a hard start gate: do not edit code until a delivery run has written and received approval for `01-delivery-requirements.md` and the required plan document.
 - If code changes already exist before the delivery run starts, record them as pre-existing workspace state in `01-delivery-requirements.md`, lock the intended scope, and do not expand or normalize unrelated diffs.
+
+## Implementation Strategy
+
+Before code edits, choose and record one strategy:
+
+```md
+## Implementation Strategy
+
+- Strategy: test_first / minimal_patch / exploratory_fix
+- Reason:
+- Expected behavior:
+- Test / verification cases:
+```
+
+Use `test_first` for bug fixes, state machines, complex business rules, data transformations, API compatibility, migration checks, or code with good existing test coverage.
+Use `minimal_patch` for small deterministic edits, copy/enum/config changes, or tasks where manual verification is the right surface.
+Use `exploratory_fix` only when root cause is not fully confirmed and a minimal reproduction or observation step is required.
+
+## Implementation Plan
+
+The active plan document must include:
+
+```md
+## Implementation Plan
+
+### 1. 修改目标
+- ...
+
+### 2. 修改范围
+- 涉及模块：
+- 涉及文件：
+- 不修改范围：
+
+### 3. 执行步骤
+1. ...
+
+### 4. 数据 / 配置影响
+- 数据库：
+- Redis：
+- MQ：
+- 配置项：
+- 外部接口：
+
+### 5. 风险点
+- ...
+
+### 6. 验证方式
+- 单元测试：
+- 集成测试：
+- 手工验证：
+- 回归范围：
+
+### 7. 回滚方式
+- ...
+```
+
+No implementation begins until this plan is written, scope-locked, and approved.
+
+## Task Decomposition
+
+For complex tasks, record:
+
+```md
+## Task Decomposition
+
+### 是否需要拆分
+- yes / no
+
+### 子任务
+| 子任务 | 类型 | 是否可并行 | 输出 |
+| --- | --- | --- | --- |
+| 代码结构分析 | read-only | yes | findings |
+| 数据契约分析 | read-only | yes | contract notes |
+| 风险点分析 | read-only | yes | risk list |
+| 实现修改 | write | no | patch |
+```
+
+Only read-only analysis should be parallelized. Code edits that touch the same files or same behavior are not parallel.
+
+## Finish Checklist
+
+Before writing the delivery summary, complete or explicitly mark skipped:
+
+```md
+## Finish Checklist
+
+- [ ] 已检查 git diff
+- [ ] 已检查无关改动
+- [ ] 已运行必要测试
+- [ ] 已更新必要文档
+- [ ] 已说明未验证项
+- [ ] 已给出回滚方式
+- [ ] 已给出 PR / merge 建议
+```
 
 ## Execution Modes
 
@@ -91,6 +206,24 @@ Strongly consider using a dedicated branch or git worktree when:
 
 If isolated workspace is not used for a risky task, record the reason and risk in `01-delivery-requirements.md`.
 
+Record the decision in this format:
+
+```md
+## Worktree Recommendation
+
+当前任务建议使用独立 worktree：yes / no
+
+原因：
+- ...
+
+建议命令：
+```bash
+git worktree add ../<repo>-<task-slug> -b <branch-name>
+```
+```
+
+This is a recommendation only. Do not create a worktree unless the human explicitly asks.
+
 ## Review Handoff Input
 
 Use this mode when the user says to continue from a review, fix selected findings, follow `code-review-triage`, provides a `workflow/reviews/...` path, or says “按这个修”, “继续”, “落地”, “修复选中的问题” immediately after a review handoff. In these cases, automatically use the review handoff as input instead of asking which workflow to use.
@@ -121,6 +254,8 @@ Every generated workflow document should include the shared quality fields when 
 - 决策记录: capture selected option, rejected options, rationale, and confirmation record.
 - 范围锁定: allowed and forbidden files/behaviors; pause if implementation needs to exceed them.
 - 验收样例 and 验证矩阵: connect requirements/findings to concrete examples and verification evidence.
+
+All delivery stages also follow the shared engineering principles: clarify assumptions, keep implementation simple, make surgical changes, and tie completion to verification evidence.
 
 ## Preflight Checklist
 
@@ -176,8 +311,11 @@ Required files:
 6. `06-delivery-debugging.md` (for complex paths; if no debugging is needed, still create a short Chinese stub)
 7. `07-delivery-verification.md` (or `05-delivery-verification.md` for simple low-risk tasks without change review/debugging)
 8. `08-delivery-summary.md` (or `06-delivery-summary.md` for simple low-risk tasks)
+9. `workflow-state.json` (machine-readable state, maintained alongside `delivery-workflow-state.md`)
 
 Use the templates in `assets/workflow-templates/`. The templates are Chinese-first and should remain Chinese when filled.
+
+After each stage document is written or updated, update `delivery-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, selected scope, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Stage 1 — Requirements Capture
 
@@ -233,6 +371,10 @@ Actions:
 - if `02-delivery-architecture.md` exists, read it and follow its confirmed constraints
 - if no standalone architecture document exists, record why independent architecture/design/selection was not needed
 - break work into concrete steps
+- record `Implementation Strategy`
+- write the required `Implementation Plan`
+- record `Task Decomposition` when the task is complex
+- record `Worktree Recommendation` for risky, dirty, multi-module, or long-running tasks
 - identify risks, dependencies, and verification strategy
 - define test targets before implementation
 - write `02-delivery-plan.md` for simple tasks, or `03-delivery-plan.md` after a standalone architecture stage
@@ -247,6 +389,8 @@ Goal: implement from the plan with test-first discipline.
 
 Actions:
 - read the approved plan document: `02-delivery-plan.md` for simple tasks, or `03-delivery-plan.md` when a standalone architecture stage exists
+- follow the recorded `Implementation Strategy`
+- follow the approved `Implementation Plan` and update `Execution Status`
 - identify the smallest meaningful failing test or failing reproduction
 - default to fail-first for behavior changes that are reasonably testable
 - verify the test or reproduction fails for the right reason
@@ -349,6 +493,7 @@ Actions:
 - prefer project-native checks: tests, build, lint, typecheck, smoke test, screenshot, diff inspection
 - record exactly what was run and the outcome
 - list any skipped checks and why they were skipped
+- include the shared `Verification` structure with completed / analysis-only / blocked / needs-user-confirmation judgment
 - if meaningful verification is blocked or cannot be run, write the blocker to the active verification report (`05-delivery-verification.md` for simple low-risk paths, or `07-delivery-verification.md` for architecture/change-review paths), ask whether to accept the risk or provide the missing environment/input, and pause before claiming completion
 - write the verification report
 
@@ -359,6 +504,7 @@ Do not mark the work complete unless verification evidence exists or a blocker i
 Goal: hand the result to the human in one concise document and wait for acceptance feedback.
 
 Actions:
+- complete the `Finish Checklist`
 - summarize what changed
 - list files touched
 - summarize verification results
@@ -406,3 +552,12 @@ Read these only when needed:
 - `references/document-contracts.md` — required fields for each artifact
 - `references/stage-playbook.md` — how to execute each stage with the right discipline
 - `references/example-run.md` — example of a completed workflow run
+- `examples/standard-run.md` — canonical miniature run shape for state, stages, verification, and summary
+- `docs/prompt-modules/clarification.zh-CN.md` — requirements clarification rules
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — Implementation Plan structure
+- `docs/prompt-modules/execution-discipline.zh-CN.md` — scope and execution status rules
+- `docs/prompt-modules/test-strategy.zh-CN.md` — implementation strategy selection
+- `docs/prompt-modules/worktree-recommendation.zh-CN.md` — worktree recommendation rules
+- `docs/prompt-modules/task-decomposition.zh-CN.md` — task decomposition and parallelism boundaries
+- `docs/prompt-modules/finish-checklist.zh-CN.md` — delivery finish checklist
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

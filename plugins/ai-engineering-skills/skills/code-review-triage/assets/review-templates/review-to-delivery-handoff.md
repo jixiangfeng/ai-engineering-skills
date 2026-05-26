@@ -19,7 +19,24 @@
 - 明确不修 Findings：
 
 ## 修复目标摘要
-- 
+-
+
+## Fix Handoff
+
+### Accepted scope
+-
+
+### Excluded scope
+-
+
+### Files likely affected
+-
+
+### Verification focus
+-
+
+### Recommended next workflow
+- software-delivery-pipeline
 
 ## Findings 明细
 
@@ -32,20 +49,20 @@
 - 验收标准：
 
 ## 用户约束
-- 
+-
 
 ## 架构门禁建议
 - 是否建议进入 `software-delivery-pipeline` 的架构设计阶段：是 | 否
 - 原因：
 
 ## 修复计划摘要
-- 
+-
 
 ## 验证要求
-- 
+-
 
 ## 禁止事项 / 不做范围
-- 
+-
 
 
 ## 澄清与收敛记录

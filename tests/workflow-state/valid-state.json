@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "workflow": "codebase-orientation",
+  "runPath": "workflow/orientation/2026-05-26-example",
+  "sourceArtifact": null,
+  "status": "completed",
+  "currentStage": "summary",
+  "latestDocument": "07-orientation-summary.md",
+  "nextAction": "No action required.",
+  "codeEditsAllowed": false,
+  "blockers": [],
+  "selectedScope": "Example orientation scope",
+  "updatedAt": "2026-05-26T00:00:00+08:00"
+}

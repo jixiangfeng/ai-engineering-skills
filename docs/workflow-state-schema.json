@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ai-engineering-skills/workflow-state.schema.json",
+  "title": "AI Engineering Skills Workflow State",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "workflow",
+    "runPath",
+    "status",
+    "currentStage",
+    "nextAction",
+    "codeEditsAllowed",
+    "updatedAt"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "workflow": {
+      "type": "string",
+      "enum": [
+        "codebase-orientation",
+        "code-review-triage",
+        "debug-root-cause",
+        "api-contract-design",
+        "data-migration-planning",
+        "software-delivery-pipeline"
+      ]
+    },
+    "runPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceArtifact": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "blocked",
+        "pending_human_confirmation",
+        "handoff_ready",
+        "completed",
+        "abandoned"
+      ]
+    },
+    "currentStage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "latestDocument": {
+      "type": ["string", "null"]
+    },
+    "nextAction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "codeEditsAllowed": {
+      "type": "boolean"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "selectedScope": {
+      "type": ["string", "null"]
+    },
+    "updatedAt": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

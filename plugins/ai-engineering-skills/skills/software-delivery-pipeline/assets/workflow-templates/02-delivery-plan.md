@@ -12,7 +12,7 @@
 - 待用户确认
 
 ## 目标
-- 
+-
 
 ## 输入
 - `01-delivery-requirements.md`
@@ -23,24 +23,86 @@
 - 如存在 `02-delivery-architecture.md`，必须遵循的架构约束：
 
 ## 任务拆解
-1. 
-2. 
-3. 
+1.
+2.
+3.
+
+## Implementation Strategy
+- Strategy: test_first | minimal_patch | exploratory_fix
+- Reason:
+- Expected behavior:
+- Test / verification cases:
+
+## Implementation Plan
+
+### 1. 修改目标
+-
+
+### 2. 修改范围
+- 涉及模块：
+- 涉及文件：
+- 不修改范围：
+
+### 3. 执行步骤
+1.
+2.
+3.
+
+### 4. 数据 / 配置影响
+- 数据库：
+- Redis：
+- MQ：
+- 配置项：
+- 外部接口：
+
+### 5. 风险点
+-
+
+### 6. 验证方式
+- 单元测试：
+- 集成测试：
+- 手工验证：
+- 回归范围：
+
+### 7. 回滚方式
+-
+
+## Task Decomposition
+
+### 是否需要拆分
+- yes | no
+
+### 子任务
+| 子任务 | 类型 | 是否可并行 | 输出 |
+| --- | --- | --- | --- |
+|  | read-only / write | yes / no |  |
+
+## Worktree Recommendation
+
+当前任务建议使用独立 worktree：yes | no
+
+原因：
+-
+
+建议命令：
+```bash
+git worktree add ../<repo>-<task-slug> -b <branch-name>
+```
 
 ## Findings 修复映射
 - F-001：实现步骤；验证方式；不做范围。
 
 ## 风险
-- 
+-
 
 ## 测试策略
-- 
+-
 
 ## 验证策略
-- 
+-
 
 ## 退出标准
-- [ ] 
+- [ ]
 - [ ]
 
 

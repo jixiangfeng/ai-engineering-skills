@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "workflow": "data-migration-planning",
+  "runPath": "workflow/example-runs/2026-05-26-example",
+  "sourceArtifact": null,
+  "status": "completed",
+  "currentStage": "summary",
+  "latestDocument": null,
+  "nextAction": "Review the summary.",
+  "codeEditsAllowed": false,
+  "blockers": [],
+  "selectedScope": null,
+  "updatedAt": "2026-05-26T00:00:00+08:00"
+}

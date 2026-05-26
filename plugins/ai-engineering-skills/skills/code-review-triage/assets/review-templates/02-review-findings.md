@@ -16,13 +16,15 @@
 
 ## 阻塞问题
 
+## Review Findings
+
 ### F-001 标题
-- 严重级别：阻塞
-- 位置：`path/to/file:line`
-- 证据：
-- 影响：
-- 修复方向：
-- 置信度：高 | 中 | 低
+- Severity: critical | high | medium | low | suggestion
+- Evidence:
+- Impact:
+- Suggested fix:
+- Confidence: high | medium | low
+- Requires user decision: yes | no
 
 ## 高优先级问题
 
@@ -31,10 +33,10 @@
 ## 低优先级问题
 
 ## 不建议本次处理
-- 
+-
 
 ## 测试缺口 / 剩余风险
-- 
+-
 
 ## 证据引用
 | 结论 | 证据位置 | 类型 | 置信度 | 备注 |

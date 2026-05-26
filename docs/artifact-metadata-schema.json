@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ai-engineering-skills/artifact-metadata-schema.json",
+  "title": "AI Engineering Skills Artifact Metadata",
+  "type": "object",
+  "required": [
+    "schema",
+    "workflow",
+    "run_path",
+    "mode",
+    "status",
+    "code_edits_allowed"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "ai-engineering-skills.artifact.v1"
+    },
+    "workflow": {
+      "enum": [
+        "workflow-bootstrap",
+        "codebase-orientation",
+        "code-review-triage",
+        "debug-root-cause",
+        "api-contract-design",
+        "data-migration-planning",
+        "software-delivery-pipeline"
+      ]
+    },
+    "run_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^workflow/"
+    },
+    "mode": {
+      "enum": ["lightweight", "full"]
+    },
+    "status": {
+      "enum": [
+        "not_started",
+        "in_progress",
+        "blocked",
+        "pending_human_confirmation",
+        "handoff_ready",
+        "completed",
+        "abandoned"
+      ]
+    },
+    "code_edits_allowed": {
+      "type": "boolean"
+    },
+    "source_artifact": {
+      "type": ["string", "null"]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+# Debug Root Cause Full Run
+
+```yaml
+artifact:
+  schema: ai-engineering-skills.artifact.v1
+  workflow: debug-root-cause
+  run_path: workflow/debug/2026-05-26-submit-timeout
+  mode: full
+  status: handoff_ready
+  code_edits_allowed: false
+```
+
+## Debug Analysis
+
+### 1. 现象复述
+- 重复提交第二次请求超时。
+
+### 2. 影响范围
+- 影响订单提交。
+
+### 3. 已知证据
+- 日志：等待锁超时。
+- 代码：异常分支跳过 unlock。
+- 复现步骤：连续提交相同 payload。
+
+### 4. 初始假设
+| 假设 | 支持证据 | 反证 | 当前状态 |
+| --- | --- | --- | --- |
+| 异常分支未释放锁 | 日志和代码路径一致 | 正常分支会释放 | confirmed |
+
+### 5. 排除过程
+1. 排除数据库慢查询。
+2. 排除网关超时。
+
+### 6. 根因判断
+- Root cause: catch 分支提前返回跳过 unlock。
+- Confidence: high
+- Evidence: `SubmitService.submit(...)`
+
+### 7. 最小修复点
+- 用 finally 释放锁。
+
+### 8. 验证方案
+- 异常分支释放锁测试。
+
+## Verification
+
+### 完成判断
+- analysis-only

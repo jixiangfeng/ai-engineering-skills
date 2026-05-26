@@ -16,7 +16,19 @@
 5. 清理旧逻辑：
 
 ## 执行顺序
-- 
+-
+
+## Worktree Recommendation
+
+当前任务建议使用独立 worktree：yes | no
+
+原因：
+-
+
+建议命令：
+```bash
+git worktree add ../<repo>-<task-slug> -b <branch-name>
+```
 
 ## 范围锁定
 - 允许修改 / 关注的目录或文件：

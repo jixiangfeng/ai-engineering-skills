@@ -4,6 +4,8 @@
 
 所有中间产物默认使用中文，生成在当前项目根目录的 `workflow/` 下，而不是生成在 skill 安装目录里。
 
+所有 workflow 共同遵守 [`engineering-principles.zh-CN.md`](./engineering-principles.zh-CN.md)：编码前先澄清、简单优先、精准修改、目标驱动验证。具体 workflow 的阶段规则优先，但不能绕过这些底线。
+
 ## 一、Skill 总览
 
 | Skill | 适用场景 | 是否默认改代码 | 主要产物目录 |
@@ -144,6 +146,10 @@ workflow-bootstrap
 - 用户明确要求二次 review
 
 二次 review 通过后才能进入验证。
+
+### 6. 完成声明必须有验证依据
+
+`software-delivery-pipeline` 的 summary 只能声明已经验证过的内容。验证可以来自自动化测试、构建、静态检查、手工检查或明确记录的替代验证；如果验证没有运行，必须写明阻塞原因和剩余风险。
 
 ## 五、各 Skill 详细说明
 

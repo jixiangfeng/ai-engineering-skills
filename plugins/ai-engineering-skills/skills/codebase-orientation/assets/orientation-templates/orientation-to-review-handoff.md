@@ -12,19 +12,19 @@
 - 路径：`workflow/orientation/<YYYY-MM-DD>-<slug>/`
 
 ## 建议 Review 范围
-- 
+-
 
 ## Review 重点
-- 
+-
 
 ## 后续可 review 的线索
-- 
+-
 
 ## 关键上下文
-- 
+-
 
 ## 不应扩大范围
-- 
+-
 
 ## 待确认
 -

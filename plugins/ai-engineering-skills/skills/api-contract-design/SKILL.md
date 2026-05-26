@@ -8,15 +8,51 @@ description: >-
 
 Use this skill when the user asks to design or revise an API, endpoint, DTO, response shape, error code, validation rule, or frontend/backend contract.
 
+## Usage Boundary
+
+Use when:
+- the user asks to design or revise an endpoint, DTO, response shape, error code, or validation rule
+- frontend/backend contract, compatibility, versioning, or examples must be agreed before coding
+- implementation should wait for a confirmed contract
+
+Do not use when:
+- the task is only to understand existing code without changing a contract
+- a runtime failure needs root-cause debugging first
+- the contract is already approved and only implementation remains
+
+Prefer another skill when:
+- `codebase-orientation`: current API behavior is not understood yet
+- `debug-root-cause`: the issue starts from a failing API behavior or log
+- `code-review-triage`: the user wants to audit existing API code for problems
+- `data-migration-planning`: contract changes require persisted data/schema changes
+- `software-delivery-pipeline`: the contract is confirmed and ready to implement
+
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record whether the run is lightweight or full in state and summary.
+
 ## Core Rules
 
+- Follow `docs/prompt-modules/clarification.zh-CN.md` before contract design when goal, caller, compatibility boundary, or acceptance criteria is unclear.
+- Follow `docs/prompt-modules/implementation-plan.zh-CN.md` when producing a contract-to-delivery handoff that will require code changes.
+- Follow `docs/prompt-modules/verification-gate.zh-CN.md` before summary or handoff closure.
 - Contract design is a confirmation gate before implementation.
 - Preserve exact response shape unless the user explicitly approves a change.
 - Prefer typed DTOs and explicit fields over loose containers.
 - Record compatibility, versioning, and old-client behavior explicitly.
 - All generated documents must be Simplified Chinese, except code identifiers, commands, paths, error text, API names, and quoted user text.
+- Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - Hand off confirmed contracts to `software-delivery-pipeline` for implementation.
 - If the user provides an existing contract artifact path or asks to continue a prior contract run, resume that run instead of creating a new one unless a reset is explicitly requested.
+
+## Contract Clarification Gate
+
+Before proposing a target contract, clarify:
+
+- business/API goal
+- callers and consumers
+- affected endpoints, DTOs, schemas, and validation points
+- compatibility boundary and forbidden changes
+- UI states, empty states, error states, and abnormal states that the contract must cover
+- acceptance criteria for examples and validation behavior
 
 ## Document Quality Rules
 
@@ -65,10 +101,11 @@ Required files:
 6. `06-api-examples.md`
 7. `07-api-summary.md`
 8. `api-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
+9. `workflow-state.json` (machine-readable state, maintained alongside `api-contract-workflow-state.md`)
 
 Use the templates in `assets/api-contract-templates/`.
 
-After each stage document is written or updated, update `api-contract-workflow-state.md` with current stage, status, next action, and whether code edits are allowed.
+After each stage document is written or updated, update `api-contract-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Stage 1 — Scope
 
@@ -135,6 +172,7 @@ Goal: produce the reusable final contract package and route to the next workflow
 Actions:
 - write `07-api-summary.md`
 - summarize scope, current contract, final proposed contract, compatibility decision, validation behavior, and open questions
+- include `Verification`: checked callers/DTOs/examples, UI/error states covered, unverified assumptions, and completion judgment
 - if implementation should continue next, write `api-to-delivery-handoff.md`
 - if unresolved contract conflicts remain, stop and ask for confirmation instead of handing off
 
@@ -155,3 +193,7 @@ Do not invent implementation decisions that were not confirmed in the contract w
 Read when doing actual contract design:
 - `references/api-contract-document-contracts.md` — artifact minimums and handoff expectations
 - `references/api-contract-guidelines.md` — contract evidence, compatibility, and output quality rules
+- `examples/standard-run.md` — canonical miniature run shape for contract proposal, examples, state, and handoff output
+- `docs/prompt-modules/clarification.zh-CN.md` — contract clarification rules
+- `docs/prompt-modules/implementation-plan.zh-CN.md` — implementation handoff plan structure
+- `docs/prompt-modules/verification-gate.zh-CN.md` — final Verification output contract

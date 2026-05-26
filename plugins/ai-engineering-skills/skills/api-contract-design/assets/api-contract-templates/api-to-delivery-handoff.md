@@ -12,7 +12,7 @@
 - 路径：`workflow/api-contracts/<YYYY-MM-DD>-<slug>/`
 
 ## 已确认契约
-- 
+-
 
 ## 范围锁定
 - 允许修改 / 关注的目录或文件：
