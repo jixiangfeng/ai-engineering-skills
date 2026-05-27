@@ -16,6 +16,8 @@ spec.loader.exec_module(bootstrap_routing)
 route = bootstrap_routing.route
 
 
+EXPECTED_COLUMNS = ["prompt", "expectedWorkflow", "expectedDomainModule", "expectedMode"]
+
 JAVA_SPRING_SIGNALS = [
     "java",
     "spring",
@@ -82,6 +84,26 @@ HIGH_RISK_SIGNALS = [
 ]
 
 
+def validate_tsv_shape(path: Path) -> list[str]:
+    errors: list[str] = []
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if len(lines) < 2:
+        return [f"{path}: TSV must contain a header and at least one case row"]
+
+    header = lines[0].split("\t")
+    if header != EXPECTED_COLUMNS:
+        errors.append(f"{path}: TSV header must be tab-delimited columns {EXPECTED_COLUMNS}, got {header}")
+
+    for line_number, line in enumerate(lines[1:], start=2):
+        columns = line.split("\t")
+        if len(columns) != len(EXPECTED_COLUMNS):
+            errors.append(
+                f"{path}: line {line_number} must have {len(EXPECTED_COLUMNS)} tab-delimited columns, "
+                f"got {len(columns)}"
+            )
+    return errors
+
+
 def detect_domain_module(prompt: str) -> str:
     normalized = prompt.lower()
     if any(signal in normalized for signal in JAVA_SPRING_SIGNALS):
@@ -103,8 +125,15 @@ def main() -> int:
     parser.add_argument("--cases", default="tests/domain-modules/java-spring-microservice-cases.tsv")
     args = parser.parse_args()
 
+    case_path = Path(args.cases)
+    shape_errors = validate_tsv_shape(case_path)
+    if shape_errors:
+        for error in shape_errors:
+            print(error, file=sys.stderr)
+        return 1
+
     failed = False
-    with Path(args.cases).open(encoding="utf-8", newline="") as handle:
+    with case_path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
         for line_number, row in enumerate(reader, start=2):
             workflow, run = route(row["prompt"])
