@@ -45,6 +45,18 @@ ALLOWED_WORKFLOWS = {
     "software-delivery-pipeline",
 }
 
+DEFAULT_PATHS = [
+    "docs/artifact-templates",
+    "plugins/ai-engineering-skills/skills/api-contract-design/assets/api-contract-templates",
+    "plugins/ai-engineering-skills/skills/code-review-triage/assets/review-templates",
+    "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates",
+    "plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates",
+    "plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates",
+    "plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates",
+    "docs/full-run-examples",
+    "tests/artifact-metadata/valid-artifact.md",
+]
+
 
 def parse_scalar(value: str):
     cleaned = value.strip().strip('"')
@@ -209,7 +221,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Check machine-readable artifact metadata blocks.")
     parser.add_argument("--schema", default="docs/artifact-metadata-schema.json")
     parser.add_argument("--require-verification", action="store_true")
-    parser.add_argument("paths", nargs="+")
+    parser.add_argument("paths", nargs="*", default=DEFAULT_PATHS)
     args = parser.parse_args()
     schema = json.loads(Path(args.schema).read_text(encoding="utf-8"))
 

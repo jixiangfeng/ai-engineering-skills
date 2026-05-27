@@ -28,11 +28,17 @@ def check_file(path: Path) -> list[str]:
     errors: list[str] = []
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
+    non_empty_lines = [line for line in lines if line.strip()]
 
     if text and not text.endswith("\n"):
         errors.append("missing final newline")
     if len(text) > 1000 and len(lines) < 5:
         errors.append("document appears collapsed into too few lines")
+    if len(text) > 2000 and len(non_empty_lines) < 10:
+        errors.append(
+            "large markdown file appears minified into too few lines "
+            f"(chars={len(text)}, non_empty_lines={len(non_empty_lines)})"
+        )
 
     fence_count = 0
     previous_heading = 0

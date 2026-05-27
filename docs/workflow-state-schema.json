@@ -117,6 +117,13 @@
       },
       "default": []
     },
+    "affectedFeignClients": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "affectedTables": {
       "type": "array",
       "items": {
@@ -144,6 +151,18 @@
         "type": "string"
       },
       "default": []
+    },
+    "rollbackPlan": {
+      "type": ["string", "null"],
+      "default": null
+    },
+    "verificationPlan": {
+      "type": ["string", "null"],
+      "default": null
+    },
+    "verificationRequired": {
+      "type": "boolean",
+      "default": false
     },
     "updatedAt": {
       "type": "string",

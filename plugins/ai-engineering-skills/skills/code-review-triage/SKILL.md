@@ -50,7 +50,23 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, review findings must prioritize transaction boundaries, Feign dependency and timeout risks, MQ idempotency/retry/DLQ, Redis lock safety, Mapper dynamic SQL, DTO/VO/Entity boundaries, patientId/storeId/tenantId authorization, and enum/status magic strings.
+If `domainModules` contains `java-spring-microservice`, review findings must prioritize:
+
+- Transaction boundaries and `@Transactional` misuse
+- Feign / OpenFeign coupling, timeout, fallback, and N+1 remote calls
+- MQ idempotency, ack/nack, retry, DLQ, duplicate consumption, and ordering
+- Redis / Redisson lock safety, TTL, owner check, and cache key design
+- MyBatis / MyBatis-Plus dynamic SQL risks, missing `WHERE`, empty `foreach`, unstable pagination
+- MongoDB historical field compatibility and field-missing semantics
+- DTO / VO / Entity boundary leakage
+- enum / status / magic string compatibility
+- patientId / storeId / tenantId / deptId authorization risks
+- Nacos / YAML config default value and gray release risks
+- Observability gaps: missing traceId, jobId, checkNo, orderNo, topic, config key, or elapsed-time logs
+
+High-risk findings must include rollback and verification suggestions.
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 

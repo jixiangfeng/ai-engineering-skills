@@ -21,7 +21,7 @@ NO_WORKFLOW_INTENTS = [
 ]
 
 WORKFLOW_ACTIONS: dict[str, list[str]] = {
-    "code-review-triage": ["review", "审查", "找问题", "找出", "风险", "代码质量", "先列问题"],
+    "code-review-triage": ["review", "审查", "检查", "找问题", "找出", "风险", "代码质量", "先列问题"],
     "debug-root-cause": ["排查", "启动失败", "启动不了", "失败", "报错", "异常", "根因", "测试为什么失败"],
     "api-contract-design": ["设计接口", "接口返回结构", "请求响应契约", "接口契约", "返回字段", "响应结构", "DTO", "VO", "days[]"],
     "data-migration-planning": ["表结构", "数据迁移", "回填", "迁移", "schema", "兼容"],

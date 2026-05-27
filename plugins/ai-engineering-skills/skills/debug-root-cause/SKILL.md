@@ -50,7 +50,21 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, the debug hypothesis tree must cover Profile/Nacos config, Bean injection/circular dependencies, transaction failure, Feign timeout/fallback, MQ ack/retry/DLQ, Redis lock/cache, MyBatis SQL, and Mongo historical-field compatibility.
+If `domainModules` contains `java-spring-microservice`, the debug hypothesis tree must consider:
+
+- Profile / Nacos / YAML config missing or stale
+- Bean injection, circular dependency, proxy, and conditional bean issues
+- `@Transactional` not taking effect, self-invocation, swallowed exception, or rollback mismatch
+- Feign timeout, fallback, response contract mismatch, or service dependency failure
+- MQ ack/nack, retry, DLQ, duplicate consumption, idempotency, and ordering issues
+- Redis lock expiration, wrong key, owner mismatch, stale cache, or cache penetration
+- MyBatis SQL condition bugs, empty collection, missing `WHERE`, mapper XML mismatch
+- MongoDB historical documents missing fields, null vs empty vs missing-field semantics
+- Security context mismatch, token claim missing, login scene mismatch, or permission leakage
+
+Each confirmed or rejected hypothesis must include evidence.
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 

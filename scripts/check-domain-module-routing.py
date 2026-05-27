@@ -16,41 +16,83 @@ spec.loader.exec_module(bootstrap_routing)
 route = bootstrap_routing.route
 
 
-JAVA_SIGNALS = [
-    "Spring Boot",
-    "SpringBoot",
-    "@RestController",
-    "@Service",
-    "@Transactional",
-    "Controller",
-    "Feign",
-    "OpenFeign",
-    "MyBatis",
-    "Mapper",
-    "Mongo",
-    "Redis",
-    "Redisson",
-    "RabbitMQ",
-    "Kafka",
-    "RocketMQ",
-    "MQ",
-    "Nacos",
-    "XXL-JOB",
-    "Spring Security",
+JAVA_SPRING_SIGNALS = [
+    "java",
+    "spring",
+    "spring boot",
+    "springboot",
+    "springcloud",
+    "spring cloud",
+    "@restcontroller",
+    "@service",
+    "@transactional",
+    "controller",
+    "service",
+    "mapper",
+    "mybatis",
+    "mybatis-plus",
+    "mongo",
+    "mongodb",
+    "redis",
+    "redisson",
+    "rabbitmq",
+    "kafka",
+    "rocketmq",
+    "mq",
+    "feign",
+    "openfeign",
+    "nacos",
+    "xxl-job",
+    "spring security",
+    "jwt",
+    "gateway",
 ]
 
-HIGH_RISK_SIGNALS = ["MQ", "MyBatis", "数据迁移", "回填", "删除", "支付", "权限", "健康计划", "诊断报告"]
+HIGH_RISK_SIGNALS = [
+    "支付",
+    "订单",
+    "退款",
+    "余额",
+    "商户收益",
+    "权限",
+    "认证",
+    "授权",
+    "jwt",
+    "patientid",
+    "storeid",
+    "tenantid",
+    "deptid",
+    "诊断报告",
+    "健康计划",
+    "医疗",
+    "mq",
+    "消费者",
+    "消费逻辑",
+    "重试",
+    "死信",
+    "dlq",
+    "幂等",
+    "数据迁移",
+    "回填",
+    "删除字段",
+    "删除表",
+    "破坏性",
+    "跨服务",
+    "共享表",
+]
 
 
 def detect_domain_module(prompt: str) -> str:
-    if any(signal in prompt for signal in JAVA_SIGNALS):
+    normalized = prompt.lower()
+    if any(signal in normalized for signal in JAVA_SPRING_SIGNALS):
         return "java-spring-microservice"
     return "none"
 
 
 def expected_mode(prompt: str, workflow: str, module: str) -> str:
+    normalized = prompt.lower()
     if module == "java-spring-microservice" and (
-        workflow in {"data-migration-planning"} or any(signal in prompt for signal in HIGH_RISK_SIGNALS)
+        workflow in {"data-migration-planning"} or any(signal in normalized for signal in HIGH_RISK_SIGNALS)
     ):
         return "full"
     return "standard"
@@ -64,7 +106,7 @@ def main() -> int:
     failed = False
     with Path(args.cases).open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
-        for row in reader:
+        for line_number, row in enumerate(reader, start=2):
             workflow, run = route(row["prompt"])
             module = detect_domain_module(row["prompt"])
             mode = expected_mode(row["prompt"], workflow, module) if run == "yes" else "none"
@@ -72,7 +114,14 @@ def main() -> int:
             actual = (workflow, module, mode)
             if actual != expected:
                 failed = True
-                print(f"{row['prompt']}: expected {expected}, got {actual}", file=sys.stderr)
+                print(
+                    f"FAIL line {line_number}:\n"
+                    f"prompt={row['prompt']}\n"
+                    f"expectedWorkflow={row['expectedWorkflow']} actualWorkflow={workflow}\n"
+                    f"expectedDomainModule={row['expectedDomainModule']} actualDomainModule={module}\n"
+                    f"expectedMode={row['expectedMode']} actualMode={mode}",
+                    file=sys.stderr,
+                )
 
     if failed:
         return 1

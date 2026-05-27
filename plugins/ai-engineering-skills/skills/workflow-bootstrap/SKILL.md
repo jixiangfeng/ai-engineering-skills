@@ -63,12 +63,28 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module Routing
 
-When a task involves Java / Spring Boot / Spring Cloud / MyBatis / Mongo / Redis / MQ / Nacos / XXL-JOB / Feign / Spring Security:
+When a task involves Java / Spring Boot / Spring Cloud / MyBatis / MongoDB / Redis / RabbitMQ / Kafka / MQ / Nacos / XXL-JOB / Feign / OpenFeign / Spring Security, do not create a new workflow.
 
-1. Do not create a new workflow.
-2. Choose the main workflow with the normal routing rules.
-3. Also load `docs/domain-modules/java-spring-microservice.zh-CN.md`.
-4. Record `domainModules: [java-spring-microservice]` in workflow state when a workflow run is created.
+Instead:
+
+1. Select the primary workflow using the normal routing rules.
+2. Also load `docs/domain-modules/java-spring-microservice.zh-CN.md`.
+3. Record the loaded module in workflow state:
+
+```yaml
+domainModules:
+  - java-spring-microservice
+```
+
+4. If the task touches payment, order, permission, authentication, diagnosis report, health plan, MQ consumer logic, data migration, destructive SQL, field deletion, cross-service compatibility, or medical/health advice, prefer `full` mode and set:
+
+```yaml
+riskLevel: high
+verificationRequired: true
+rollbackRequired: true
+```
+
+5. If the task is only a conceptual question, explanation, or comparison, do not open a workflow even if Java/Spring keywords appear.
 
 ## Core Rules
 

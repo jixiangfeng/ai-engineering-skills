@@ -50,7 +50,22 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, API contracts must check Request DTO / Response VO naming, Entity leakage, enum compatibility, null / empty / missing field semantics, historical data compatibility, and frontend fallback behavior.
+If `domainModules` contains `java-spring-microservice`, API contracts must additionally define:
+
+- Controller endpoint path and HTTP method
+- Request DTO name and field validation rules
+- Response VO name and field semantics
+- Error code and message behavior
+- enum values and fallback value such as `UNKNOWN`
+- `null` / empty string / empty array / missing field semantics
+- Backward compatibility for old clients and historical data
+- Whether a version field is required
+- Whether front-end rendering needs fallback logic
+- Whether Entity, Mongo document, or internal Feign DTO is leaking into public response
+
+Any deletion or semantic change of a response field must be marked as high risk.
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 

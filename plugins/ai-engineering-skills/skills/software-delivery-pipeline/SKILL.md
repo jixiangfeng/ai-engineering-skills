@@ -66,7 +66,33 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, the Implementation Plan must include affectedServices, affectedControllers, affectedTables, affectedCollections, affectedTopics, affectedConfigKeys, riskLevel, rollbackPlan, and verificationPlan.
+If `domainModules` contains `java-spring-microservice`, the implementation plan must record:
+
+- affectedServices
+- affectedControllers
+- affectedFeignClients
+- affectedTables
+- affectedCollections
+- affectedTopics
+- affectedConfigKeys
+- riskLevel
+- rollbackRequired
+- verificationRequired
+- rollbackPlan
+- verificationPlan
+
+For high-risk Java/Spring tasks, do not enter implementation until the user confirms the implementation plan.
+
+High-risk Java/Spring tasks include:
+
+- payment, order, refund, merchant revenue, account balance
+- authentication, authorization, JWT, login scene, patientId/storeId/tenantId/deptId access
+- diagnosis report, health plan, medical or health advice
+- MQ consumer behavior, retry, DLQ, idempotency
+- data migration, destructive SQL, field deletion, enum semantic change
+- cross-service compatibility involving Feign, MQ, shared DB table, or shared DTO
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 

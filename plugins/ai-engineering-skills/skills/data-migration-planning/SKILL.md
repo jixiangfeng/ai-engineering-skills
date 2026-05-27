@@ -50,7 +50,20 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, migration planning must cover MyBatis / entity field changes, historical data compatibility, affected tables and collections, backfill scope, read/write compatibility period, rollback SQL or recovery plan, and validation queries.
+If `domainModules` contains `java-spring-microservice`, migration planning must additionally check:
+
+- MyBatis / MyBatis-Plus mapper usage of the affected columns
+- XML dynamic SQL and wrapper query conditions
+- MongoDB historical documents and missing-field compatibility
+- DTO / VO / Entity fields affected by migration
+- Feign and front-end contract compatibility
+- Nacos config flags required for gray release or rollback
+- Batch size, retry strategy, idempotency key, and rollback SQL
+- Verification SQL or scripts before and after migration
+
+Destructive SQL, field deletion, table deletion, or incompatible enum changes require explicit user confirmation.
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 

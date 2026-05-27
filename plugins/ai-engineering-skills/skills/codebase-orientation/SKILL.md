@@ -49,7 +49,22 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 
 ## Domain Module: Java / Spring
 
-If `docs/domain-modules/java-spring-microservice.zh-CN.md` is loaded, orientation output must also cover Java module structure, Controller / Service / Mapper boundaries, Feign call chains, MQ topics/queues, Redis keys/locks, MySQL tables, Mongo collections, config keys, permission context, and high-risk modules.
+If `domainModules` contains `java-spring-microservice`, this workflow must additionally identify and summarize:
+
+- Maven / Gradle module structure
+- Spring Boot entrypoints
+- Controller / Service / Mapper / Repository layering
+- Feign / OpenFeign clients and remote service dependencies
+- MQ topics / exchanges / queues and consumers
+- Redis keys / Redisson locks
+- MySQL tables / MongoDB collections
+- Nacos / YAML configuration keys
+- Security context sources, such as JWT claims, `SecurityUtils`, `login_scene`, `patientId`, `storeId`, `tenantId`
+- High-risk modules and cross-service boundaries
+
+All conclusions must cite evidence such as file path, class name, method name, annotation, endpoint path, table name, collection name, topic name, or config key.
+
+Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checklist.
 
 ## Core Rules
 
