@@ -2,7 +2,7 @@
 workflow: software-delivery-pipeline
 runId: <YYYYMMDD-slug>
 runPath: workflow/runs/<YYYY-MM-DD>-<slug>
-executionMode: standard
+executionMode: full
 stage: summary
 status: draft
 source: user-request
@@ -10,6 +10,11 @@ allowsCodeEdit: true
 nextAction: wait_for_user_acceptance
 ---
 # 交付摘要（复杂路径）
+
+## Template Usage
+- mode: audited only
+- fast 使用 `00-fast-patch-summary.md`
+- guarded 使用 `10-guarded-*`
 
 ## 文档元信息
 - 项目根目录：

@@ -41,11 +41,13 @@ expected_skills=(
 
 for skill in "${expected_skills[@]}"; do
   require_file "${CODEX_SKILLS_DIR}/${skill}/SKILL.md"
+  require_file "${CODEX_SKILLS_DIR}/${skill}/docs/workflow-contracts.zh-CN.md"
 done
 
 CLAUDE_PLUGIN_DIR="${CLAUDE_PLUGINS_DIR}/ai-engineering-skills"
 require_file "${CLAUDE_PLUGIN_DIR}/.claude-plugin/plugin.json"
 require_file "${CLAUDE_PLUGIN_DIR}/.codex-plugin/plugin.json"
+require_file "${CLAUDE_PLUGIN_DIR}/docs/workflow-contracts.zh-CN.md"
 
 for skill in "${expected_skills[@]}"; do
   require_file "${CLAUDE_PLUGIN_DIR}/skills/${skill}/SKILL.md"

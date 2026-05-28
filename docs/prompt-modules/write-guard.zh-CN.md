@@ -15,6 +15,7 @@
 默认允许写入 workflow：
 
 - `software-delivery-pipeline` 的 implementation / verification / summary 阶段，且必须经过 requirements gate 和 plan gate。
+- `software-delivery-pipeline` 的 fast 模式例外：在记录 goal、scope、minimal plan、verification、skipped gates 和 upgrade conditions 后，允许直接修改低风险范围内文件；一旦触发 API / DTO / 数据 / 权限 / MQ / 调度 / 跨服务 / handoff / dirty worktree 风险，必须暂停并升级。
 
 ## 写入门禁
 
@@ -43,8 +44,10 @@
 
 - review 阶段只写 review artifact，不修改业务代码。
 - delivery 阶段在 requirements + plan 确认后才修改计划内文件。
+- fast 模式修复单文件文案，先记录最小 scope 和验证命令，再修改并验证。
 
 ## 反例
 
 - orientation 时顺手修代码。
 - 没有确认 selected findings 就开始改 review 发现的问题。
+- fast 模式中发现需要改接口响应后仍继续直接改代码。

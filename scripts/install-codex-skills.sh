@@ -4,11 +4,20 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SOURCE_DIR="${REPO_ROOT}/plugins/ai-engineering-skills/skills"
+SHARED_DOCS_DIR="${REPO_ROOT}/docs"
 TARGET_DIR="${CODEX_SKILLS_DIR:-${HOME}/.codex/skills}"
 BACKUP_ROOT="${CODEX_SKILLS_BACKUP_DIR:-${HOME}/.codex/skills-backups}"
 DRY_RUN=0
 FORCE=0
 BACKUP=0
+
+action() {
+  if [[ "${DRY_RUN}" -eq 1 ]]; then
+    echo "DRY-RUN: $*"
+  else
+    echo "$*"
+  fi
+}
 
 usage() {
   cat <<'USAGE'
@@ -60,8 +69,13 @@ if [[ ! -d "${SOURCE_DIR}" ]]; then
   echo "Source skills directory not found: ${SOURCE_DIR}" >&2
   exit 1
 fi
+if [[ ! -d "${SHARED_DOCS_DIR}" ]]; then
+  echo "Shared docs directory not found: ${SHARED_DOCS_DIR}" >&2
+  exit 1
+fi
 
 echo "Source: ${SOURCE_DIR}"
+echo "Shared docs: ${SHARED_DOCS_DIR}"
 echo "Target: ${TARGET_DIR}"
 if [[ "${BACKUP}" -eq 1 ]]; then
   echo "Backup root: ${BACKUP_ROOT}"
@@ -89,13 +103,13 @@ for skill_dir in "${SOURCE_DIR}"/*; do
   if [[ -e "${target}" ]]; then
     if [[ "${BACKUP}" -eq 1 ]]; then
       backup_dir="${BACKUP_ROOT}/${timestamp}/${skill_name}"
-      echo "Backup ${target} -> ${backup_dir}"
+      action "Backup ${target} -> ${backup_dir}"
       if [[ "${DRY_RUN}" -eq 0 ]]; then
         mkdir -p "$(dirname "${backup_dir}")"
         mv "${target}" "${backup_dir}"
       fi
     elif [[ "${FORCE}" -eq 1 ]]; then
-      echo "Replace existing ${target}"
+      action "Replace existing ${target}"
       if [[ "${DRY_RUN}" -eq 0 ]]; then
         rm -rf "${target}"
       fi
@@ -106,10 +120,12 @@ for skill_dir in "${SOURCE_DIR}"/*; do
     fi
   fi
 
-  echo "Install ${skill_name} -> ${target}"
+  action "Install ${skill_name} -> ${target}"
   if [[ "${DRY_RUN}" -eq 0 ]]; then
     cp -R "${skill_dir}" "${target}"
+    cp -R "${SHARED_DOCS_DIR}" "${target}/docs"
   fi
+  action "Install shared docs -> ${target}/docs"
   installed=$((installed + 1))
 done
 

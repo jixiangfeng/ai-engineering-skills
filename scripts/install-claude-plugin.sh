@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SOURCE_DIR="${REPO_ROOT}/plugins/ai-engineering-skills"
+SHARED_DOCS_DIR="${REPO_ROOT}/docs"
 TARGET_DIR="${CLAUDE_PLUGINS_DIR:-${HOME}/.claude/plugins}"
 PLUGIN_NAME="${CLAUDE_PLUGIN_NAME:-ai-engineering-skills}"
 TARGET_PLUGIN_DIR="${TARGET_DIR}/${PLUGIN_NAME}"
@@ -11,6 +12,14 @@ BACKUP_ROOT="${CLAUDE_PLUGINS_BACKUP_DIR:-${HOME}/.claude/plugins-backups}"
 DRY_RUN=0
 FORCE=0
 BACKUP=0
+
+action() {
+  if [[ "${DRY_RUN}" -eq 1 ]]; then
+    echo "DRY-RUN: $*"
+  else
+    echo "$*"
+  fi
+}
 
 usage() {
   cat <<'USAGE'
@@ -67,8 +76,13 @@ if [[ ! -f "${SOURCE_DIR}/.claude-plugin/plugin.json" ]]; then
   echo "Source Claude plugin metadata not found: ${SOURCE_DIR}/.claude-plugin/plugin.json" >&2
   exit 1
 fi
+if [[ ! -d "${SHARED_DOCS_DIR}" ]]; then
+  echo "Shared docs directory not found: ${SHARED_DOCS_DIR}" >&2
+  exit 1
+fi
 
 echo "Source: ${SOURCE_DIR}"
+echo "Shared docs: ${SHARED_DOCS_DIR}"
 echo "Target: ${TARGET_PLUGIN_DIR}"
 if [[ "${BACKUP}" -eq 1 ]]; then
   echo "Backup root: ${BACKUP_ROOT}"
@@ -82,13 +96,13 @@ if [[ -e "${TARGET_PLUGIN_DIR}" ]]; then
   if [[ "${BACKUP}" -eq 1 ]]; then
     timestamp="$(date +%Y%m%d-%H%M%S)"
     backup_dir="${BACKUP_ROOT}/${timestamp}/${PLUGIN_NAME}"
-    echo "Backup ${TARGET_PLUGIN_DIR} -> ${backup_dir}"
+    action "Backup ${TARGET_PLUGIN_DIR} -> ${backup_dir}"
     if [[ "${DRY_RUN}" -eq 0 ]]; then
       mkdir -p "$(dirname "${backup_dir}")"
       mv "${TARGET_PLUGIN_DIR}" "${backup_dir}"
     fi
   elif [[ "${FORCE}" -eq 1 ]]; then
-    echo "Replace existing ${TARGET_PLUGIN_DIR}"
+    action "Replace existing ${TARGET_PLUGIN_DIR}"
     if [[ "${DRY_RUN}" -eq 0 ]]; then
       rm -rf "${TARGET_PLUGIN_DIR}"
     fi
@@ -102,10 +116,12 @@ if [[ -e "${TARGET_PLUGIN_DIR}" ]]; then
   fi
 fi
 
-echo "Install Claude plugin ${PLUGIN_NAME} -> ${TARGET_PLUGIN_DIR}"
+action "Install Claude plugin ${PLUGIN_NAME} -> ${TARGET_PLUGIN_DIR}"
 if [[ "${DRY_RUN}" -eq 0 ]]; then
   cp -R "${SOURCE_DIR}" "${TARGET_PLUGIN_DIR}"
+  cp -R "${SHARED_DOCS_DIR}" "${TARGET_PLUGIN_DIR}/docs"
 fi
+action "Install shared docs -> ${TARGET_PLUGIN_DIR}/docs"
 
 if [[ "${DRY_RUN}" -eq 1 ]]; then
   echo "Dry run complete: Claude plugin would be installed into ${TARGET_PLUGIN_DIR}."

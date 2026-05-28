@@ -4,6 +4,56 @@
 
 格式参考 Keep a Changelog，版本号遵循 `docs/versioning.zh-CN.md`。
 
+## [Unreleased]
+
+### Added
+
+- 新增 `docs/execution-modes.zh-CN.md`，将 `lightweight` / `standard` / `full` 明确映射为 fast / guarded / audited 三条自适应重量路径。
+- 新增 `docs/prompt-modules/conditional-blocks.zh-CN.md`，定义 Risk Gate、Dirty Worktree、API Contract、Migration、Rollback、Change Review、Handoff、Verification Matrix 等条件块和 skipped reason 规则。
+- 新增 `docs/run-examples/`，提供 fast patch、guarded change、audited delivery 三类示例。
+- 新增 delivery 模板：
+  - `00-fast-patch-summary.md`
+  - `10-guarded-scope.md`
+  - `11-guarded-plan.md`
+  - `12-guarded-implementation.md`
+  - `13-guarded-verification.md`
+  - `14-guarded-summary.md`
+  - `20-audited-run-map.md`
+- 新增 `scripts/check-execution-mode-contract.sh`，校验 fast / guarded / audited 文档、模板和示例约束。
+- 新增 `scripts/check-python.sh` 和 `scripts/check-structured.sh`，让日常检查优先使用 shell 入口，Python 仅作为结构化检查内部实现。
+- `workflow-state.json` schema 新增 `modePath` 字段，支持 `fast` / `guarded` / `audited` 机器可恢复路径。
+- 新增 `.gitignore`，忽略本地 `workflow/` run 产物和 Python runtime artifacts。
+- 安装冒烟文档新增 fast / guarded / audited 三档真实 agent 行为抽查提示词。
+
+### Changed
+
+- `software-delivery-pipeline` 从单一重流程 Required files 改为三条路径：
+  - Fast Patch：低风险小改，只需 `workflow-state.json` 和 `00-fast-patch-summary.md` / concise note。
+  - Guarded Change：普通开发变更使用 `10-guarded-*` 轻量阶段模板。
+  - Audited Delivery：高风险、handoff、契约、数据、权限或可审计交付使用 `20-audited-run-map.md` + 完整门禁链路。
+- 旧 `01-08 delivery` 模板标记为 `audited only`，并将 front matter `executionMode` 调整为 `full`，避免普通任务误用。
+- `delivery-workflow-state.md` 增加 `mode path` 和 `Mode Artifact Plan`，明确 fast / guarded / audited 各自的产物和升级条件。
+- `docs/run-examples/README.zh-CN.md` 明确 full-run 示例不是默认路径，只代表 audited 场景。
+- `docs/workflow-contracts.zh-CN.md` 和 `document-contracts.md` 增加 mode path / template taxonomy 说明。
+- `generate-workflow-state.py` 增加 `--mode-path`，未传时根据 `executionMode` 自动推导。
+- `validate-workflow-state.py` 增加 `executionMode` 与 `modePath` 映射一致性校验。
+- `release-check.sh` 接入 `check-execution-mode-contract.sh` 和 `check-structured.sh`。
+- README、使用说明、测试说明和脚本说明同步改为 shell 入口优先。
+- `install-codex-skills.sh` 和 `install-claude-plugin.sh` 的 dry-run 行为输出增加 `DRY-RUN:` 前缀，避免把预览误读为真实写入。
+- 本地 Codex / Claude 安装脚本会同步复制共享 `docs/`，避免安装后 `SKILL.md` 中的 `docs/...` 引用失效。
+
+### Removed
+
+- 移除已跟踪的 `scripts/__pycache__/check-bootstrap-routing.cpython-312.pyc`，避免每次运行检查产生无关 diff。
+
+### Verification
+
+- `bash scripts/check-workflow-state.sh`
+- `bash scripts/check-execution-mode-contract.sh`
+- `bash scripts/check-structured.sh`
+- `bash scripts/check-consistency.sh`
+- `bash scripts/release-check.sh --ci`
+
 ## [0.1.0] - 2026-05-26
 
 ### Added

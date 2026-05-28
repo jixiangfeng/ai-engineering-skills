@@ -9,11 +9,13 @@
 - [仓库结构说明](./docs/repository-layout.md)：说明 plugin 内 `skills/` 和 marketplace 元数据之间的关系。
 - [版本管理规则](./docs/versioning.zh-CN.md)：说明版本号、CHANGELOG 和 manifest 同步规则。
 - [工程行为原则](./docs/engineering-principles.zh-CN.md)：跨 workflow 的澄清、简单、精准修改和验证底线。
+- [Execution Modes](./docs/execution-modes.zh-CN.md)：定义 fast / guarded / audited 三种自适应重量路径，避免小任务进入完整流程。
 - [Superpowers 方法论吸收说明](./docs/superpowers-inspired-rules.zh-CN.md)：把澄清、计划、测试、debug、review、验证和收尾纪律改造成中文 workflow 规则。
 - [Workflow 契约](./docs/workflow-contracts.zh-CN.md)：统一 state、summary、handoff、恢复、执行模式和文档职责边界。
 - [Bootstrap 路由示例](./docs/bootstrap-examples.zh-CN.md)：典型中文提示词到 workflow 的期望路由。
 - [示例维护策略](./docs/examples-policy.zh-CN.md)：说明 `examples/standard-run.md` 的边界和完整示例取舍。
 - [Full Run 示例](./docs/full-run-examples/README.zh-CN.md)：展示完整阶段产物、机器可读元数据和 Verification 形态。
+- [Run Examples](./docs/run-examples/README.zh-CN.md)：展示 fast、guarded、audited 三种不同重量的 delivery 示例。
 - [兼容说明](./docs/compatibility.zh-CN.md)：说明与其他 skill 套件同装时由用户自主决策。
 - [安装冒烟验证](./docs/install-smoke-test.zh-CN.md)：本地安装、覆盖策略和安装后路由验证步骤。
 - [发布前检查清单](./docs/release-checklist.zh-CN.md)：发布或真实安装前的检查步骤。
@@ -44,7 +46,7 @@
 
 简单概念问答不强制进入 workflow。
 
-所有 workflow 都应遵守 [工程行为原则](./docs/engineering-principles.zh-CN.md)：先澄清关键假设，保持方案简单，只做可追溯的精准修改，并用实际验证结果支撑完成声明。
+所有 workflow 都应遵守 [工程行为原则](./docs/engineering-principles.zh-CN.md)：先澄清关键假设，保持方案简单，只做可追溯的精准修改，并用实际验证结果支撑完成声明。执行重量按 [Execution Modes](./docs/execution-modes.zh-CN.md) 裁剪：小任务走 fast，普通变更走 guarded，高风险或 handoff 交付走 audited。
 
 ## 目录结构
 

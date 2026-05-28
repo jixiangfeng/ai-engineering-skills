@@ -79,6 +79,7 @@
 每个 state 文件至少应包含：
 
 - `executionMode`: `lightweight` / `standard` / `full`
+- `modePath`: `fast` / `guarded` / `audited`
 - 模式选择理由
 - 当前阶段
 - 当前状态
@@ -90,17 +91,18 @@
 
 ## Machine-Readable State Contract
 
-每个 workflow run 除 Markdown state 文件外，推荐同时维护 `workflow-state.json`，用于 agent 自动恢复、脚本校验和统计。
+每个 workflow run 除 Markdown state 文件外，必须同时维护 `workflow-state.json`，用于 agent 自动恢复、脚本校验和统计。
 
 新建 run 时可以用 `scripts/generate-workflow-state.py` 生成初始 `workflow-state.json`，再用 `scripts/validate-workflow-state.py` 或 `scripts/check-workflow-state.sh` 校验。
 
-`workflow-state.json` 必须符合 `docs/workflow-state-schema.json` 的最小字段：
+`workflow-state.json` 必须严格符合 `docs/workflow-state-schema.json`：
 
 - `schemaVersion`: 当前为 `1.0`
 - `workflow`: workflow 名称，例如 `codebase-orientation`
 - `runPath`: 当前 run 路径
 - `sourceArtifact`: 上游输入文档或 `null`
 - `executionMode`: `lightweight` / `standard` / `full`
+- `modePath`: `fast` / `guarded` / `audited`，必须与 `executionMode` 映射一致：`lightweight=fast`、`standard=guarded`、`full=audited`
 - `status`: `not_started` / `in_progress` / `blocked` / `pending_human_confirmation` / `handoff_ready` / `completed` / `abandoned`
 - `currentStage`: 当前阶段
 - `latestDocument`: 最新阶段文档或 `null`
@@ -109,6 +111,8 @@
 - `blockers`: 阻塞项数组
 - `selectedScope`: 当前确认范围或 `null`
 - `updatedAt`: 更新时间
+
+禁止写入 schema 未声明的额外字段。诸如 `projectRoot`、`runDir`、`branch`、`commit`、`producedArtifacts`、`skippedArtifacts`、`verification` 等信息应写入 Markdown state 或 summary，不得写进 `workflow-state.json`。
 
 Markdown state 面向人类阅读；`workflow-state.json` 面向自动恢复和校验。两者内容冲突时，必须暂停并要求人工确认，而不是静默选择其中一个。
 

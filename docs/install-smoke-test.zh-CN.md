@@ -30,6 +30,8 @@ bash scripts/install-codex-skills.sh --force
 CODEX_SKILLS_DIR=/tmp/codex-skills-test bash scripts/install-codex-skills.sh --force
 ```
 
+安装脚本会把仓库级共享文档 `docs/` 一并复制到每个 skill 目录下，确保 `SKILL.md` 中的 `docs/...` 引用在本地 Codex 安装后仍可读取。
+
 ## 安装后文件检查
 
 确认以下文件存在：
@@ -42,6 +44,7 @@ CODEX_SKILLS_DIR=/tmp/codex-skills-test bash scripts/install-codex-skills.sh --f
 ~/.codex/skills/debug-root-cause/SKILL.md
 ~/.codex/skills/api-contract-design/SKILL.md
 ~/.codex/skills/data-migration-planning/SKILL.md
+~/.codex/skills/software-delivery-pipeline/docs/workflow-contracts.zh-CN.md
 ```
 
 安装后需要重启 Codex，让新 skill 被重新发现。
@@ -74,6 +77,8 @@ bash scripts/install-claude-plugin.sh --force
 CLAUDE_PLUGINS_DIR=/tmp/claude-plugins-test bash scripts/install-claude-plugin.sh --force
 ```
 
+安装脚本会把仓库级共享文档 `docs/` 复制到 Claude plugin 根目录下，确保 plugin 内 skill 的共享文档引用可读取。
+
 ## Claude 安装后文件检查
 
 确认以下文件存在：
@@ -83,6 +88,7 @@ CLAUDE_PLUGINS_DIR=/tmp/claude-plugins-test bash scripts/install-claude-plugin.s
 ~/.claude/plugins/ai-engineering-skills/skills/workflow-bootstrap/SKILL.md
 ~/.claude/plugins/ai-engineering-skills/skills/codebase-orientation/SKILL.md
 ~/.claude/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md
+~/.claude/plugins/ai-engineering-skills/docs/workflow-contracts.zh-CN.md
 ```
 
 安装后需要重启 Claude Code，让 plugin 被重新发现。
@@ -131,6 +137,49 @@ $workflow-bootstrap 按这个 handoff 落地
 - 读取 handoff 作为 source of truth
 - 先写需求/计划文档并等待确认，不直接改代码
 
+## 三档执行模式冒烟
+
+安装后还应人工抽查 `software-delivery-pipeline` 的三档执行模式，确认小任务不会进入完整重流程，高风险任务不会被降级。
+
+### Fast / lightweight
+
+```text
+$workflow-bootstrap 帮我把 README 里一个错别字改掉，并说明验证结果
+```
+
+期望：
+
+- 路由到 `software-delivery-pipeline`
+- 选择 `executionMode=lightweight` / `modePath=fast`
+- 不生成完整 `01-08` 阶段文档
+- 记录目标、范围、最小计划、验证结果和 skipped gates
+
+### Guarded / standard
+
+```text
+$workflow-bootstrap 实现一个局部低风险 bugfix，需要先确认范围和计划
+```
+
+期望：
+
+- 路由到 `software-delivery-pipeline`
+- 选择 `executionMode=standard` / `modePath=guarded`
+- 使用 `10-guarded-scope.md` 到 `14-guarded-summary.md`
+- scope / plan 需要确认，验证矩阵需要回填
+
+### Audited / full
+
+```text
+$workflow-bootstrap 按这个 review handoff 修复涉及 API 响应结构的问题
+```
+
+期望：
+
+- 路由到 `software-delivery-pipeline`
+- 选择 `executionMode=full` / `modePath=audited`
+- 使用 `20-audited-run-map.md` 和完整门禁链路
+- review handoff、API / DTO / 数据契约等触发项不得因为改动小而降级
+
 ## 判定标准
 
 冒烟验证通过需要满足：
@@ -138,4 +187,5 @@ $workflow-bootstrap 按这个 handoff 落地
 - agent 明确说明路由到哪个 workflow
 - 没有跳过只读、设计、review 或交付确认门禁
 - 产物写入当前项目根目录的 `workflow/`
+- execution mode 与任务风险匹配，且 `modePath` 映射正确
 - 如果无法继续，明确说明阻塞项

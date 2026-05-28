@@ -80,6 +80,7 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - If no material issues are found, say so clearly and record residual risks or test gaps.
 - Do not modify code before the human confirms `03-review-fix-selection.md` and `04-review-fix-plan.md`.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
+- `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
 - By default, this skill must not implement fixes. After `04-review-fix-plan.md` is approved, generate `review-to-delivery-handoff.md` and stop so `software-delivery-pipeline` can run requirements, architecture, plan, implementation, and verification.
 - Implement inside this skill only if the human explicitly says not to use `software-delivery-pipeline` and explicitly asks this review skill to implement the selected findings.
 - If implementation discovers new issues or requires scope expansion, append the issue to the review artifacts and pause for human confirmation.

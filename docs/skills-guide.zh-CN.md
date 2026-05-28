@@ -6,6 +6,8 @@
 
 所有 workflow 共同遵守 [`engineering-principles.zh-CN.md`](./engineering-principles.zh-CN.md)：编码前先澄清、简单优先、精准修改、目标驱动验证。具体 workflow 的阶段规则优先，但不能绕过这些底线。
 
+执行重量按 [`execution-modes.zh-CN.md`](./execution-modes.zh-CN.md) 裁剪：`lightweight` 对应 fast，`standard` 对应 guarded，`full` 对应 audited。小任务不应默认生成完整阶段文档；高风险、handoff、契约、数据或权限任务必须升级并保留确认门禁。
+
 ## 一、Skill 总览
 
 | Skill | 适用场景 | 是否默认改代码 | 主要产物目录 |

@@ -2,6 +2,8 @@
 
 本目录保存比 `examples/standard-run.md` 更完整的 workflow 产物示例，用于展示完整阶段串联、机器可读元数据、Verification gate、handoff 和收尾纪律。
 
+本目录展示 audited / full 级别的完整产物，不代表默认执行路径。普通小改应优先参考 `docs/run-examples/fast-patch/`，普通开发变更应优先参考 `docs/run-examples/guarded-change/`。
+
 维护原则：
 
 - `standard-run.md` 是每个 skill 的最小标准样例。

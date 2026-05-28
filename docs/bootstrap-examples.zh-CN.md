@@ -52,7 +52,7 @@
 
 ## 安装后冒烟测试
 
-建议至少手动测试三类提示词：
+建议至少手动测试三类路由提示词：
 
 1. 熟悉类：`熟悉下当前项目`
 2. 排错类：`排查这个启动失败`
@@ -64,6 +64,24 @@
 - 是否没有跳过只读/确认门禁
 - 是否把产物写到当前项目根目录下的 `workflow/`
 - 如果无法继续，是否说明阻塞原因
+
+## Delivery 执行模式冒烟
+
+安装后还应测试 `software-delivery-pipeline` 是否能按风险选择执行重量：
+
+| 用户提示词 | 期望模式 | 期望产物 |
+| --- | --- | --- |
+| 帮我把 README 里一个错别字改掉，并说明验证结果 | `lightweight` / `fast` | concise summary 或 `00-fast-patch-summary.md` |
+| 实现一个局部低风险 bugfix，需要先确认范围和计划 | `standard` / `guarded` | `10-guarded-scope.md` 到 `14-guarded-summary.md` |
+| 按这个 review handoff 修复涉及 API 响应结构的问题 | `full` / `audited` | `20-audited-run-map.md` + 完整门禁链路 |
+
+每次测试确认：
+
+- agent 是否明确说明 execution mode 和 mode path
+- fast 是否没有生成完整 `01-08` 文档
+- guarded 是否有 scope / plan / verification
+- audited 是否保留 handoff、风险门禁、验证矩阵和必要确认
+- 高风险或 handoff 任务是否没有被降级
 
 ## 自动化 Harness
 

@@ -1,0 +1,6 @@
+# Local workflow runs
+/workflow/
+
+# Python runtime artifacts
+__pycache__/
+*.py[cod]

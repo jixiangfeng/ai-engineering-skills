@@ -8,6 +8,7 @@
     "workflow",
     "runPath",
     "executionMode",
+    "modePath",
     "status",
     "currentStage",
     "nextAction",
@@ -53,6 +54,10 @@
     "executionMode": {
       "type": "string",
       "enum": ["lightweight", "standard", "full"]
+    },
+    "modePath": {
+      "type": "string",
+      "enum": ["fast", "guarded", "audited"]
     },
     "status": {
       "type": "string",

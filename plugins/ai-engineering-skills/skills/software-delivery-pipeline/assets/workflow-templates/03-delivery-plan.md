@@ -2,7 +2,7 @@
 workflow: software-delivery-pipeline
 runId: <YYYYMMDD-slug>
 runPath: workflow/runs/<YYYY-MM-DD>-<slug>
-executionMode: standard
+executionMode: full
 stage: plan
 status: draft
 source: user-request
@@ -10,6 +10,11 @@ allowsCodeEdit: false
 nextAction: confirm_plan
 ---
 # 实施计划（架构确认后）
+
+## Template Usage
+- mode: audited only
+- fast 使用 `00-fast-patch-summary.md`
+- guarded 使用 `10-guarded-*`
 
 ## 文档元信息
 - 项目根目录：
@@ -32,6 +37,18 @@ nextAction: confirm_plan
 ## 架构设计说明
 - 无需独立架构设计的原因：
 - 如存在 `02-delivery-architecture.md`，必须遵循的架构约束：
+
+## 需求承接检查
+- 已读取并承接 `01-delivery-requirements.md`：是 / 否
+- 需求阶段的任务类型 / 路由检查结论：
+- 需求阶段的范围锁定是否延续：是 / 否，差异说明：
+- 需求阶段的预存工作区变更处理策略：
+- 如发现需求缺口、范围冲突或验证不可行：暂停并回到需求确认。
+
+## 需求到计划映射
+| 需求 / 验收项 / Finding | 计划步骤 | 涉及文件 / 模块 | 验证方式 | 未覆盖原因 |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
 
 ## 任务拆解
 1.
@@ -115,6 +132,7 @@ git worktree add ../<repo>-<task-slug> -b <branch-name>
 ## 退出标准
 - [ ]
 - [ ]
+- [ ] `01-delivery-requirements.md` 中每个阻塞性交付验收项均已映射到计划步骤和验证方式。
 
 
 ## 澄清与收敛记录

@@ -76,6 +76,7 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Separate confirmed facts from AI inferences. Mark uncertain items as `待确认`.
 - If the user names a module, package, endpoint, or path, stay there first and do not widen scope until necessary.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
+- `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
 - Do not produce a shallow file listing. Explain what each important component does in the business and runtime flow.
 - Do not turn suspicious code into review findings inside this skill. Put them under “后续可 review 的线索”.
 - If the user later asks to review or fix issues, hand off to `code-review-triage` or `software-delivery-pipeline` using the orientation artifacts as context.

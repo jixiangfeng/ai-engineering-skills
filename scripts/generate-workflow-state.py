@@ -30,6 +30,12 @@ STATUSES = (
 )
 
 EXECUTION_MODES = ("lightweight", "standard", "full")
+MODE_PATHS = ("fast", "guarded", "audited")
+MODE_PATH_BY_EXECUTION_MODE = {
+    "lightweight": "fast",
+    "standard": "guarded",
+    "full": "audited",
+}
 RISK_LEVELS = ("low", "medium", "high")
 
 
@@ -71,6 +77,12 @@ def main() -> int:
     parser.add_argument("--output", required=True, help="Output workflow-state.json path.")
     parser.add_argument("--status", default="in_progress", choices=STATUSES)
     parser.add_argument("--execution-mode", default="standard", choices=EXECUTION_MODES)
+    parser.add_argument(
+        "--mode-path",
+        default=None,
+        choices=MODE_PATHS,
+        help="Mode path. Defaults from execution mode: lightweight=fast, standard=guarded, full=audited.",
+    )
     parser.add_argument("--current-stage", default="scope")
     parser.add_argument("--latest-document", default=None)
     parser.add_argument("--next-action", default="Continue from current workflow state.")
@@ -98,6 +110,13 @@ def main() -> int:
         fail(f"{output} already exists; use --force to overwrite")
 
     updated_at = args.updated_at or datetime.now(timezone.utc).isoformat()
+    mode_path = args.mode_path or MODE_PATH_BY_EXECUTION_MODE[args.execution_mode]
+    expected_mode_path = MODE_PATH_BY_EXECUTION_MODE[args.execution_mode]
+    if mode_path != expected_mode_path:
+        fail(
+            f"--mode-path {mode_path!r} does not match --execution-mode "
+            f"{args.execution_mode!r}; expected {expected_mode_path!r}"
+        )
     state = {
         "schemaVersion": "1.0",
         "workflow": args.workflow,
@@ -105,6 +124,7 @@ def main() -> int:
         "sourceArtifact": nullable(args.source_artifact),
         "domainModules": parse_csv_items(args.domain_module),
         "executionMode": args.execution_mode,
+        "modePath": mode_path,
         "status": args.status,
         "currentStage": args.current_stage,
         "latestDocument": nullable(args.latest_document),

@@ -7,6 +7,7 @@
     "java-spring-microservice"
   ],
   "executionMode": "lightweight",
+  "modePath": "fast",
   "status": "completed",
   "currentStage": "summary",
   "latestDocument": "07-orientation-summary.md",

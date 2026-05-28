@@ -106,6 +106,21 @@ def validate_state(schema: dict[str, Any], state: dict[str, Any], state_path: Pa
                         f"{field}[{index}]: expected {sorted(item_types)}, got {item_type}"
                     )
 
+    mode_path_by_execution_mode = {
+        "lightweight": "fast",
+        "standard": "guarded",
+        "full": "audited",
+    }
+    execution_mode = state.get("executionMode")
+    mode_path = state.get("modePath")
+    if execution_mode in mode_path_by_execution_mode and mode_path is not None:
+        expected_mode_path = mode_path_by_execution_mode[execution_mode]
+        if mode_path != expected_mode_path:
+            errors.append(
+                f"modePath: expected {expected_mode_path!r} for executionMode "
+                f"{execution_mode!r}, got {mode_path!r}"
+            )
+
     if not isinstance(state, dict):
         errors.append(f"{state_path}: state must be a JSON object")
     return errors

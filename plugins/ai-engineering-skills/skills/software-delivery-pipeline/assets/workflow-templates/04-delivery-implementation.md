@@ -2,7 +2,7 @@
 workflow: software-delivery-pipeline
 runId: <YYYYMMDD-slug>
 runPath: workflow/runs/<YYYY-MM-DD>-<slug>
-executionMode: standard
+executionMode: full
 stage: implementation
 status: in_progress
 source: user-request
@@ -10,6 +10,11 @@ allowsCodeEdit: true
 nextAction: continue_implementation
 ---
 # 实施记录（架构确认后）
+
+## Template Usage
+- mode: audited only
+- fast 使用 `00-fast-patch-summary.md`
+- guarded 使用 `10-guarded-*`
 
 ## 文档元信息
 - 项目根目录：
@@ -22,6 +27,17 @@ nextAction: continue_implementation
 ## 计划引用
 - `03-delivery-plan.md`
 
+## 计划执行映射
+| 计划步骤 / 验收项 / Finding | 实施状态 | 实际修改 | 测试 / 验证状态 | 偏差说明 |
+| --- | --- | --- | --- | --- |
+|  | 未开始 / 进行中 / 完成 / 阻塞 |  |  |  |
+
+## Test-First 记录
+- 是否先写失败测试 / 复现：是 / 否
+- 失败测试 / 复现命令：
+- 失败原因是否符合预期：是 / 否 / 不适用
+- 未采用 fail-first 的原因：
+
 ## 已完成变更
 -
 
@@ -33,6 +49,7 @@ nextAction: continue_implementation
 
 ## 与计划的偏差
 -
+- 是否需要回到需求 / 架构 / 计划：否 / 是，目标阶段：
 
 ## 当前状态
 - 完成 | 部分完成 | 阻塞

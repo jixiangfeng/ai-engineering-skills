@@ -2,6 +2,8 @@
   "schemaVersion": "1.0",
   "workflow": "unknown-workflow",
   "runPath": "",
+  "executionMode": "lightweight",
+  "modePath": "audited",
   "status": "done",
   "currentStage": "summary",
   "nextAction": "",

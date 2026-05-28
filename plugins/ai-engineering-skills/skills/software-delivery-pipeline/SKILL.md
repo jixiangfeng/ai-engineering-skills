@@ -38,12 +38,12 @@ Prefer another skill when:
 - `api-contract-design`: request/response/DTO/error behavior is not yet agreed
 - `data-migration-planning`: schema, persisted data, rollback, or backfill needs planning first
 
-Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary.
+Follow `docs/workflow-contracts.zh-CN.md` `Execution Mode Contract`; record `executionMode` as `lightweight`, `standard`, or `full` in state and summary. Use `docs/execution-modes.zh-CN.md` to treat these as fast, guarded, and audited paths.
 
 
 ## Execution Mode Selection
 
-Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/prompt-modules/lightweight-mode.zh-CN.md` for selection rules, produced/skipped artifacts, and upgrade conditions.
+Choose and record `executionMode` as `lightweight`, `standard`, or `full` before creating workflow artifacts. Follow `docs/execution-modes.zh-CN.md`, `docs/prompt-modules/lightweight-mode.zh-CN.md`, and `docs/prompt-modules/conditional-blocks.zh-CN.md` for selection rules, produced/skipped artifacts, conditional blocks, and upgrade conditions.
 
 ## Prompt Modules
 
@@ -57,6 +57,7 @@ This skill keeps workflow-specific rules here and delegates shared execution dis
 - `docs/prompt-modules/task-decomposition.zh-CN.md` — 复杂任务拆分
 - `docs/prompt-modules/finish-checklist.zh-CN.md` — 交付收尾检查
 - `docs/prompt-modules/lightweight-mode.zh-CN.md` — 轻量/标准/完整交付产物边界
+- `docs/prompt-modules/conditional-blocks.zh-CN.md` — 条件块和 skipped reason
 - `docs/prompt-modules/handoff.zh-CN.md` — 上游 handoff 输入和结果回写
 - `docs/prompt-modules/minimal-change.zh-CN.md` — 最小改动和 scope guard
 - `docs/prompt-modules/verification-gate.zh-CN.md` — 完成前验证
@@ -98,19 +99,24 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 
 - Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
 
-- Treat each stage as a separate checkpoint.
-- Every stage must write its output document before the next stage starts.
-- Stage 1 has a mandatory human review gate: after writing `01-delivery-requirements.md`, stop and ask the human to confirm or revise it before Stage 2.
+- Start from the lightest safe path. Do not generate full 01-08 artifacts unless `executionMode` is `full` / audited or a risk trigger requires them.
+- Treat each generated stage as a separate checkpoint.
+- Every generated stage must write its output document before the next generated stage starts.
+- Stage 1 has a mandatory human review gate for `standard` / guarded and `full` / audited runs: after writing `01-delivery-requirements.md`, stop and ask the human to confirm or revise it before Stage 2.
+- `lightweight` / fast runs may use a concise summary / verification note instead of full requirements and plan documents, but must still record goal, scope, assumptions, verification, skipped gates, and upgrade conditions.
+- Guarded runs require scope and plan confirmation, but the confirmation may be a single combined gate when the user's instruction already clearly approves the scope, plan direction, and verification target. Do not skip verification.
+- Audited hard triggers override task size. If any audited trigger is present, do not downgrade to guarded or fast only because the code diff is small.
 - Architecture design is conditional: for simple tasks, record why no standalone architecture document is needed; for architecture-triggering tasks, write `02-delivery-architecture.md` and stop for human confirmation before planning.
 - The planning stage has a mandatory human review gate: after writing the plan document, stop and ask the human to confirm or revise it before implementation.
 - Confirmation gates are clarification-and-convergence loops, not one-shot approvals.
 - Do not treat the human's initial description as automatically correct; compare it with code evidence, constraints, risk, and feasibility.
 - If a requirement, architecture choice, or plan contains contradictions, missing decisions, unsafe assumptions, infeasible work, or conflicts with the current codebase, state the issue clearly, propose options, update the current stage document, and ask for confirmation again.
 - If the human requests requirement, architecture, or plan changes, update the current stage document and ask for confirmation again; repeat until explicitly approved and no unresolved questions remain.
-- Do not begin planning until the requirements document is approved.
-- Do not begin implementation or code edits until required architecture and implementation plan documents are approved.
+- Do not begin planning until the requirements document is approved, except in `lightweight` / fast runs where the summary records the scope and verification note.
+- Do not begin implementation or code edits until required architecture and implementation plan documents are approved, except in `lightweight` / fast runs where the task is low risk and the fast note records the minimal plan and stop conditions.
 - During implementation, debugging, or verification, pause for human confirmation if scope expands, the plan must materially change, verification is blocked, or a destructive/high-risk operation is needed.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
+- `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
 - If a stage is incomplete, blocked, or failed, do not silently continue.
 - Prefer tool evidence over assumptions.
 - Do not claim completion until verification has run.
@@ -245,20 +251,61 @@ Project root resolution:
 2. If the active working directory is not inside a git repository, use the active working directory itself.
 3. Create artifacts at `<project-root>/workflow/runs/<YYYY-MM-DD>-<slug>/`.
 
+Mode-specific artifact paths:
+
+### Fast Patch — `lightweight` / fast
+Use this path for low-risk small edits. Do not create full 01-08 artifacts.
+
 Required files:
+0. `workflow-state.json`
+1. `delivery-workflow-state.md` only when a persistent run directory is useful
+2. `00-fast-patch-summary.md` or a concise summary / verification note
 
+The summary / verification note must include goal, scope, assumptions, minimal plan, skipped gates, verification result, remaining risk, and upgrade conditions.
+
+### Guarded Change — `standard` / guarded
+Use this path for ordinary implementation or bugfix work that needs scope, plan, execution, and verification but not a full audit chain.
+
+Required files:
 0. `delivery-workflow-state.md`
-1. `01-delivery-requirements.md`
-2. `02-delivery-architecture.md` (required only when architecture/design/selection triggers apply; otherwise note the reason in the plan)
-3. `03-delivery-plan.md` (or `02-delivery-plan.md` for simple tasks without standalone architecture)
-4. `04-delivery-implementation.md` (or `03-delivery-implementation.md` for simple tasks without standalone architecture)
-5. `05-delivery-change-review.md` (required when Change Review Gate triggers apply)
-6. `06-delivery-debugging.md` (for complex paths; if no debugging is needed, still create a short Chinese stub)
-7. `07-delivery-verification.md` (or `05-delivery-verification.md` for simple low-risk tasks without change review/debugging)
-8. `08-delivery-summary.md` (or `06-delivery-summary.md` for simple low-risk tasks)
-9. `workflow-state.json` (machine-readable state, maintained alongside `delivery-workflow-state.md`)
+1. `10-guarded-scope.md`
+2. `11-guarded-plan.md`
+3. `12-guarded-implementation.md`
+4. `13-guarded-verification.md`
+5. `14-guarded-summary.md`
+6. `workflow-state.json`
 
-Use the templates in `assets/workflow-templates/`. The templates are Chinese-first and should remain Chinese when filled.
+Conditional files:
+- `02-delivery-architecture.md` only when architecture triggers apply.
+- `05-delivery-change-review.md` only when change review triggers apply.
+- `04-delivery-debugging.md` only when implementation or verification requires debugging.
+
+### Audited Delivery — `full` / audited
+Use this path for review handoff, high-risk changes, API/data/permission changes, or user-requested auditable delivery.
+
+Hard triggers:
+- continuing from review handoff
+- API, DTO, response shape, error code, or data contract change
+- migration, destructive SQL, field deletion, historical data compatibility, or persisted entity change
+- authentication, authorization, permission, privacy, funds, payment, refund, medical, or health advice impact
+- cross-service, Feign, MQ, scheduler, workflow, concurrency, or consistency change
+- dirty worktree risk that may affect scoped files
+- user explicitly asks for full, audited, recoverable, handoff-based, or document-complete delivery
+
+Required / conditional chain:
+0. `delivery-workflow-state.md`
+1. `20-audited-run-map.md`
+2. `01-delivery-requirements.md`
+3. `02-delivery-architecture.md` when architecture/design/selection triggers apply; otherwise record skipped reason in the run map or plan
+4. `03-delivery-plan.md` or `02-delivery-plan.md` when no standalone architecture document exists
+5. `04-delivery-implementation.md` or `03-delivery-implementation.md` when no standalone architecture document exists
+6. `05-delivery-change-review.md` when Change Review Gate triggers apply; review handoff fixes trigger it by default
+7. `06-delivery-debugging.md` for complex paths; if no debugging is needed, create a short Chinese note or skipped reason
+8. `07-delivery-verification.md` or `05-delivery-verification.md` when no change review/debugging path is used
+9. `08-delivery-summary.md` or `06-delivery-summary.md` for simple audited paths
+10. `workflow-state.json`
+
+Use the templates in `assets/workflow-templates/`. Fast patch runs should use `00-fast-patch-summary.md`; guarded runs should use `10-guarded-*` templates; audited runs should use the full delivery templates required by their mode. The templates are Chinese-first and should remain Chinese when filled.
 
 After each stage document is written or updated, update `delivery-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, selected scope, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
@@ -269,9 +316,13 @@ Goal: turn the user's request into a concrete engineering target.
 Actions:
 - if continuing from `code-review-triage`, read the review handoff files first
 - restate the requested outcome in Chinese
+- record why this task should continue in `software-delivery-pipeline` instead of routing to another workflow
 - capture assumptions and constraints
+- separate user-stated requirements, evidence-derived requirements, and AI-suggested extensions that still need confirmation
 - identify affected files, systems, or repos if known
 - define acceptance criteria
+- define a verification matrix that maps each acceptance item to a concrete command or check method
+- record pre-existing workspace changes from `git status` and whether they affect the intended scope
 - write `01-delivery-requirements.md`
 - mark the document status as pending human confirmation
 - reply to the human with the run folder path, a concise summary, identified gaps/risks/conflicts, options if needed, and a direct request to confirm or revise the requirements
@@ -315,6 +366,9 @@ Actions:
 - read `01-delivery-requirements.md`
 - if `02-delivery-architecture.md` exists, read it and follow its confirmed constraints
 - if no standalone architecture document exists, record why independent architecture/design/selection was not needed
+- carry forward the requirements-stage route decision, scope lock, acceptance criteria, verification matrix, and pre-existing workspace-change strategy
+- map every blocking acceptance item or selected finding from `01-delivery-requirements.md` to a plan step, target file/module, and verification method
+- if any requirement cannot be mapped to implementation or verification, pause and return to requirements confirmation instead of inventing new scope
 - break work into concrete steps
 - record `Implementation Strategy`
 - write the required `Implementation Plan`
@@ -336,6 +390,7 @@ Actions:
 - read the approved plan document: `02-delivery-plan.md` for simple tasks, or `03-delivery-plan.md` when a standalone architecture stage exists
 - follow the recorded `Implementation Strategy`
 - follow the approved `Implementation Plan` and update `Execution Status`
+- create a plan execution mapping that records each plan step, acceptance item, or selected finding as completed, blocked, or deviated
 - identify the smallest meaningful failing test or failing reproduction
 - default to fail-first for behavior changes that are reasonably testable
 - verify the test or reproduction fails for the right reason
@@ -434,8 +489,10 @@ Precondition: if Change Review Gate triggers applied, `05-delivery-change-review
 Before verification, confirm that the implementation still matches the approved requirements and plan, and that no unnecessary scope expansion or over-engineering was introduced.
 
 Actions:
+- copy or carry forward the verification matrix from the approved plan and fill actual results for each item
 - run the smallest meaningful verification gates
 - prefer project-native checks: tests, build, lint, typecheck, smoke test, screenshot, diff inspection
+- verify the final diff still stays inside the approved scope lock
 - record exactly what was run and the outcome
 - list any skipped checks and why they were skipped
 - include the shared `Verification` structure with completed / analysis-only / blocked / needs-user-confirmation judgment

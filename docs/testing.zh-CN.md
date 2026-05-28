@@ -8,15 +8,13 @@
 bash scripts/check-consistency.sh
 ```
 
-更细的专项检查：
+更细的结构化专项检查统一走 shell 入口：
 
 ```bash
-python3 scripts/check-markdown.py README.md docs plugins/ai-engineering-skills/skills
-python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/artifact-templates plugins/ai-engineering-skills/skills/*/assets/*-templates docs/full-run-examples tests/artifact-metadata/valid-artifact.md
-python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv
-python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv --runtime-command tests/bootstrap-routing/fake-agent-runtime.py
-python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv
+bash scripts/check-structured.sh
 ```
+
+`check-structured.sh` 内部仍使用 Python 标准库脚本处理 JSON、Markdown metadata 和 TSV 路由规则。这样日常入口保持 shell 友好，同时避免用 shell 解析结构化数据导致规则变脆。
 
 发布或真实安装前，推荐直接运行：
 
@@ -38,6 +36,12 @@ bash scripts/check-workflow-state.sh
 bash scripts/check-workflow-index.sh
 ```
 
+修改 execution mode 或 delivery 示例时，运行：
+
+```bash
+bash scripts/check-execution-mode-contract.sh
+```
+
 ## 常见任务到检查命令
 
 | 任务 | 推荐检查 |
@@ -45,8 +49,9 @@ bash scripts/check-workflow-index.sh
 | 修改 README 或 docs | `bash scripts/check-consistency.sh` |
 | 修改 `SKILL.md` | `bash scripts/check-consistency.sh` |
 | 修改模板或 reference | `bash scripts/check-consistency.sh` |
-| 修改 `workflow-bootstrap` 路由 | `bash scripts/check-consistency.sh` + `python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv` |
-| 修改领域模块路由 | `bash scripts/check-consistency.sh` + `python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv` |
+| 修改 execution mode / 条件块 / run examples | `bash scripts/check-execution-mode-contract.sh` + `bash scripts/check-consistency.sh` |
+| 修改 `workflow-bootstrap` 路由 | `bash scripts/check-consistency.sh` + `bash scripts/check-structured.sh` |
+| 修改领域模块路由 | `bash scripts/check-consistency.sh` + `bash scripts/check-structured.sh` |
 | 修改安装脚本 | `bash scripts/check-consistency.sh` + `bash scripts/smoke-install-local.sh` |
 | 修改 plugin metadata | `bash scripts/check-consistency.sh` + `bash scripts/smoke-install-local.sh` |
 | 修改 `workflow-state.json` schema | `bash scripts/check-workflow-state.sh` + `bash scripts/check-workflow-index.sh` + `bash scripts/check-consistency.sh` |
@@ -74,6 +79,7 @@ bash scripts/check-workflow-index.sh
 - 安装脚本仍使用唯一 skill 源目录 `plugins/ai-engineering-skills/skills`
 - Claude 安装脚本仍使用唯一 plugin 源目录 `plugins/ai-engineering-skills`
 - 本地安装冒烟脚本存在、可执行，并使用临时目录隔离 Codex/Claude 安装目标
+- 本地安装冒烟脚本确认共享 `docs/` 已复制到安装目录，避免 `SKILL.md` 中的 `docs/...` 引用失效
 - 仓库根目录没有重新引入 `skills/` 源码副本
 - `workflow-state.json` schema 能接受有效样例并拒绝无效样例
 - `workflow-state.json` 必须包含 `executionMode`
@@ -83,6 +89,7 @@ bash scripts/check-workflow-index.sh
 - 修改任意 `SKILL.md` 后
 - 修改任意 `assets/*-templates/` 后
 - 修改 `docs/skills-guide.zh-CN.md`、`docs/workflow-contracts.zh-CN.md` 或 README 后
+- 修改 `docs/execution-modes.zh-CN.md` 或 `docs/prompt-modules/conditional-blocks.zh-CN.md` 后
 - 修改 plugin manifest 或 marketplace metadata 后
 - 修改 `workflow-bootstrap` 路由规则或 bootstrap 示例后
 - 修改安装脚本或安装冒烟文档后
@@ -103,7 +110,7 @@ bash scripts/check-workflow-index.sh
 
 ## Workflow State Schema 验证
 
-`scripts/check-workflow-state.sh` 使用 Python 标准库运行 `scripts/validate-workflow-state.py` 和 `scripts/generate-workflow-state.py`，不依赖外部 `jsonschema` 包。
+`scripts/check-workflow-state.sh` 是 shell 入口，内部使用 Python 标准库运行 `scripts/validate-workflow-state.py` 和 `scripts/generate-workflow-state.py`，不依赖外部 `jsonschema` 包。
 
 它会校验：
 
@@ -112,8 +119,9 @@ bash scripts/check-workflow-index.sh
 - `tests/workflow-state/invalid-state.json` 必须失败
 - 生成器输出必须匹配 `tests/workflow-state/generated-state.expected.json`
 - `executionMode` 必须是 `lightweight`、`standard` 或 `full`
+- `modePath` 必须是 `fast`、`guarded` 或 `audited`，并与 `executionMode` 映射一致
 
-也可以手工验证真实 workflow state：
+也可以手工验证真实 workflow state。以下是维护者专项命令，日常优先使用 `.sh` 入口：
 
 ```bash
 python3 scripts/validate-workflow-state.py workflow/<run>/workflow-state.json
@@ -135,7 +143,7 @@ python3 scripts/generate-workflow-state.py \
 
 `scripts/check-workflow-index.sh` 会用生成器创建临时 `workflow-state.json`，再运行 `scripts/update-workflow-index.py`，并与 `tests/workflow-index/expected-index.md` 做 diff。
 
-也可以手工更新真实项目索引：
+也可以手工更新真实项目索引。以下是维护者专项命令，日常优先使用 `.sh` 入口：
 
 ```bash
 python3 scripts/update-workflow-index.py \

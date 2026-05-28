@@ -75,6 +75,7 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Separate schema change, code compatibility, data backfill, verification, and cleanup phases.
 - All generated documents must be Simplified Chinese, except code identifiers, commands, paths, SQL, error text, API names, and quoted user text.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
+- `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
 - Hand off confirmed migration plans to `software-delivery-pipeline` for implementation.
 - If the user provides an existing migration artifact path or asks to continue a prior migration run, resume that run instead of creating a new one unless a reset is explicitly requested.
 

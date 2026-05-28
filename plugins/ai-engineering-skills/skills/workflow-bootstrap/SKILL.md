@@ -99,6 +99,7 @@ rollbackRequired: true
 - If the user provides an existing workflow artifact path or asks to continue a prior run, prefer continuing that workflow rather than starting a new routing decision.
 - If the user provides a handoff artifact, treat the handoff as higher priority than generic re-routing.
 - Follow `docs/workflow-contracts.zh-CN.md` `Handoff Flow Contract` when deciding downstream workflow from a handoff.
+- If creating or updating any workflow run state during routing or handoff recovery, `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields.
 - Do not create a new parallel workflow when a single existing run can be resumed safely.
 
 ## Clarification Rules

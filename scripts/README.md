@@ -2,6 +2,8 @@
 
 本目录包含仓库维护、安装和冒烟验证脚本。
 
+日常使用优先运行 `.sh` 入口。部分结构化检查内部使用 Python 标准库处理 JSON、Markdown metadata 和 TSV 规则；如果本机缺少 `python3`，shell 入口会给出安装提示。
+
 ## `check-consistency.sh`
 
 轻量静态一致性检查。用于确认 skill 目录、README、使用说明、模板、workflow contract、plugin metadata 和安装脚本没有明显漂移。
@@ -24,7 +26,7 @@ bash scripts/smoke-install-local.sh
 
 ## `check-workflow-state.sh`
 
-验证 `workflow-state.json` schema、测试样例和生成器输出。该脚本调用 Python 标准库工具，不需要额外依赖。
+验证 `workflow-state.json` schema、测试样例和生成器输出。该脚本是 shell 入口，内部调用 Python 标准库工具，不需要额外 Python 包。
 
 常用命令：
 
@@ -32,7 +34,7 @@ bash scripts/smoke-install-local.sh
 bash scripts/check-workflow-state.sh
 ```
 
-也可以直接校验某个真实 state 文件：
+也可以直接校验某个真实 state 文件。以下是维护者专项命令，日常优先使用 `.sh` 入口：
 
 ```bash
 python3 scripts/validate-workflow-state.py workflow/<run>/workflow-state.json
@@ -41,7 +43,7 @@ python3 scripts/validate-workflow-state.py --strict-jsonschema workflow/<run>/wo
 
 ## `generate-workflow-state.py`
 
-生成符合 schema 的 `workflow-state.json`。默认不覆盖已有文件；需要覆盖时显式传 `--force`。
+生成符合 schema 的 `workflow-state.json`。这是维护者专项工具，默认不覆盖已有文件；需要覆盖时显式传 `--force`。
 
 示例：
 
@@ -50,6 +52,7 @@ python3 scripts/generate-workflow-state.py \
   --workflow software-delivery-pipeline \
   --run-path workflow/runs/2026-05-26-example \
   --current-stage requirements \
+  --mode-path guarded \
   --latest-document 01-delivery-requirements.md \
   --next-action "Wait for requirements confirmation." \
   --output workflow/runs/2026-05-26-example/workflow-state.json
@@ -57,7 +60,7 @@ python3 scripts/generate-workflow-state.py \
 
 ## `update-workflow-index.py`
 
-根据某个 `workflow-state.json` upsert 当前项目的 `workflow/index.md`。同一个 `runPath` 会更新原行，不存在则追加。
+根据某个 `workflow-state.json` upsert 当前项目的 `workflow/index.md`。这是维护者专项工具，同一个 `runPath` 会更新原行，不存在则追加。
 
 示例：
 
@@ -84,11 +87,17 @@ bash scripts/check-workflow-index.sh
 bash scripts/release-check.sh
 bash scripts/release-check.sh --ci
 bash scripts/release-check.sh --no-smoke --skip-dry-run
-python3 scripts/check-markdown.py README.md docs plugins/ai-engineering-skills/skills
-python3 scripts/check-artifact-metadata.py --schema docs/artifact-metadata-schema.json docs/artifact-templates plugins/ai-engineering-skills/skills/*/assets/*-templates docs/full-run-examples tests/artifact-metadata/valid-artifact.md
-python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv
-python3 scripts/check-bootstrap-routing.py --cases tests/bootstrap-routing/cases.tsv --runtime-command tests/bootstrap-routing/fake-agent-runtime.py
-python3 scripts/check-domain-module-routing.py --cases tests/domain-modules/java-spring-microservice-cases.tsv
+bash scripts/check-structured.sh
+```
+
+## `check-structured.sh`
+
+统一运行 Markdown、artifact metadata、bootstrap routing 和 domain module routing 检查。该脚本是 shell 入口，内部调用 Python 标准库脚本。
+
+常用命令：
+
+```bash
+bash scripts/check-structured.sh
 ```
 
 ## `install-codex-skills.sh`

@@ -2,7 +2,7 @@
 workflow: software-delivery-pipeline
 runId: <YYYYMMDD-slug>
 runPath: workflow/runs/<YYYY-MM-DD>-<slug>
-executionMode: standard
+executionMode: full
 stage: scope
 status: draft
 source: user-request
@@ -10,6 +10,11 @@ allowsCodeEdit: false
 nextAction: confirm_scope
 ---
 # 需求确认
+
+## Template Usage
+- mode: audited only
+- fast 使用 `00-fast-patch-summary.md`
+- guarded 使用 `10-guarded-*`
 
 ## 文档元信息
 - 项目根目录：
@@ -31,12 +36,23 @@ nextAction: confirm_scope
 - 已选 Findings：
 - 明确不修 Findings：
 
+## 任务类型 / 路由检查
+- 当前任务类型：
+- 继续使用 `software-delivery-pipeline` 的原因：
+- 是否应转入其他 workflow：否 / 是，目标 workflow：
+- 判断依据：
+
 ## 目标结果
 -
 
 ## 范围
 - 范围内：
 - 范围外：
+
+## 需求来源分层
+- 用户明确要求：
+- 由代码 / 文档证据推导出的必要要求：
+- AI 建议但未确认的扩展项：
 
 ## 约束
 -
@@ -48,8 +64,18 @@ nextAction: confirm_scope
 - [ ]
 - [ ]
 
+## 验证矩阵
+| 验收项 | 验证命令 / 方式 | 预期结果 | 是否阻塞交付 |
+| --- | --- | --- | --- |
+|  |  |  | 是 / 否 |
+
 ## 未知项 / 问题
 -
+
+## 预存工作区变更
+- `git status` 摘要：
+- 是否影响本轮范围：否 / 是，说明：
+- 处理策略：忽略 / 纳入范围 / 暂停确认
 
 
 ## 澄清与收敛记录

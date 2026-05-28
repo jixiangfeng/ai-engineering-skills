@@ -27,6 +27,7 @@ require_file "${REPO_ROOT}/docs/workflow-contracts.zh-CN.md"
 require_file "${REPO_ROOT}/docs/workflow-state-schema.json"
 require_file "${REPO_ROOT}/docs/artifact-metadata-schema.json"
 require_file "${REPO_ROOT}/docs/workflow-index-template.md"
+require_file "${REPO_ROOT}/docs/execution-modes.zh-CN.md"
 require_file "${REPO_ROOT}/docs/artifact-templates/state.md"
 require_file "${REPO_ROOT}/docs/artifact-templates/stage-document.md"
 require_file "${REPO_ROOT}/docs/artifact-templates/summary.md"
@@ -37,6 +38,7 @@ require_file "${REPO_ROOT}/docs/examples-policy.zh-CN.md"
 require_file "${REPO_ROOT}/docs/compatibility.zh-CN.md"
 require_file "${REPO_ROOT}/docs/superpowers-inspired-rules.zh-CN.md"
 require_file "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md"
+require_file "${REPO_ROOT}/docs/run-examples/README.zh-CN.md"
 require_file "${REPO_ROOT}/docs/install-smoke-test.zh-CN.md"
 require_file "${REPO_ROOT}/docs/release-checklist.zh-CN.md"
 require_file "${REPO_ROOT}/docs/domain-modules/java-spring-microservice.zh-CN.md"
@@ -56,6 +58,9 @@ require_file "${REPO_ROOT}/scripts/check-markdown.py"
 require_file "${REPO_ROOT}/scripts/check-artifact-metadata.py"
 require_file "${REPO_ROOT}/scripts/check-bootstrap-routing.py"
 require_file "${REPO_ROOT}/scripts/check-domain-module-routing.py"
+require_file "${REPO_ROOT}/scripts/check-python.sh"
+require_file "${REPO_ROOT}/scripts/check-structured.sh"
+require_file "${REPO_ROOT}/scripts/check-execution-mode-contract.sh"
 require_file "${REPO_ROOT}/scripts/check-workflow-state.sh"
 require_file "${REPO_ROOT}/scripts/check-workflow-index.sh"
 require_file "${REPO_ROOT}/scripts/release-check.sh"
@@ -76,6 +81,7 @@ for prompt_module in \
   review-loop.zh-CN.md \
   worktree-recommendation.zh-CN.md \
   task-decomposition.zh-CN.md \
+  conditional-blocks.zh-CN.md \
   finish-checklist.zh-CN.md \
   handoff.zh-CN.md \
   lightweight-mode.zh-CN.md \
@@ -99,6 +105,7 @@ rg -q "workflow-bootstrap" "${PLUGIN_DIR}/.codex-plugin/plugin.json" || fail "Co
 rg -q 'Handoff Flow Contract' "${SKILLS_DIR}/workflow-bootstrap/SKILL.md" || fail "workflow-bootstrap should reference Handoff Flow Contract"
 rg -q 'Handoff Flow Contract' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "software-delivery-pipeline should reference Handoff Flow Contract"
 rg -q 'Workflow 契约' "${REPO_ROOT}/README.md" || fail "README should link workflow contract"
+rg -q 'Execution Modes' "${REPO_ROOT}/README.md" || fail "README should link execution modes"
 rg -q 'workflow/runs/<run>/' "${REPO_ROOT}/docs/skills-guide.zh-CN.md" || fail "skills guide should document delivery run path"
 rg -q 'workflow/runs/<YYYY-MM-DD>-<slug>/' "${REPO_ROOT}/docs/skills-guide.zh-CN.md" || fail "skills guide should document delivery run slug path"
 rg -q 'workflow/runs/<YYYY-MM-DD>-<slug>' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should use canonical workflow/runs path"
@@ -121,15 +128,19 @@ done
 
 [[ -x "${REPO_ROOT}/scripts/install-codex-skills.sh" ]] || fail "Codex install script should be executable"
 rg -q 'plugins/ai-engineering-skills/skills' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script should install from the canonical plugin skills directory"
+rg -q 'SHARED_DOCS_DIR' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script should copy shared docs"
 rg -q -- '--dry-run' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script should support --dry-run"
 rg -q -- '--force' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script should support --force"
 rg -q -- '--backup' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script should support --backup"
+rg -q 'DRY-RUN:' "${REPO_ROOT}/scripts/install-codex-skills.sh" || fail "Codex install script dry-run output should be explicit"
 
 [[ -x "${REPO_ROOT}/scripts/install-claude-plugin.sh" ]] || fail "Claude install script should be executable"
 rg -q 'plugins/ai-engineering-skills' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script should install from the canonical plugin directory"
+rg -q 'SHARED_DOCS_DIR' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script should copy shared docs"
 rg -q -- '--dry-run' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script should support --dry-run"
 rg -q -- '--force' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script should support --force"
 rg -q -- '--backup' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script should support --backup"
+rg -q 'DRY-RUN:' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Claude install script dry-run output should be explicit"
 
 [[ -x "${REPO_ROOT}/scripts/smoke-install-local.sh" ]] || fail "Smoke install script should be executable"
 [[ -x "${REPO_ROOT}/scripts/generate-workflow-state.py" ]] || fail "Workflow state generator should be executable"
@@ -139,6 +150,9 @@ rg -q -- '--backup' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Cla
 [[ -x "${REPO_ROOT}/scripts/check-artifact-metadata.py" ]] || fail "Artifact metadata check script should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-bootstrap-routing.py" ]] || fail "Bootstrap routing harness should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-domain-module-routing.py" ]] || fail "Domain module routing harness should be executable"
+[[ -x "${REPO_ROOT}/scripts/check-python.sh" ]] || fail "Python availability check script should be executable"
+[[ -x "${REPO_ROOT}/scripts/check-structured.sh" ]] || fail "Structured check wrapper should be executable"
+[[ -x "${REPO_ROOT}/scripts/check-execution-mode-contract.sh" ]] || fail "Execution mode contract check script should be executable"
 [[ -x "${REPO_ROOT}/tests/bootstrap-routing/fake-agent-runtime.py" ]] || fail "Fake agent runtime should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-workflow-state.sh" ]] || fail "Workflow state check script should be executable"
 [[ -x "${REPO_ROOT}/scripts/check-workflow-index.sh" ]] || fail "Workflow index check script should be executable"
@@ -146,12 +160,17 @@ rg -q -- '--backup' "${REPO_ROOT}/scripts/install-claude-plugin.sh" || fail "Cla
 rg -q 'mktemp -d' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should use a temporary directory"
 rg -q 'CODEX_SKILLS_DIR' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should isolate Codex install target"
 rg -q 'CLAUDE_PLUGINS_DIR' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should isolate Claude install target"
+rg -q 'docs/workflow-contracts.zh-CN.md' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should verify installed shared docs"
 rg -q '.codex-plugin/plugin.json' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should verify Codex plugin metadata"
 rg -q '.claude-plugin/plugin.json' "${REPO_ROOT}/scripts/smoke-install-local.sh" || fail "Smoke install script should verify Claude plugin metadata"
 rg -q 'generate-workflow-state.py' "${REPO_ROOT}/scripts/check-workflow-state.sh" || fail "Workflow state check should call generator"
 rg -q 'validate-workflow-state.py' "${REPO_ROOT}/scripts/check-workflow-state.sh" || fail "Workflow state check should call validator"
 rg -q 'update-workflow-index.py' "${REPO_ROOT}/scripts/check-workflow-index.sh" || fail "Workflow index check should call updater"
-for term in 'check-consistency.sh' 'check-workflow-state.sh' 'check-workflow-index.sh' 'check-markdown.py' 'check-artifact-metadata.py' 'check-bootstrap-routing.py' 'check-domain-module-routing.py' 'smoke-install-local.sh' 'install-codex-skills.sh" --dry-run --backup' 'install-claude-plugin.sh" --dry-run --backup'; do
+for wrapper in check-workflow-state.sh check-workflow-index.sh check-structured.sh; do
+  rg -q 'check-python.sh' "${REPO_ROOT}/scripts/${wrapper}" || fail "${wrapper} should use check-python.sh before Python-backed checks"
+done
+rg -q 'check-structured.sh' "${REPO_ROOT}/scripts/release-check.sh" || fail "release-check.sh should use check-structured.sh for Python-backed checks"
+for term in 'check-consistency.sh' 'check-workflow-state.sh' 'check-workflow-index.sh' 'check-structured.sh' 'smoke-install-local.sh' 'install-codex-skills.sh" --dry-run --backup' 'install-claude-plugin.sh" --dry-run --backup'; do
   rg -q "${term}" "${REPO_ROOT}/scripts/release-check.sh" || fail "release check script missing term: ${term}"
 done
 for term in '--ci' '--no-smoke' '--skip-dry-run'; do
@@ -160,20 +179,28 @@ for term in '--ci' '--no-smoke' '--skip-dry-run'; do
 done
 rg -q -- '--strict-jsonschema' "${REPO_ROOT}/scripts/validate-workflow-state.py" || fail "workflow state validator missing strict jsonschema option"
 rg -q 'executionMode' "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing executionMode"
+rg -q 'modePath' "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing modePath"
 rg -q -- '--execution-mode' "${REPO_ROOT}/scripts/generate-workflow-state.py" || fail "workflow state generator missing execution mode option"
+rg -q -- '--mode-path' "${REPO_ROOT}/scripts/generate-workflow-state.py" || fail "workflow state generator missing mode path option"
 for mode in lightweight standard full; do
   rg -q "${mode}" "${REPO_ROOT}/docs/workflow-contracts.zh-CN.md" || fail "workflow contract missing execution mode: ${mode}"
   rg -q "${mode}" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing execution mode: ${mode}"
 done
+for mode_path in fast guarded audited; do
+  rg -q "${mode_path}" "${REPO_ROOT}/docs/workflow-contracts.zh-CN.md" || fail "workflow contract missing mode path: ${mode_path}"
+  rg -q "${mode_path}" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing mode path: ${mode_path}"
+done
 rg -q 'artifact-metadata-schema' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should use schema"
 rg -q 'extract_front_matter' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should parse YAML front matter"
 rg -q 'REQUIRED_HANDOFF_KEYS' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should enforce handoff metadata"
-rg -q 'docs/artifact-templates' "${REPO_ROOT}/scripts/release-check.sh" || fail "release check should validate artifact templates"
+rg -q 'docs/artifact-templates' "${REPO_ROOT}/scripts/check-structured.sh" || fail "structured check should validate artifact templates"
 rg -q 'assets/.\\*-templates' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs should include artifact template metadata check"
 rg -q -- '--runtime-command' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing harness missing runtime command mode"
 rg -q -- '--strict-jsonschema' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs missing strict jsonschema option"
 rg -q '自动化 Harness' "${REPO_ROOT}/docs/bootstrap-examples.zh-CN.md" || fail "bootstrap examples missing automation harness"
 rg -q '真实 agent harness' "${REPO_ROOT}/docs/bootstrap-examples.zh-CN.md" || fail "bootstrap examples missing real agent harness boundary"
+rg -q 'Delivery 执行模式冒烟' "${REPO_ROOT}/docs/bootstrap-examples.zh-CN.md" || fail "bootstrap examples missing delivery execution mode smoke tests"
+rg -q '三档执行模式冒烟' "${REPO_ROOT}/docs/install-smoke-test.zh-CN.md" || fail "install smoke test missing execution mode smoke prompts"
 rg -q 'NO_WORKFLOW_INTENTS' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing should use no-workflow intent rules"
 rg -q 'WORKFLOW_ACTIONS' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing should use workflow action rules"
 rg -q 'review 后修复' "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv" || fail "bootstrap routing cases should cover review-first conflict"
@@ -181,6 +208,9 @@ rg -q '解释一下这个问题' "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv
 rg -q '不默认维护完整 01-07/08 示例' "${REPO_ROOT}/docs/examples-policy.zh-CN.md" || fail "examples policy missing full-run decision"
 rg -q '用户自主决策原则' "${REPO_ROOT}/docs/compatibility.zh-CN.md" || fail "compatibility docs missing user decision principle"
 rg -q 'Full Run 示例' "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md" || fail "full-run examples README missing title"
+rg -q '不代表默认执行路径' "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md" || fail "full-run examples should state they are not the default path"
+rg -q 'Run Examples' "${REPO_ROOT}/docs/run-examples/README.zh-CN.md" || fail "run examples README missing title"
+bash "${REPO_ROOT}/scripts/check-execution-mode-contract.sh" >/dev/null
 for workflow in codebase-orientation code-review-triage software-delivery-pipeline debug-root-cause api-contract-design data-migration-planning; do
   require_file "${REPO_ROOT}/docs/full-run-examples/${workflow}/full-run.md"
   require_dir "${REPO_ROOT}/docs/full-run-examples/${workflow}/files"
@@ -189,6 +219,12 @@ for workflow in codebase-orientation code-review-triage software-delivery-pipeli
   rg -q "workflow: ${workflow}" "${REPO_ROOT}/docs/full-run-examples/${workflow}/files"/*.md || fail "full-run files missing workflow metadata: ${workflow}"
 done
 rg -q 'Superpowers 方法论吸收说明' "${REPO_ROOT}/README.md" || fail "README should link superpowers-inspired rules"
+rg -q 'execution-modes.zh-CN.md' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference execution modes"
+rg -q 'conditional-blocks.zh-CN.md' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference conditional blocks"
+rg -q 'Audited hard triggers override task size' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should make audited triggers override task size"
+rg -q 'single combined gate' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should define guarded combined confirmation"
+rg -q '风险触发优先于任务大小' "${REPO_ROOT}/docs/execution-modes.zh-CN.md" || fail "execution modes should prioritize risk over task size"
+rg -q 'fast 模式例外' "${REPO_ROOT}/docs/prompt-modules/write-guard.zh-CN.md" || fail "write guard should define fast mode write exception"
 for term in 'brainstorming' 'writing-plans' 'executing-plans' 'test-driven-development' 'systematic-debugging' 'verification-before-completion' 'requesting-code-review' 'receiving-code-review' 'using-git-worktrees' 'subagent-driven-development' 'finishing-a-development-branch'; do
   rg -q "${term}" "${REPO_ROOT}/docs/superpowers-inspired-rules.zh-CN.md" || fail "superpowers-inspired rules missing capability: ${term}"
 done
@@ -417,7 +453,7 @@ for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolv
   rg -q "${term}" "${REPO_ROOT}/docs/artifact-templates/handoff.md" || fail "shared handoff template missing term: ${term}"
 done
 
-for term in "schemaVersion" "workflow" "runPath" "domainModules" "affectedServices" "affectedControllers" "affectedTables" "affectedCollections" "affectedTopics" "affectedConfigKeys" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do
+for term in "schemaVersion" "workflow" "runPath" "domainModules" "executionMode" "modePath" "affectedServices" "affectedControllers" "affectedTables" "affectedCollections" "affectedTopics" "affectedConfigKeys" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do
   rg -q "\"${term}\"" "${REPO_ROOT}/docs/workflow-state-schema.json" || fail "workflow state schema missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/valid-state.json" || fail "valid workflow state fixture missing field: ${term}"
   rg -q "\"${term}\"" "${REPO_ROOT}/tests/workflow-state/generated-state.expected.json" || fail "generated workflow state fixture missing field: ${term}"
