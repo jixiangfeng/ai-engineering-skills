@@ -112,6 +112,16 @@
 - 关注 patientId、storeId、tenantId、deptId 越权查询。
 - 管理端和 C 端接口必须隔离。
 
+### 权限 / API 架构任务
+
+- 输出 Provider 侧调用链：Controller、Feign、Service、Mapper / Repository、表、缓存、MQ / 调度影响。
+- 输出 Consumer 侧调用链：入口接口、调用顺序、查询前置过滤、业务层评估、分页 / 排序 / 总数影响。
+- DTO / Request / Response / Feign DTO 必须强类型，不使用 loose container 表达权限决策。
+- 权限失败默认 fail-closed；如选择降级，必须说明降级数据范围、错误码和前端行为。
+- 对 patientId、自然人、tenantId、storeId、deptId、历史数据和时间窗口分别说明可 SQL 过滤字段与必须远程评估的资源事实。
+- 对 scope 查询、resource permission 评估、单接口合并方案说明取舍、批量能力、N+1 风险和服务边界。
+- 检查事务、Feign 超时 / fallback、MQ / 调度、缓存和幂等是否被权限链路放大。
+
 ### 接口兼容
 
 - 不删除字段、不改变字段语义、不破坏 enum。
@@ -155,4 +165,6 @@
 
 ### software-delivery-pipeline
 
-Implementation Plan 必须记录 affectedServices、affectedControllers、affectedTables、affectedCollections、affectedTopics、affectedConfigKeys、riskLevel、rollbackPlan、verificationPlan。
+Implementation Plan 必须记录 affectedServices、affectedControllers、affectedFeignClients、affectedTables、affectedCollections、affectedTopics、affectedConfigKeys、riskLevel、rollbackPlan、verificationPlan。
+
+权限、API、跨服务任务还必须继承架构文档中的 Provider 侧逻辑、Consumer 侧逻辑、接口拆分取舍、数据查询边界和验收项映射；缺失任一项时，回到架构确认阶段。

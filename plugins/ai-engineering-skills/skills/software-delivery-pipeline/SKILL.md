@@ -353,6 +353,13 @@ If `02-delivery-architecture.md` is created:
 - compare viable options and explain tradeoffs
 - state the selected option and rejected options
 - define module/service/data/interface boundaries
+- for API, permission, or cross-service designs, explicitly cover:
+  - provider-side logic: owner service, data sources, rule inputs, decision algorithm, allowed operations, failure behavior
+  - consumer-side logic: entrypoints, call order, query-before/query-after placement, pagination/sorting impact, fail-closed or degrade behavior
+  - interface split/merge tradeoff: why one endpoint or multiple endpoints, and the impact on performance, boundaries, reuse, and compatibility
+  - permission/rule model when applicable: typed enum + strategy, rule table/config, policy registry, decision DTO, extension path, and auditability
+  - data/query boundary: SQL prefilter, resource facts, ownership fields, time windows, historical data, and cross-service N+1 risk
+  - acceptance mapping: each acceptance/risk maps to provider logic, consumer logic, DTO fields, and verification
 - state compatibility and migration strategy if relevant
 - list constraints that the implementation plan must follow
 - stop and ask the human to confirm or revise the architecture before writing the implementation plan
@@ -367,6 +374,7 @@ Actions:
 - if `02-delivery-architecture.md` exists, read it and follow its confirmed constraints
 - if no standalone architecture document exists, record why independent architecture/design/selection was not needed
 - carry forward the requirements-stage route decision, scope lock, acceptance criteria, verification matrix, and pre-existing workspace-change strategy
+- for API, permission, or cross-service tasks, map confirmed provider-side and consumer-side logic into concrete implementation steps; if either side is missing, return to the architecture gate instead of planning from assumptions
 - map every blocking acceptance item or selected finding from `01-delivery-requirements.md` to a plan step, target file/module, and verification method
 - if any requirement cannot be mapped to implementation or verification, pause and return to requirements confirmation instead of inventing new scope
 - break work into concrete steps
