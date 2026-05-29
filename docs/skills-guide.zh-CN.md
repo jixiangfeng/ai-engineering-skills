@@ -163,7 +163,7 @@ workflow-bootstrap
 
 `software-delivery-pipeline` 的 summary 只能声明已经验证过的内容。验证可以来自自动化测试、构建、静态检查、手工检查或明确记录的替代验证；如果验证没有运行，必须写明阻塞原因和剩余风险。
 
-## 五、各 Skill 详细说明
+## 六、各 Skill 详细说明
 
 ## 1. codebase-orientation
 
@@ -518,7 +518,7 @@ migration-to-delivery-handoff.md
 - 迁移方案确认后，交给 `software-delivery-pipeline` 读取 `migration-to-delivery-handoff.md` 落地。
 - 相关最小文档契约由 `plugins/ai-engineering-skills/skills/data-migration-planning/references/data-migration-document-contracts.md` 约束。
 
-## 六、常见组合流程
+## 七、常见组合流程
 
 ### 1. 先熟悉，再 review，再修复
 
@@ -578,7 +578,7 @@ $software-delivery-pipeline 按 workflow/reviews/<run>/review-to-delivery-handof
 
 `software-delivery-pipeline` 可以重建需求，但必须停在 `01-delivery-requirements.md` 等用户确认，不能直接改代码。
 
-## 七、状态机与恢复
+## 八、状态机与恢复
 
 `software-delivery-pipeline` 和 `code-review-triage` 都有状态机文件：
 
@@ -597,7 +597,7 @@ review-workflow-state.md
 4. 明确当前阶段、阻塞项、是否允许改代码。
 5. 只从记录的下一步继续。
 
-## 八、文件命名规则
+## 九、文件命名规则
 
 新 run 必须使用带流程前缀的文件名：
 
@@ -619,7 +619,7 @@ handoff-to-delivery.md
 
 可以读取兼容，但不要继续生成新的老命名文件。
 
-## 九、防误用规则
+## 十、防误用规则
 
 ### 所有 skill
 
@@ -643,7 +643,7 @@ handoff-to-delivery.md
 - 不允许回滚用户或既有改动，除非用户明确要求。
 - Change Review Gate 未通过，不能进入验证。
 
-## 十、推荐使用习惯
+## 十一、推荐使用习惯
 
 - 用户说“熟悉一下”：用 `codebase-orientation`。
 - 用户说“review 下”：用 `code-review-triage`。
@@ -653,7 +653,7 @@ handoff-to-delivery.md
 - 用户说“实现/落地/按 handoff 修”：用 `software-delivery-pipeline`。
 
 
-## 十一、仓库级一致性清单
+## 十二、仓库级一致性清单
 
 仓库级 skill 一致性自检清单见：
 
