@@ -11,6 +11,8 @@ nextAction: none
 ---
 # Data Migration Planning Full Run
 
+> 这是 audited / full 路径的教学示例，用于展示 expanded migration package 和 handoff 形态；不代表新 run 的默认执行路径。
+> 新 run 默认应优先使用 `10-migration-scope-current.md`、`11-migration-target-plan.md`、`12-migration-rollback-validation.md`、`13-migration-summary.md` 这条 slim path。
 
 ## Migration Package
 

@@ -11,6 +11,8 @@ nextAction: none
 ---
 # API Contract Design Full Run
 
+> 这是 audited / full 路径的教学示例，用于展示 expanded contract package 和 handoff 形态；不代表新 run 的默认执行路径。
+> 新 run 默认应优先使用 `10-api-contract-scope.md`、`11-api-current-proposed.md`、`12-api-rules-examples.md`、`13-api-summary.md` 这条 slim path。
 
 ## Contract Package
 

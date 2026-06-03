@@ -2,7 +2,7 @@
 
 ## Run
 - Workflow: `software-delivery-pipeline`
-- Mode: full
+- Mode: standard
 - Run path: `workflow/runs/2026-05-26-order-idempotency`
 - Status: `completed`
 - Code edits allowed: `true` after approved requirements and plan
@@ -14,13 +14,11 @@
 - Selected scope：修复订单重复提交
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
-## Stage Shape
-- requirements: 明确 in scope / out of scope / acceptance criteria
-- architecture: 简单修复可跳过并记录原因；高风险改动需确认
-- plan: 每个任务绑定验证方式
-- implementation: 记录实际改动和偏离计划处
-- verification: 记录已运行命令、结果、失败原因或替代检查
-- summary: 说明完成项、风险、验证和后续建议
+## Slim Artifact Shape
+- `10-guarded-scope-plan.md`：合并 requirements / scope lock / implementation plan / verification targets
+- `11-guarded-execution.md`：合并 implementation / verification / 偏差记录
+- `12-guarded-summary.md`：记录完成情况、风险、验证结果和后续建议
+- 如风险升高或用户要求完整链路，再升级到 audited / full 文档集
 
 ## Implementation Strategy
 

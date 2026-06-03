@@ -11,6 +11,8 @@ nextAction: none
 ---
 # Codebase Orientation Full Run
 
+> 这是 audited / full 路径的教学示例，用于展示 expanded orientation trail；不代表新 run 的默认执行路径。
+> 新 run 默认应优先使用 `10-orientation-scope.md`、`11-orientation-map.md`、`12-orientation-summary.md` 这条 slim path。
 
 ## Stage Documents
 

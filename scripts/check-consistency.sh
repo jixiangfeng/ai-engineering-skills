@@ -454,6 +454,32 @@ check_slim_default_contract "data-migration-planning" \
 check_slim_default_templates "data-migration-planning" "assets/data-migration-templates" \
   "10-migration-scope-current.md" "11-migration-target-plan.md" "12-migration-rollback-validation.md" "13-migration-summary.md"
 
+for standard_example in \
+  "${SKILLS_DIR}/codebase-orientation/examples/standard-run.md" \
+  "${SKILLS_DIR}/code-review-triage/examples/standard-run.md" \
+  "${SKILLS_DIR}/software-delivery-pipeline/examples/standard-run.md" \
+  "${SKILLS_DIR}/debug-root-cause/examples/standard-run.md" \
+  "${SKILLS_DIR}/api-contract-design/examples/standard-run.md" \
+  "${SKILLS_DIR}/data-migration-planning/examples/standard-run.md"; do
+  require_file "${standard_example}"
+  rg -q 'Slim Artifact Shape' "${standard_example}" || fail "standard example missing Slim Artifact Shape section: ${standard_example}"
+done
+
+for full_run in \
+  "${REPO_ROOT}/docs/full-run-examples/software-delivery-pipeline/full-run.md" \
+  "${REPO_ROOT}/docs/full-run-examples/codebase-orientation/full-run.md" \
+  "${REPO_ROOT}/docs/full-run-examples/code-review-triage/full-run.md" \
+  "${REPO_ROOT}/docs/full-run-examples/debug-root-cause/full-run.md" \
+  "${REPO_ROOT}/docs/full-run-examples/api-contract-design/full-run.md" \
+  "${REPO_ROOT}/docs/full-run-examples/data-migration-planning/full-run.md"; do
+  require_file "${full_run}"
+  rg -q '教学示例' "${full_run}" || fail "full-run example must declare teaching status: ${full_run}"
+  rg -q '不代表新 run 的默认执行路径' "${full_run}" || fail "full-run example must declare non-default positioning: ${full_run}"
+done
+
+rg -q '教学示例集合' "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md" || fail "full-run README missing teaching positioning"
+rg -q '不应该被新 run 直接照搬为默认产物清单' "${REPO_ROOT}/docs/full-run-examples/README.zh-CN.md" || fail "full-run README missing non-default warning"
+
 for state_template in \
   "${SKILLS_DIR}/codebase-orientation/assets/orientation-templates/orientation-workflow-state.md" \
   "${SKILLS_DIR}/code-review-triage/assets/review-templates/review-workflow-state.md" \

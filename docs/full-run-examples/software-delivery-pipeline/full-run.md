@@ -12,6 +12,8 @@ sourceArtifact: workflow/reviews/2026-05-26-order-review/review-to-delivery-hand
 ---
 # Software Delivery Pipeline Full Run
 
+> 这是 audited / full 路径的教学示例，用于展示完整产物链路；不代表新 run 的默认执行路径。
+> 新 run 默认应先按 `executionMode` 选择 fast / guarded，仅在高风险、handoff、审计或用户明确要求完整链路时进入 full。
 
 ## delivery-workflow-state.md
 

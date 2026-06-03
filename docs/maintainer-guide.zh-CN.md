@@ -37,6 +37,7 @@ tests/
 | 修改 skill 触发边界 | 对应 `SKILL.md` 的 `Usage Boundary`、`workflow-bootstrap/SKILL.md`、`docs/bootstrap-examples.zh-CN.md` | `bash scripts/check-consistency.sh` |
 | 修改阶段模板 | `plugins/ai-engineering-skills/skills/<skill>/assets/` | `bash scripts/check-consistency.sh` |
 | 修改标准 run 示例 | `plugins/ai-engineering-skills/skills/<skill>/examples/standard-run.md`、对应 `SKILL.md` | `bash scripts/check-consistency.sh` |
+| 修改 full-run 教学示例 | `docs/full-run-examples/`、`docs/full-run-examples/README.zh-CN.md`、相关 examples policy | `bash scripts/check-consistency.sh` |
 | 修改示例策略 | `docs/examples-policy.zh-CN.md`、相关 examples | `bash scripts/check-consistency.sh` |
 | 修改兼容说明 | `docs/compatibility.zh-CN.md` | `bash scripts/check-consistency.sh` |
 | 修改 handoff / state / summary 契约 | `docs/workflow-contracts.zh-CN.md`、对应 `references/` | `bash scripts/check-consistency.sh` |
@@ -64,6 +65,7 @@ tests/
 - 新增某个 workflow 的细节规则时，优先放入该 skill 的 `references/`，再从 `SKILL.md` 引用。
 - 新增或修改 required files 时，同步更新对应 `assets/*-templates/`。
 - 如果某个 workflow 采用“默认轻量、按需展开”，同步更新 `SKILL.md`、`examples/standard-run.md`、`references/*document-contracts.md`、state 模板与相关检查，避免只改一处说明。
+- 如果调整 `full-run` 示例，必须同时确认它仍明确声明“教学用途 / 非默认新 run 路径”，避免读者把 expanded trail 误当默认产物清单。
 - 修改安装脚本时，保持默认不覆盖真实本地目录，并保留 `--dry-run`、`--force`、`--backup`。
 - 修改 skill 行为、workflow contract、触发规则、安装语义或 manifest 时，同步更新 `CHANGELOG.md`。
 - 不做无关格式化或全仓换行归一化；换行策略由 `.gitattributes` 约束后续改动。

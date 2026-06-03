@@ -50,7 +50,7 @@ bash scripts/check-workflow-index.sh
 - marketplace：根目录 Claude marketplace metadata 存在并指向当前 plugin。
 - 版本号：Codex manifest、Claude manifest、`CHANGELOG.md` 当前版本一致。
 - 文档：README、`docs/skills-guide.zh-CN.md`、`docs/workflow-contracts.zh-CN.md`、`docs/testing.zh-CN.md` 已同步。
-- 示例：每个实际 workflow 都有 `examples/standard-run.md`。
+- 示例：每个实际 workflow 都有 `examples/standard-run.md`，且它优先展示默认 slim path；`docs/full-run-examples/` 如有更新，需保持“teaching / 非默认新 run 路径”定位。
 - 模板：`SKILL.md` required files 均有对应 `assets/` 模板。
 - 安装脚本：Codex / Claude 安装脚本默认不覆盖，且保留 `--dry-run`、`--force`、`--backup`。
 - 测试脚本：`scripts/check-consistency.sh`、`scripts/check-workflow-state.sh` 和 `scripts/smoke-install-local.sh` 可执行并通过。
@@ -90,6 +90,7 @@ bash scripts/install-claude-plugin.sh --dry-run --backup
 - `docs/install-smoke-test.zh-CN.md`
 - `docs/bootstrap-examples.zh-CN.md`
 - `docs/examples-policy.zh-CN.md`
+- `docs/full-run-examples/README.zh-CN.md`
 - `docs/compatibility.zh-CN.md`
 - `docs/workflow-contracts.zh-CN.md`
 - `plugins/ai-engineering-skills/skills/*/examples/standard-run.md`
@@ -113,6 +114,7 @@ $workflow-bootstrap 按这个 handoff 落地
 - agent 明确说明路由到哪个 workflow。
 - 没有跳过只读、设计、review 或交付确认门禁。
 - workflow 产物写入当前项目根目录的 `workflow/`。
+- 普通实现场景默认走 fast / guarded 或 workflow-specific slim path，而不是直接落到 full-run 形态。
 
 ## 7. 换行策略
 
