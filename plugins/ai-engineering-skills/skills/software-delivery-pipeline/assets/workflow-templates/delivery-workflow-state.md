@@ -29,7 +29,7 @@ nextAction: continue_current_stage
 | 模式 | 必需产物 | 跳过产物 | 升级条件 |
 | --- | --- | --- | --- |
 | fast | `workflow-state.json` + `00-fast-patch-summary.md` / concise note | 完整 01-08 阶段文档 | 发现契约、数据、权限、跨模块或验证阻塞 |
-| guarded | `10-guarded-scope.md` + `11-guarded-plan.md` + `12-guarded-implementation.md` + `13-guarded-verification.md` + `14-guarded-summary.md` | 未触发的 architecture / change review / debugging | 风险升高或需要 handoff / 审计 |
+| guarded | `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md` | 未触发的 architecture / change review / debugging | 风险升高或需要 handoff / 审计 |
 | audited | `20-audited-run-map.md` + 完整门禁链路 | 无风险触发项可写 skipped reason | 不降级，除非用户明确重置 scope |
 
 ## 当前状态
@@ -51,12 +51,10 @@ nextAction: continue_current_stage
 ## 阶段状态
 | 阶段 | 文档 | 状态 | 确认记录 |
 | --- | --- | --- | --- |
-| scope / requirements | `10-guarded-scope.md` / `01-delivery-requirements.md` | pending / approved / skipped |  |
+| scope + plan | `10-guarded-scope-plan.md` / `01-delivery-requirements.md` + plan doc | pending / approved / skipped |  |
 | architecture | `02-delivery-architecture.md` | pending / approved / skipped |  |
-| plan | `11-guarded-plan.md` / `02-delivery-plan.md` / `03-delivery-plan.md` | pending / approved / skipped |  |
-| implementation | `12-guarded-implementation.md` / implementation report | not_allowed / allowed / done |  |
-| verification | `13-guarded-verification.md` / verification report | pending / done / blocked |  |
-| delivery | `00-fast-patch-summary.md` / `14-guarded-summary.md` / delivery report | pending / done |  |
+| execution | `11-guarded-execution.md` / implementation + verification reports | not_allowed / allowed / done / blocked |  |
+| delivery | `00-fast-patch-summary.md` / `12-guarded-summary.md` / delivery report | pending / done |  |
 
 ## Preflight 记录
 - cwd：

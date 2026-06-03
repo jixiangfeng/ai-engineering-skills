@@ -4,6 +4,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
+bash "${REPO_ROOT}/scripts/check-tooling.sh" rg
+
 fail() {
   echo "ERROR: $*" >&2
   exit 1
@@ -23,18 +25,14 @@ require_dir "${REPO_ROOT}/docs/run-examples/fast-patch"
 require_dir "${REPO_ROOT}/docs/run-examples/guarded-change"
 require_dir "${REPO_ROOT}/docs/run-examples/audited-delivery"
 require_file "${REPO_ROOT}/docs/run-examples/fast-patch/summary.md"
-require_file "${REPO_ROOT}/docs/run-examples/guarded-change/10-guarded-scope.md"
-require_file "${REPO_ROOT}/docs/run-examples/guarded-change/11-guarded-plan.md"
-require_file "${REPO_ROOT}/docs/run-examples/guarded-change/12-guarded-implementation.md"
-require_file "${REPO_ROOT}/docs/run-examples/guarded-change/13-guarded-verification.md"
-require_file "${REPO_ROOT}/docs/run-examples/guarded-change/14-guarded-summary.md"
+require_file "${REPO_ROOT}/docs/run-examples/guarded-change/10-guarded-scope-plan.md"
+require_file "${REPO_ROOT}/docs/run-examples/guarded-change/11-guarded-execution.md"
+require_file "${REPO_ROOT}/docs/run-examples/guarded-change/12-guarded-summary.md"
 require_file "${REPO_ROOT}/docs/run-examples/audited-delivery/README.md"
 require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/00-fast-patch-summary.md"
-require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/10-guarded-scope.md"
-require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/11-guarded-plan.md"
-require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/12-guarded-implementation.md"
-require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/13-guarded-verification.md"
-require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/14-guarded-summary.md"
+require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/10-guarded-scope-plan.md"
+require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/11-guarded-execution.md"
+require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/12-guarded-summary.md"
 require_file "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/20-audited-run-map.md"
 
 for term in fast guarded audited lightweight standard full; do
@@ -45,7 +43,7 @@ rg -q 'conditional-blocks.zh-CN.md' "${REPO_ROOT}/plugins/ai-engineering-skills/
 rg -q 'Fast Patch' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Fast Patch artifact path"
 rg -q '00-fast-patch-summary.md' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference fast patch template"
 rg -q 'Guarded Change' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Guarded Change artifact path"
-rg -q '10-guarded-scope.md' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference guarded templates"
+rg -q '10-guarded-scope-plan.md' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference guarded templates"
 rg -q 'Audited Delivery' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Audited Delivery artifact path"
 rg -q '20-audited-run-map.md' "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md" || fail "delivery skill should reference audited run map"
 
@@ -57,9 +55,22 @@ if rg -q '01-delivery-requirements|02-delivery-plan|03-delivery-implementation|0
   fail "fast patch template should not include full delivery stage filenames"
 fi
 
-for old_guarded in 01-scope.md 02-plan.md 03-implementation.md 04-verification.md 05-summary.md; do
-  if [[ -e "${REPO_ROOT}/docs/run-examples/guarded-change/${old_guarded}" ]]; then
-    fail "guarded example should use 10-14 guarded filenames, found: ${old_guarded}"
+for obsolete_guarded in \
+  10-guarded-scope.md \
+  11-guarded-plan.md \
+  12-guarded-implementation.md \
+  13-guarded-verification.md \
+  14-guarded-summary.md \
+  01-scope.md \
+  02-plan.md \
+  03-implementation.md \
+  04-verification.md \
+  05-summary.md; do
+  if [[ -e "${REPO_ROOT}/docs/run-examples/guarded-change/${obsolete_guarded}" ]]; then
+    fail "guarded example should use the slim 10-12 guarded filenames, found: ${obsolete_guarded}"
+  fi
+  if [[ -e "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/${obsolete_guarded}" ]]; then
+    fail "guarded templates should not keep obsolete split files, found: ${obsolete_guarded}"
   fi
 done
 
@@ -95,11 +106,9 @@ done
 
 for template in \
   00-fast-patch-summary.md \
-  10-guarded-scope.md \
-  11-guarded-plan.md \
-  12-guarded-implementation.md \
-  13-guarded-verification.md \
-  14-guarded-summary.md; do
+  10-guarded-scope-plan.md \
+  11-guarded-execution.md \
+  12-guarded-summary.md; do
   path="${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates/${template}"
   if rg -q 'mode: audited only' "${path}"; then
     fail "fast/guarded template must not be marked audited-only: ${template}"

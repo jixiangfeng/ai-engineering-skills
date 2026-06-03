@@ -51,7 +51,7 @@
 | executionMode | 适用场景 | 最小产物 | 不应做的事 |
 | --- | --- | --- | --- |
 | `lightweight` | “小改一下 / 快速看下 / 简单修复 / 帮我看一眼”等小任务；scope 很小；用户不需要完整阶段文档 | `workflow-state.json` + summary 文件；如需要人类可读 state，可补 `*-workflow-state.md` | 不生成完整 `01-*` 阶段文档，不默认 handoff |
-| `standard` | 中等任务；需要少量关键文档支撑判断、计划或验证 | `workflow-state.json` + `*-workflow-state.md` + summary + 关键阶段文档 | 不展开所有阶段，不生成无必要 handoff |
+| `standard` | 中等任务；需要少量关键文档支撑判断、计划或验证 | `workflow-state.json` + `*-workflow-state.md` + summary + 少量关键阶段文档（可合并） | 不展开所有阶段，不生成无必要 handoff |
 | `full` | “完整熟悉 / 深度 review / 形成文档 / 可交付 / handoff / 后续恢复”等明确需要可审计全流程的任务；高风险、多阶段、跨 workflow | 对应 workflow 的完整 required files、handoff、verification、必要时更新 `workflow/index.md` | 不省略确认门禁和验证记录 |
 
 默认选择规则：
@@ -65,6 +65,7 @@
 
 - 如果 `lightweight` 过程中发现 scope 变大、风险升高或需要 handoff，必须先说明原因，再升级到 `standard` 或 `full`。
 - 如果用户明确要求“不要生成太多文档”，不得自动进入 `full`；除非存在安全或恢复风险，并需说明取舍。
+- `standard` 模式优先合并可合并阶段，例如把 scope+plan、implementation+verification 收敛为更少的主文档。
 - 如果用户要求完整文档，不能用 `lightweight` 代替。
 
 ## State File Contract

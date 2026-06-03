@@ -6,6 +6,8 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 RUN_SMOKE=1
 RUN_DRY_RUN=1
 
+bash "${REPO_ROOT}/scripts/check-tooling.sh" git
+
 usage() {
   cat <<'USAGE'
 Usage: scripts/release-check.sh [--no-smoke] [--skip-dry-run] [--ci]
@@ -65,6 +67,10 @@ bash "${REPO_ROOT}/scripts/check-execution-mode-contract.sh"
 echo
 echo "== Structured checks =="
 bash "${REPO_ROOT}/scripts/check-structured.sh"
+
+if [[ "${RUN_SMOKE}" -eq 1 ]]; then
+  bash "${REPO_ROOT}/scripts/check-tooling.sh" python3
+fi
 
 echo
 echo "== Isolated smoke install =="

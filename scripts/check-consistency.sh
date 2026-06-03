@@ -6,6 +6,8 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 PLUGIN_DIR="${REPO_ROOT}/plugins/ai-engineering-skills"
 SKILLS_DIR="${PLUGIN_DIR}/skills"
 
+bash "${REPO_ROOT}/scripts/check-tooling.sh" rg
+
 fail() {
   echo "ERROR: $*" >&2
   exit 1
@@ -59,6 +61,8 @@ require_file "${REPO_ROOT}/scripts/check-artifact-metadata.py"
 require_file "${REPO_ROOT}/scripts/check-bootstrap-routing.py"
 require_file "${REPO_ROOT}/scripts/check-domain-module-routing.py"
 require_file "${REPO_ROOT}/scripts/check-python.sh"
+require_file "${REPO_ROOT}/scripts/check-tooling.sh"
+require_file "${REPO_ROOT}/scripts/check-example-completeness.py"
 require_file "${REPO_ROOT}/scripts/check-structured.sh"
 require_file "${REPO_ROOT}/scripts/check-execution-mode-contract.sh"
 require_file "${REPO_ROOT}/scripts/check-workflow-state.sh"
@@ -169,6 +173,10 @@ rg -q 'update-workflow-index.py' "${REPO_ROOT}/scripts/check-workflow-index.sh" 
 for wrapper in check-workflow-state.sh check-workflow-index.sh check-structured.sh; do
   rg -q 'check-python.sh' "${REPO_ROOT}/scripts/${wrapper}" || fail "${wrapper} should use check-python.sh before Python-backed checks"
 done
+rg -q 'check-tooling.sh' "${REPO_ROOT}/scripts/check-consistency.sh" || fail "consistency check should validate rg availability"
+rg -q 'check-tooling.sh' "${REPO_ROOT}/scripts/check-execution-mode-contract.sh" || fail "execution mode contract check should validate rg availability"
+rg -q 'check-tooling.sh' "${REPO_ROOT}/scripts/release-check.sh" || fail "release-check.sh should validate git availability"
+rg -q 'check-tooling.sh' "${REPO_ROOT}/scripts/check-python.sh" || fail "check-python.sh should use shared tooling validation"
 rg -q 'check-structured.sh' "${REPO_ROOT}/scripts/release-check.sh" || fail "release-check.sh should use check-structured.sh for Python-backed checks"
 for term in 'check-consistency.sh' 'check-workflow-state.sh' 'check-workflow-index.sh' 'check-structured.sh' 'smoke-install-local.sh' 'install-codex-skills.sh" --dry-run --backup' 'install-claude-plugin.sh" --dry-run --backup'; do
   rg -q "${term}" "${REPO_ROOT}/scripts/release-check.sh" || fail "release check script missing term: ${term}"
@@ -194,6 +202,7 @@ rg -q 'artifact-metadata-schema' "${REPO_ROOT}/scripts/check-artifact-metadata.p
 rg -q 'extract_front_matter' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should parse YAML front matter"
 rg -q 'REQUIRED_HANDOFF_KEYS' "${REPO_ROOT}/scripts/check-artifact-metadata.py" || fail "artifact metadata checker should enforce handoff metadata"
 rg -q 'docs/artifact-templates' "${REPO_ROOT}/scripts/check-structured.sh" || fail "structured check should validate artifact templates"
+rg -q 'check-example-completeness.py' "${REPO_ROOT}/scripts/check-structured.sh" || fail "structured check should validate published examples for leftover placeholders"
 rg -q 'assets/.\\*-templates' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs should include artifact template metadata check"
 rg -q -- '--runtime-command' "${REPO_ROOT}/scripts/check-bootstrap-routing.py" || fail "bootstrap routing harness missing runtime command mode"
 rg -q -- '--strict-jsonschema' "${REPO_ROOT}/docs/testing.zh-CN.md" || fail "testing docs missing strict jsonschema option"

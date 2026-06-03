@@ -72,14 +72,14 @@
 | 用户提示词 | 期望模式 | 期望产物 |
 | --- | --- | --- |
 | 帮我把 README 里一个错别字改掉，并说明验证结果 | `lightweight` / `fast` | concise summary 或 `00-fast-patch-summary.md` |
-| 实现一个局部低风险 bugfix，需要先确认范围和计划 | `standard` / `guarded` | `10-guarded-scope.md` 到 `14-guarded-summary.md` |
+| 实现一个局部低风险 bugfix，需要先确认范围和计划 | `standard` / `guarded` | `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md` |
 | 按这个 review handoff 修复涉及 API 响应结构的问题 | `full` / `audited` | `20-audited-run-map.md` + 完整门禁链路 |
 
 每次测试确认：
 
 - agent 是否明确说明 execution mode 和 mode path
 - fast 是否没有生成完整 `01-08` 文档
-- guarded 是否有 scope / plan / verification
+- guarded 是否有合并后的 scope / plan 门禁，以及带验证证据的 execution 文档
 - audited 是否保留 handoff、风险门禁、验证矩阵和必要确认
 - 高风险或 handoff 任务是否没有被降级
 

@@ -92,13 +92,15 @@ bash scripts/check-structured.sh
 
 ## `check-structured.sh`
 
-统一运行 Markdown、artifact metadata、bootstrap routing 和 domain module routing 检查。该脚本是 shell 入口，内部调用 Python 标准库脚本。
+统一运行 Markdown、artifact metadata、示例完整性、bootstrap routing 和 domain module routing 检查。该脚本是 shell 入口，内部调用 Python 标准库脚本。
 
 常用命令：
 
 ```bash
 bash scripts/check-structured.sh
 ```
+
+它还会检查 `docs/run-examples`、`docs/full-run-examples` 和各 skill `examples/` 中是否残留 `<slug>`、`path/to/file:line`、`TODO` 这类模板占位内容。
 
 ## `install-codex-skills.sh`
 

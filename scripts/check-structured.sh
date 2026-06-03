@@ -24,6 +24,16 @@ python3 "${REPO_ROOT}/scripts/check-artifact-metadata.py" \
   "${REPO_ROOT}/docs/run-examples" \
   "${REPO_ROOT}/tests/artifact-metadata/valid-artifact.md"
 
+python3 "${REPO_ROOT}/scripts/check-example-completeness.py" \
+  "${REPO_ROOT}/docs/full-run-examples" \
+  "${REPO_ROOT}/docs/run-examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/api-contract-design/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/code-review-triage/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/codebase-orientation/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/data-migration-planning/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/examples"
+
 echo "== Bootstrap routing cases =="
 python3 "${REPO_ROOT}/scripts/check-bootstrap-routing.py" \
   --cases "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv"

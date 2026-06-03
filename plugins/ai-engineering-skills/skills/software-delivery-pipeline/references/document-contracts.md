@@ -11,7 +11,7 @@
 | 模式 | 模板 | 用途 |
 | --- | --- | --- |
 | fast | `00-fast-patch-summary.md` | 低风险小改，只保留目标、范围、最小计划、验证和风险 |
-| guarded | `10-guarded-*` | 普通开发变更，保留 scope、plan、implementation、verification、summary |
+| guarded | `10-guarded-*` | 普通开发变更，默认收缩为 `scope+plan`、`execution`、`summary` 三份主文档 |
 | audited | `20-audited-run-map.md` + `01-08 delivery` | 高风险、handoff、契约、数据、权限或可审计交付 |
 
 旧 `01-08 delivery` 模板是 audited only。fast 和 guarded 不应引用这些模板，除非任务升级到 audited。

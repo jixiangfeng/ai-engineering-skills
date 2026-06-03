@@ -16,6 +16,8 @@ bash scripts/check-structured.sh
 
 `check-structured.sh` 内部仍使用 Python 标准库脚本处理 JSON、Markdown metadata 和 TSV 路由规则。这样日常入口保持 shell 友好，同时避免用 shell 解析结构化数据导致规则变脆。
 
+另外它还会检查 `docs/run-examples`、`docs/full-run-examples` 以及各 skill `examples/` 是否残留 `<YYYY-MM-DD>`、`<slug>`、`path/to/file:line`、`TODO` 等模板占位内容，避免把半成品示例发布出去。
+
 发布或真实安装前，推荐直接运行：
 
 ```bash
@@ -49,7 +51,7 @@ bash scripts/check-execution-mode-contract.sh
 | 修改 README 或 docs | `bash scripts/check-consistency.sh` |
 | 修改 `SKILL.md` | `bash scripts/check-consistency.sh` |
 | 修改模板或 reference | `bash scripts/check-consistency.sh` |
-| 修改 execution mode / 条件块 / run examples | `bash scripts/check-execution-mode-contract.sh` + `bash scripts/check-consistency.sh` |
+| 修改 execution mode / 条件块 / run examples | `bash scripts/check-execution-mode-contract.sh` + `bash scripts/check-consistency.sh` + `bash scripts/check-structured.sh` |
 | 修改 `workflow-bootstrap` 路由 | `bash scripts/check-consistency.sh` + `bash scripts/check-structured.sh` |
 | 修改领域模块路由 | `bash scripts/check-consistency.sh` + `bash scripts/check-structured.sh` |
 | 修改安装脚本 | `bash scripts/check-consistency.sh` + `bash scripts/smoke-install-local.sh` |

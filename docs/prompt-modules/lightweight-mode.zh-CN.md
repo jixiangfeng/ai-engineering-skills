@@ -5,7 +5,7 @@
 ## 模式选择
 
 - `lightweight` / fast: 小改、快速看下、简单修复、轻量问答后的最小 workflow；只生成 `workflow-state.json` 和 summary / verification note。
-- `standard` / guarded: 普通 review/debug/design/planning/delivery；生成 scope、plan、implementation、verification 等关键阶段文档。
+- `standard` / guarded: 普通 review/debug/design/planning/delivery；默认只生成 `10-guarded-scope-plan.md`、`11-guarded-execution.md`、`12-guarded-summary.md` 三份关键文档。
 - `full` / audited: 用户要求完整、深度、形成文档、handoff、可恢复，或任务风险较高；生成完整阶段链路。
 
 ## 执行规则

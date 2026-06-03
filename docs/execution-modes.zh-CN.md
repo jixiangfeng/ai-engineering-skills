@@ -7,7 +7,7 @@
 | 兼容名 | 产品语义 | 适用场景 | 默认产物 |
 | --- | --- | --- | --- |
 | `lightweight` | fast | 小修、小范围低风险改动、简单验证即可闭环 | `workflow-state.json` + summary / verification note |
-| `standard` | guarded | 普通 bugfix、局部重构、需要 scope 和 plan 的实现 | requirements/scope + plan + implementation + verification + summary |
+| `standard` | guarded | 普通 bugfix、局部重构、需要 scope 和 plan 的实现 | `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md` |
 | `full` | audited | 高风险、跨模块、handoff、契约、数据、权限、可审计交付 | 完整阶段文档、确认门禁、必要 handoff / change review / debugging |
 
 ## 选择原则
@@ -46,16 +46,19 @@
 - 未触发 audited 硬条件。
 
 最小输出：
-- requirements / scope。
-- implementation plan。
-- implementation record。
-- verification record。
+- 合并的 requirements / scope / implementation plan。
+- 合并的 implementation / verification execution record。
 - summary。
 
 允许跳过：
 - architecture gate，前提是记录 skipped reason。
 - change review，前提是 diff 小且不触发风险门禁。
 - debugging，前提是实现和验证没有异常。
+
+推荐收缩：
+- `scope` 与 `plan` 默认合并在 `10-guarded-scope-plan.md`，用一次确认门禁锁定范围、计划和验证目标。
+- `implementation` 与 `verification` 默认合并在 `11-guarded-execution.md`，避免把“实现完成”和“验证完成”拆成两份重复文档。
+- 只有需要审计、handoff 或风险升级时，才展开为 audited 的独立阶段文档。
 
 ## audited
 

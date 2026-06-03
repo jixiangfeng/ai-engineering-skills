@@ -102,17 +102,17 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Start from the lightest safe path. Do not generate full 01-08 artifacts unless `executionMode` is `full` / audited or a risk trigger requires them.
 - Treat each generated stage as a separate checkpoint.
 - Every generated stage must write its output document before the next generated stage starts.
-- Stage 1 has a mandatory human review gate for `standard` / guarded and `full` / audited runs: after writing `01-delivery-requirements.md`, stop and ask the human to confirm or revise it before Stage 2.
+- Guarded runs use one mandatory human review gate on `10-guarded-scope-plan.md`; audited runs use the full staged gates starting from `01-delivery-requirements.md`.
 - `lightweight` / fast runs may use a concise summary / verification note instead of full requirements and plan documents, but must still record goal, scope, assumptions, verification, skipped gates, and upgrade conditions.
 - Guarded runs require scope and plan confirmation, but the confirmation may be a single combined gate when the user's instruction already clearly approves the scope, plan direction, and verification target. Do not skip verification.
 - Audited hard triggers override task size. If any audited trigger is present, do not downgrade to guarded or fast only because the code diff is small.
 - Architecture design is conditional: for simple tasks, record why no standalone architecture document is needed; for architecture-triggering tasks, write `02-delivery-architecture.md` and stop for human confirmation before planning.
-- The planning stage has a mandatory human review gate: after writing the plan document, stop and ask the human to confirm or revise it before implementation.
+- The planning stage has a mandatory human review gate: guarded runs satisfy it inside `10-guarded-scope-plan.md`; audited runs keep the standalone plan confirmation before implementation.
 - Confirmation gates are clarification-and-convergence loops, not one-shot approvals.
 - Do not treat the human's initial description as automatically correct; compare it with code evidence, constraints, risk, and feasibility.
 - If a requirement, architecture choice, or plan contains contradictions, missing decisions, unsafe assumptions, infeasible work, or conflicts with the current codebase, state the issue clearly, propose options, update the current stage document, and ask for confirmation again.
 - If the human requests requirement, architecture, or plan changes, update the current stage document and ask for confirmation again; repeat until explicitly approved and no unresolved questions remain.
-- Do not begin planning until the requirements document is approved, except in `lightweight` / fast runs where the summary records the scope and verification note.
+- Do not begin planning until the guarded `scope+plan` document or audited requirements document is approved, except in `lightweight` / fast runs where the summary records the scope and verification note.
 - Do not begin implementation or code edits until required architecture and implementation plan documents are approved, except in `lightweight` / fast runs where the task is low risk and the fast note records the minimal plan and stop conditions.
 - During implementation, debugging, or verification, pause for human confirmation if scope expands, the plan must materially change, verification is blocked, or a destructive/high-risk operation is needed.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
@@ -126,8 +126,8 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, file paths, error text, API names, and quoted user text.
 - When continuing from `code-review-triage`, use the review handoff files as the source of truth and do not repair unselected findings.
 - When continuing from any upstream handoff, follow `docs/workflow-contracts.zh-CN.md` `Handoff Flow Contract` before writing delivery requirements.
-- Review-originated fixes have a hard start gate: do not edit code until a delivery run has written and received approval for `01-delivery-requirements.md` and the required plan document.
-- If code changes already exist before the delivery run starts, record them as pre-existing workspace state in `01-delivery-requirements.md`, lock the intended scope, and do not expand or normalize unrelated diffs.
+- Review-originated fixes have a hard start gate: do not edit code until a delivery run has written and received approval for the required guarded/audited scope-and-plan artifacts.
+- If code changes already exist before the delivery run starts, record them as pre-existing workspace state in the active requirements/scope artifact, lock the intended scope, and do not expand or normalize unrelated diffs.
 
 ## Implementation Strategy
 
@@ -268,12 +268,15 @@ Use this path for ordinary implementation or bugfix work that needs scope, plan,
 
 Required files:
 0. `delivery-workflow-state.md`
-1. `10-guarded-scope.md`
-2. `11-guarded-plan.md`
-3. `12-guarded-implementation.md`
-4. `13-guarded-verification.md`
-5. `14-guarded-summary.md`
-6. `workflow-state.json`
+1. `10-guarded-scope-plan.md`
+2. `11-guarded-execution.md`
+3. `12-guarded-summary.md`
+4. `workflow-state.json`
+
+Guarded consolidation rules:
+- `10-guarded-scope-plan.md` combines requirements/scope, implementation plan, and verification target, then stops for one human confirmation gate.
+- `11-guarded-execution.md` combines implementation record and verification evidence, so ordinary runs do not split those into two files.
+- Only expand to audited delivery documents when architecture, change-review, debugging, handoff, or risk triggers require it.
 
 Conditional files:
 - `02-delivery-architecture.md` only when architecture triggers apply.
@@ -305,7 +308,7 @@ Required / conditional chain:
 9. `08-delivery-summary.md` or `06-delivery-summary.md` for simple audited paths
 10. `workflow-state.json`
 
-Use the templates in `assets/workflow-templates/`. Fast patch runs should use `00-fast-patch-summary.md`; guarded runs should use `10-guarded-*` templates; audited runs should use the full delivery templates required by their mode. The templates are Chinese-first and should remain Chinese when filled.
+Use the templates in `assets/workflow-templates/`. Fast patch runs should use `00-fast-patch-summary.md`; guarded runs should use `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md`; audited runs should use the full delivery templates required by their mode. The templates are Chinese-first and should remain Chinese when filled.
 
 After each stage document is written or updated, update `delivery-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, selected scope, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
@@ -531,19 +534,22 @@ When using this skill in a live task:
 2. run the preflight checklist
 3. create the run folder under `<project-root>/workflow/runs/<YYYY-MM-DD>-<slug>/`
 4. create or update `delivery-workflow-state.md`
-5. write `01-delivery-requirements.md` in Chinese
-6. ask the human to confirm or revise `01-delivery-requirements.md`, then stop
-7. if revisions are requested, update `01-delivery-requirements.md` and repeat the confirmation gate
-6. after explicit approval, evaluate the architecture gate
-7. if architecture triggers apply, write `02-delivery-architecture.md` in Chinese, ask the human to confirm or revise it, then stop
-8. if architecture revisions are requested, update `02-delivery-architecture.md` and repeat the confirmation gate
-9. after architecture approval, or when no standalone architecture document is needed, write the implementation plan in Chinese (`03-delivery-plan.md` when architecture exists, otherwise `02-delivery-plan.md`)
-10. ask the human to confirm or revise the plan, then stop
-11. if revisions are requested, update the plan and repeat the confirmation gate
-12. after explicit approval, execute implementation and write the implementation report in Chinese
-13. during implementation/debugging/verification, pause for confirmation if scope expands, the architecture/plan materially changes, verification is blocked, or a destructive/high-risk operation is needed
-14. after implementation, evaluate the Change Review Gate triggers
-15. if triggers apply, write `05-delivery-change-review.md`; only continue if the conclusion is `approved_for_verification` or `approved_with_notes`
+5. if the run stays `standard` / guarded, write `10-guarded-scope-plan.md` in Chinese, ask the human to confirm or revise it, then stop
+6. if guarded revisions are requested, update `10-guarded-scope-plan.md` and repeat the confirmation gate
+7. after guarded approval, execute implementation + verification and write `11-guarded-execution.md`, then summarize in `12-guarded-summary.md`
+8. if the run is `full` / audited, write `01-delivery-requirements.md` in Chinese
+9. ask the human to confirm or revise `01-delivery-requirements.md`, then stop
+10. if audited requirement revisions are requested, update `01-delivery-requirements.md` and repeat the confirmation gate
+11. after explicit approval, evaluate the architecture gate
+12. if architecture triggers apply, write `02-delivery-architecture.md` in Chinese, ask the human to confirm or revise it, then stop
+13. if architecture revisions are requested, update `02-delivery-architecture.md` and repeat the confirmation gate
+14. after architecture approval, or when no standalone architecture document is needed, write the implementation plan in Chinese (`03-delivery-plan.md` when architecture exists, otherwise `02-delivery-plan.md`)
+15. ask the human to confirm or revise the plan, then stop
+16. if revisions are requested, update the plan and repeat the confirmation gate
+17. after explicit approval, execute implementation and write the implementation report in Chinese
+18. during implementation/debugging/verification, pause for confirmation if scope expands, the architecture/plan materially changes, verification is blocked, or a destructive/high-risk operation is needed
+19. after implementation, evaluate the Change Review Gate triggers
+20. if triggers apply, write `05-delivery-change-review.md`; only continue if the conclusion is `approved_for_verification` or `approved_with_notes`
 16. if needed, perform debugging and write the debugging report in Chinese; otherwise write the Chinese not-needed stub
 17. verify and write the verification report in Chinese
 18. summarize in the delivery report in Chinese
