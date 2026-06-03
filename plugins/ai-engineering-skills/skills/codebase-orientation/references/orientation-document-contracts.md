@@ -11,6 +11,15 @@ orientation 文档应回答：
 - 哪些是事实，哪些只是推断
 - 下一步最适合进入哪个 workflow
 
+## 默认瘦身路径
+
+`standard` 模式优先使用 3 份主文档：
+- `10-orientation-scope.md`
+- `11-orientation-map.md`
+- `12-orientation-summary.md`
+
+只有在 repo 很大、需要强分层讲解、或用户明确要求 deep decomposition 时，才展开为 `02~07` 的细分文档。
+
 ## 最低要求
 
 ### 1. `orientation-workflow-state.md`
@@ -21,27 +30,23 @@ orientation 文档应回答：
 - 阻塞项
 - 是否允许改代码（默认否）
 
-### 2. `01-orientation-scope.md`
+### 2. `10-orientation-scope.md`
 至少记录：
 - 熟悉目标（repo / 模块 / 接口 / 流程）
 - 本轮关注点
 - 范围内 / 范围外
 - 若范围过大，当前边界如何裁剪
 
-### 3. `02~05` 阶段文档
+### 3. `11-orientation-map.md`
 至少能够覆盖：
 - 项目/模块角色
 - 业务流程
 - 技术调用链
 - 数据契约或重要数据结构
+- open questions / review leads
+- `事实 / 推断 / 待确认` 区分
 
-### 4. `06-orientation-open-questions.md`
-至少记录：
-- 仍不确定的点
-- 缺证据但值得继续查的点
-- 后续可 review 的线索
-
-### 5. `07-orientation-summary.md`
+### 4. `12-orientation-summary.md`
 至少记录：
 - 本轮结论摘要
 - 关键文件/模块

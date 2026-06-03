@@ -2,61 +2,32 @@
 
 ## Run
 - Workflow: `debug-root-cause`
-- Mode: full
+- Mode: standard
 - Run path: `workflow/debug/2026-05-26-submit-timeout`
 - Status: `handoff_ready`
 - Code edits allowed: `false`
 
 ## State Snapshot
 - 当前阶段：`summary`
-- 最新文档：`08-debug-summary.md`
+- 最新文档：`13-debug-summary.md`
 - 下一步：如需修复，使用 `debug-to-delivery-handoff.md`
 - Reproduction status：`reproduced`
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
+## Slim Artifact Shape
+- `10-debug-scope-reproduction.md`：合并问题范围与复现结果
+- `11-debug-evidence.md`：合并日志、堆栈、代码路径、配置、数据和 hypotheses
+- `12-debug-root-cause.md`：合并根因、fix options、verification plan
+- `13-debug-summary.md`：记录 rejected hypotheses、confirmed root cause、next workflow
+- `debug-to-delivery-handoff.md`：仅在需要进入实现时生成
+
 ## Debug Analysis
-
-### 1. 现象复述
-- 重复调用提交接口时第二次请求超时。
-
-### 2. 影响范围
-- 影响订单提交接口；查询接口不受影响。
-
-### 3. 已知证据
-- 日志：第二次请求等待锁直到超时。
-- 代码：trace 指向 `SubmitService.acquireLock(...)`。
-- 配置：锁超时时间为 30 秒。
-- 数据：同一用户、同一订单草稿复现。
-- 复现步骤：连续两次提交相同 payload。
-
-### 4. 初始假设
-| 假设 | 支持证据 | 反证 | 当前状态 |
-| --- | --- | --- | --- |
-| 异常分支未释放锁 | catch 分支提前返回 | 正常分支会 unlock | confirmed |
-
-### 5. 排除过程
-1. 排除数据库慢查询：SQL 日志无慢查询。
-2. 排除网关超时：本地 service 单测可复现。
-
-### 6. 根因判断
-- Root cause: catch 分支提前返回，跳过 unlock。
-- Confidence: high
-- Evidence: `SubmitService.submit(...)` 异常路径缺少 finally 释放。
-
-### 7. 最小修复点
-- 使用 finally 释放锁，不改提交流程其他逻辑。
-
-### 8. 验证方案
-- 增加异常分支释放锁测试。
-- 重复提交复现脚本应不再超时。
-
-## Fix Options Shape
-| Option | Impact | Risk | Recommendation |
-| --- | --- | --- | --- |
-| finally 释放锁 | 局部修复 | 低 | recommended |
-
-## Handoff Shape
-`debug-to-delivery-handoff.md` 必须包含 root cause、selected fix option、affected files、scope lock、verification requirements、risks 和 unresolved questions。
+- 现象：重复调用提交接口时第二次请求超时。
+- 已知证据：第二次请求等待锁直到超时；trace 指向 `SubmitService.acquireLock(...)`；锁超时时间为 30 秒。
+- 已排除：数据库慢查询、网关超时。
+- 根因：catch 分支提前返回，跳过 unlock。
+- 最小修复点：使用 finally 释放锁，不改提交流程其他逻辑。
+- 验证方案：增加异常分支释放锁测试；重复提交复现脚本应不再超时。
 
 ## Verification
 

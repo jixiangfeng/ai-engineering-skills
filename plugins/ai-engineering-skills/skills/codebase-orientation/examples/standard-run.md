@@ -2,16 +2,27 @@
 
 ## Run
 - Workflow: `codebase-orientation`
-- Mode: lightweight
+- Mode: standard
 - Run path: `workflow/orientation/2026-05-26-order-module`
 - Status: `completed`
 - Code edits allowed: `false`
 
 ## State Snapshot
 - 当前阶段：`summary`
-- 最新文档：`07-orientation-summary.md`
+- 最新文档：`12-orientation-summary.md`
 - 下一步：如需审查，使用 `orientation-to-review-handoff.md`
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
+
+## Slim Artifact Shape
+- `10-orientation-scope.md`：记录熟悉目标、关注点、范围内 / 范围外
+- `11-orientation-map.md`：合并项目结构、业务流、技术流、数据契约和 open questions
+- `12-orientation-summary.md`：给出本轮结论、关键文件、风险、推荐下一步 workflow
+- `orientation-to-review-handoff.md` / `orientation-to-delivery-handoff.md`：仅在需要下游 workflow 时生成
+
+## Task Decomposition
+- 先确认订单模块边界和入口文件
+- 再梳理业务流和技术调用链
+- 最后收敛为风险、open questions 和推荐下一步 workflow
 
 ## Summary Shape
 - 当前结论：订单模块负责创建、支付状态同步和退款入口编排。
@@ -19,27 +30,6 @@
 - 未解决问题：支付回调幂等策略需要 review 验证。
 - 主要风险：订单状态机分散在 service 和 listener 中。
 - 推荐下一步：`code-review-triage`，聚焦幂等和状态流转。
-
-## Task Decomposition
-
-### 是否需要拆分
-- yes
-
-### 子任务
-| 子任务 | 类型 | 是否可并行 | 输出 |
-| --- | --- | --- | --- |
-| 代码结构分析 | read-only | yes | `02-orientation-project-map.md` |
-| 业务流分析 | read-only | yes | `03-orientation-business-flow.md` |
-| 数据契约分析 | read-only | yes | `05-orientation-data-contracts.md` |
-| 风险线索分析 | read-only | yes | `06-orientation-open-questions.md` |
-
-## Handoff Shape
-生成 `orientation-to-review-handoff.md` 时至少携带：
-- confirmed scope
-- key modules and flows
-- review leads
-- evidence sources
-- unresolved questions
 
 ## Verification
 

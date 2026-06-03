@@ -181,14 +181,16 @@ Use this mode when the user says to continue from a review, fix selected finding
 
 Required input files, in priority order:
 1. `workflow/reviews/<run>/review-to-delivery-handoff.md`
-2. `workflow/reviews/<run>/03-review-fix-selection.md`
-3. `workflow/reviews/<run>/04-review-fix-plan.md`
-4. `workflow/reviews/<run>/02-review-findings.md` only for evidence lookup
+2. `workflow/reviews/<run>/12-review-fix-plan.md`
+3. `workflow/reviews/<run>/11-review-findings.md` only for evidence lookup
+4. legacy compatibility only: `workflow/reviews/<run>/03-review-fix-selection.md` + `workflow/reviews/<run>/04-review-fix-plan.md`
+5. legacy evidence lookup only: `workflow/reviews/<run>/02-review-findings.md`
 
 Rules:
 - Read the handoff before writing `01-delivery-requirements.md`.
 - If `review-to-delivery-handoff.md` contains a YAML block, use it to verify selected findings, excluded findings, constraints, verification requirements, and forbidden scope.
-- If no handoff exists but the review run has confirmed `03-review-fix-selection.md` and `04-review-fix-plan.md`, reconstruct the handoff in `01-delivery-requirements.md` from those files, state that no handoff file was found, and stop for requirements confirmation before any code edit.
+- If no handoff exists but the review run has confirmed `12-review-fix-plan.md`, reconstruct the handoff in `01-delivery-requirements.md` from that file, state that no handoff file was found, and stop for requirements confirmation before any code edit.
+- If no handoff exists but the review run uses the legacy split path and has confirmed `03-review-fix-selection.md` and `04-review-fix-plan.md`, reconstruct the handoff in `01-delivery-requirements.md` from those files, state that no handoff file was found, and stop for requirements confirmation before any code edit.
 - If no handoff and no confirmed review selection/plan exist, stop and ask the human to complete `code-review-triage`; do not implement.
 - `01-delivery-requirements.md` must list the source review run, selected finding IDs, explicitly excluded finding IDs, user constraints, acceptance criteria for each selected finding, and any pre-existing workspace diffs that could affect the work.
 - `02-delivery-plan.md` must map each selected finding ID to concrete implementation and verification steps.

@@ -11,6 +11,9 @@
 - `workflow-state.json` 同步要求
 - summary / handoff / verification 的标准形态
 - 该 workflow 最容易被 agent 模仿的关键输出
+- **默认瘦身路径下的主文档命名和最小产物集合**
+
+对支持 slim default artifacts 的 workflow，`standard-run.md` 应优先展示默认轻量主文档，而不是先展示 fully split trail。
 
 ## 不默认维护完整 01-07/08 示例
 

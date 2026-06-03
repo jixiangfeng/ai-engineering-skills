@@ -2,16 +2,23 @@
 
 ## Run
 - Workflow: `api-contract-design`
-- Mode: full
+- Mode: standard
 - Run path: `workflow/api-contracts/2026-05-26-order-current`
 - Status: `handoff_ready`
 - Code edits allowed: `false`
 
 ## State Snapshot
 - 当前阶段：`summary`
-- 最新文档：`07-api-summary.md`
+- 最新文档：`13-api-summary.md`
 - 下一步：使用 `api-to-delivery-handoff.md` 落地
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
+
+## Slim Artifact Shape
+- `10-api-contract-scope.md`：记录目标接口 / DTO / 响应面、关注点、范围边界
+- `11-api-current-proposed.md`：合并 current contract、proposed contract、事实 / 推断 / 待确认
+- `12-api-rules-examples.md`：合并 compatibility、validation / errors、request / response examples
+- `13-api-summary.md`：给出最终契约结论与 open questions
+- `api-to-delivery-handoff.md`：仅在需要进入实现时生成
 
 ## Contract Shape
 - endpoint: `GET /api/orders/current`
@@ -21,18 +28,6 @@
 - compatibility: 新增字段，不删除旧字段
 - validation/errors: 参数缺失返回业务错误码，不返回 500
 - UI states covered: normal order, refunded order, empty current order, permission denied
-
-## Examples Shape
-```json
-{
-  "id": "O-1",
-  "status": "PAID",
-  "hasRefund": false
-}
-```
-
-## Handoff Shape
-`api-to-delivery-handoff.md` 必须包含 endpoint、DTO fields、compatibility decision、validation behavior、examples、verification focus 和 unresolved questions。
 
 ## Verification
 

@@ -195,19 +195,18 @@ $codebase-orientation 看下这个接口链路是怎么跑的
 workflow/orientation/<YYYY-MM-DD>-<slug>/
 ```
 
-文件：
+文件（默认瘦身）：
 
 ```text
-01-orientation-scope.md
-02-orientation-project-map.md
-03-orientation-business-flow.md
-04-orientation-technical-flow.md
-05-orientation-data-contracts.md
-06-orientation-open-questions.md
-07-orientation-summary.md
+orientation-workflow-state.md
+10-orientation-scope.md
+11-orientation-map.md
+12-orientation-summary.md
 orientation-to-review-handoff.md
 orientation-to-delivery-handoff.md
 ```
+
+需要更细拆分时，再展开为 `02~07` 的细分文档。
 
 ### 后续联动
 
@@ -234,7 +233,8 @@ $code-review-triage review 这个接口链路，有问题先列出来
 - findings 必须有证据、影响、修复方向和置信度。
 - 按严重级别排序：阻塞 / 高 / 中 / 低。
 - 用户确认要修复的 findings 前，不生成修复计划。
-- `04-review-fix-plan.md` 确认后，只生成 `review-to-delivery-handoff.md`，不直接实现。
+- 默认用 `12-review-fix-plan.md` 合并 selected / excluded findings、用户约束、修复计划和验证要求。
+- `12-review-fix-plan.md` 确认后，只生成 `review-to-delivery-handoff.md`，不直接实现。
 
 ### 主要产物
 
@@ -244,18 +244,19 @@ $code-review-triage review 这个接口链路，有问题先列出来
 workflow/reviews/<YYYY-MM-DD>-<slug>/
 ```
 
-文件：
+文件（默认瘦身）：
 
 ```text
 review-workflow-state.md
-01-review-scope.md
-02-review-findings.md
-03-review-fix-selection.md
-04-review-fix-plan.md
+10-review-scope.md
+11-review-findings.md
+12-review-fix-plan.md
+13-review-summary.md
 review-to-delivery-handoff.md
 review-delivery-result.md
-07-review-summary.md
 ```
+
+需要更细拆分时，再展开为 `03~07` 的细分文档。
 
 例外情况下，如果用户明确要求不走 `software-delivery-pipeline`，才可能生成：
 
@@ -339,10 +340,11 @@ delivery-workflow-state.md
 
 ```text
 workflow/reviews/<run>/review-to-delivery-handoff.md
-workflow/reviews/<run>/03-review-fix-selection.md
-workflow/reviews/<run>/04-review-fix-plan.md
-workflow/reviews/<run>/02-review-findings.md
+workflow/reviews/<run>/12-review-fix-plan.md
+workflow/reviews/<run>/11-review-findings.md
 ```
+
+如果是旧 run，再兼容读取 `03-review-fix-selection.md`、`04-review-fix-plan.md`、`02-review-findings.md`。
 
 硬规则：
 
@@ -390,7 +392,7 @@ $debug-root-cause 项目启动失败，找根因
 - 未形成有证据支撑的根因假设前，不应直接提出代码修复。
 - 如果同一问题已有两到三轮修复尝试失败，应检查是否存在架构、边界、生命周期或契约层问题。
 - 区分环境问题、既有失败、测试错误、产品代码错误。
-- 找到根因后生成修复选项和验证计划。
+- 找到根因后生成修复选项和验证计划，默认与根因文档合并。
 
 ### 主要产物
 
@@ -400,19 +402,18 @@ $debug-root-cause 项目启动失败，找根因
 workflow/debug/<YYYY-MM-DD>-<slug>/
 ```
 
-文件：
+文件（默认瘦身）：
 
 ```text
-01-debug-scope.md
-02-debug-reproduction.md
-03-debug-evidence.md
-04-debug-hypotheses.md
-05-debug-root-cause.md
-06-debug-fix-options.md
-07-debug-verification-plan.md
-08-debug-summary.md
+debug-workflow-state.md
+10-debug-scope-reproduction.md
+11-debug-evidence.md
+12-debug-root-cause.md
+13-debug-summary.md
 debug-to-delivery-handoff.md
 ```
+
+需要更细拆分时，再展开为 `02~08` 的细分文档。
 
 ### 后续联动
 
@@ -439,7 +440,7 @@ $api-contract-design 梳理前后端接口契约
 - Java 后端优先强类型 DTO，不使用 `Map<String,Object>` / raw `Object` / `JSONObject` 作为契约。
 - 明确兼容旧客户端与否。
 - 使用 `api-contract-workflow-state.md` 记录当前阶段、恢复点和是否允许改代码。
-- 按 scope → current contract → proposed contract → compatibility → validation/errors → examples → summary/handoff 的阶段推进。
+- 默认按 scope → current+proposed → rules+examples → summary/handoff 的瘦身阶段推进；需要时再展开为完整细分链路。
 
 ### 主要产物
 
@@ -449,18 +450,18 @@ $api-contract-design 梳理前后端接口契约
 workflow/api-contracts/<YYYY-MM-DD>-<slug>/
 ```
 
-文件：
+文件（默认瘦身）：
 
 ```text
-01-api-contract-scope.md
-02-api-current-contract.md
-03-api-proposed-contract.md
-04-api-compatibility.md
-05-api-validation-errors.md
-06-api-examples.md
-07-api-summary.md
+api-contract-workflow-state.md
+10-api-contract-scope.md
+11-api-current-proposed.md
+12-api-rules-examples.md
+13-api-summary.md
 api-to-delivery-handoff.md
 ```
+
+需要更细拆分时，再展开为 `02~07` 的细分文档。
 
 ### 后续联动
 
@@ -490,7 +491,7 @@ $data-migration-planning 设计数据回填和回滚方案
 - 必须有回滚或恢复策略。
 - 破坏性操作必须等待用户确认。
 - 使用 `migration-workflow-state.md` 记录当前阶段、恢复点和是否允许改代码。
-- 按 scope → current data model → target data model → migration plan → rollback → validation → summary/handoff 的阶段推进。
+- 默认按 scope+current → target+plan → rollback+validation → summary/handoff 的瘦身阶段推进；需要时再展开为完整细分链路。
 
 ### 主要产物
 
@@ -500,18 +501,18 @@ $data-migration-planning 设计数据回填和回滚方案
 workflow/data-migrations/<YYYY-MM-DD>-<slug>/
 ```
 
-文件：
+文件（默认瘦身）：
 
 ```text
-01-migration-scope.md
-02-migration-current-data-model.md
-03-migration-target-data-model.md
-04-migration-plan.md
-05-migration-rollback-plan.md
-06-migration-validation-sql.md
-07-migration-summary.md
+migration-workflow-state.md
+10-migration-scope-current.md
+11-migration-target-plan.md
+12-migration-rollback-validation.md
+13-migration-summary.md
 migration-to-delivery-handoff.md
 ```
+
+需要更细拆分时，再展开为 `02~07` 的细分文档。
 
 ### 后续联动
 
@@ -572,11 +573,12 @@ $software-delivery-pipeline 按 workflow/reviews/<run>/review-to-delivery-handof
 如果没有 handoff，但存在已确认的：
 
 ```text
-03-review-fix-selection.md
-04-review-fix-plan.md
+12-review-fix-plan.md
 ```
 
 `software-delivery-pipeline` 可以重建需求，但必须停在 `01-delivery-requirements.md` 等用户确认，不能直接改代码。
+
+旧 run 仍兼容 `03-review-fix-selection.md` + `04-review-fix-plan.md`。
 
 ## 八、状态机与恢复
 
@@ -599,16 +601,18 @@ review-workflow-state.md
 
 ## 九、文件命名规则
 
-新 run 必须使用带流程前缀的文件名：
+新 run 必须使用带流程前缀的文件名。默认优先使用瘦身主文档，例如：
 
 ```text
 01-delivery-requirements.md
-02-review-findings.md
-03-orientation-business-flow.md
-05-debug-root-cause.md
-03-api-proposed-contract.md
-04-migration-plan.md
+11-review-findings.md
+11-orientation-map.md
+12-debug-root-cause.md
+11-api-current-proposed.md
+11-migration-target-plan.md
 ```
+
+只有在需要 fully split trail 时，才继续生成旧的细分阶段文件名。
 
 旧 run 中如果已经存在老文件名，例如：
 

@@ -150,84 +150,53 @@ Project root resolution:
 Required files:
 
 0. `orientation-workflow-state.md`
-1. `01-orientation-scope.md`
-2. `02-orientation-project-map.md`
-3. `03-orientation-business-flow.md`
-4. `04-orientation-technical-flow.md`
-5. `05-orientation-data-contracts.md`
-6. `06-orientation-open-questions.md`
-7. `07-orientation-summary.md`
-8. `orientation-to-review-handoff.md` (optional, when the next step is `code-review-triage`)
-9. `orientation-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
-10. `workflow-state.json` (machine-readable state, maintained alongside `orientation-workflow-state.md`)
+1. `10-orientation-scope.md`
+2. `11-orientation-map.md`
+3. `12-orientation-summary.md`
+4. `orientation-to-review-handoff.md` (optional, when the next step is `code-review-triage`)
+5. `orientation-to-delivery-handoff.md` (optional, when the next step is `software-delivery-pipeline`)
+6. `workflow-state.json` (machine-readable state, maintained alongside `orientation-workflow-state.md`)
+
+Expanded files (only when the repo is large, the human explicitly wants deep decomposition, or the domain really benefits from separate artifacts):
+- `02-orientation-project-map.md`
+- `03-orientation-business-flow.md`
+- `04-orientation-technical-flow.md`
+- `05-orientation-data-contracts.md`
+- `06-orientation-open-questions.md`
+- `07-orientation-summary.md`
 
 Use the templates in `assets/orientation-templates/`.
 
 After each stage document is written or updated, update `orientation-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
-## Stage 1 — Scope
+## Default Slim Flow
 
+### Stage 1 — Scope
 Goal: define what to understand and how deep to go.
 
 Actions:
 - identify target: repo, module, package, endpoint, feature, business flow, or files
 - identify focus: business meaning, call path, data model, integration, deployment, or tests
-- write `01-orientation-scope.md`
+- write `10-orientation-scope.md`
 
 If the user asks “熟悉当前项目” and no module is specified, do a bounded top-level pass first. If the repo is too large, document the boundary and ask what area to deepen next.
 
-## Stage 2 — Project Map
-
-Goal: identify important modules and ownership boundaries.
-
-Actions:
-- inspect directory structure, build files, route/controller/entrypoint files, configs, and existing docs
-- write `02-orientation-project-map.md`
-- explain components by role, not just names
-
-## Stage 3 — Business Flow
-
-Goal: explain the business process in domain terms.
+### Stage 2 — Orientation Map
+Goal: give one reusable core document instead of four thin stage files.
 
 Actions:
-- identify core entities, actors, states, and user/system workflows
-- write `03-orientation-business-flow.md`
-- separate confirmed business rules from inferred rules
+- inspect directory structure, build files, route/controller/entrypoint files, configs, docs, DTOs, entities, schemas, API responses, MQ payloads, config structures, and external contracts as needed
+- write `11-orientation-map.md`
+- merge project/module role, business flow, technical flow, important data contracts, key file references, and open questions into one structured document
+- separate `事实`、`推断`、`待确认`
+- keep possible defects as review leads, not confirmed findings unless evidence is strong and the user asked for review
 
-## Stage 4 — Technical Flow
-
-Goal: trace runtime behavior through code.
-
-Actions:
-- identify entrypoints, service calls, persistence, external integrations, async jobs, and error handling
-- write `04-orientation-technical-flow.md`
-- include key file references and call paths
-
-## Stage 5 — Data Contracts
-
-Goal: record important data shapes and contracts.
-
-Actions:
-- inspect DTOs, entities, schemas, API responses, MQ payloads, config structures, and external contracts
-- write `05-orientation-data-contracts.md`
-- mark schema or contract uncertainty as `待确认`
-
-## Stage 6 — Open Questions
-
-Goal: capture what remains unclear or risky.
-
-Actions:
-- write `06-orientation-open-questions.md`
-- include unknowns, assumptions, suspicious areas, missing docs/tests, and suggested next steps
-- keep possible defects as review leads, not confirmed findings unless evidence is strong and user asked for review
-
-## Stage 7 — Summary and Handoff
-
+### Stage 3 — Summary and Handoff
 Goal: give the human a concise reusable understanding.
 
 Actions:
-- write `07-orientation-summary.md`
-- include architecture overview, business flow summary, technical flow summary, key files, risks, and recommended next step
+- write `12-orientation-summary.md`
+- include architecture overview, business flow summary, technical flow summary, key files, risks, unresolved questions, and recommended next step
 - include `Verification`: files/evidence read, areas not covered, unverified assumptions, and completion judgment
 - explicitly recommend the next best workflow when appropriate, for example: `code-review-triage`, `software-delivery-pipeline`, `debug-root-cause`, `api-contract-design`, or `data-migration-planning`, and state why
 - if the user wants review next, write `orientation-to-review-handoff.md`

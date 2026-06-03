@@ -12,6 +12,16 @@ API contract 文档应回答：
 - 校验与错误行为如何定义
 - 交给 delivery 时哪些约束已经确定
 
+## 默认瘦身路径
+
+`standard` 模式优先使用 4 份主文档：
+- `10-api-contract-scope.md`
+- `11-api-current-proposed.md`
+- `12-api-rules-examples.md`
+- `13-api-summary.md`
+
+只有在接口面广、兼容风险高、或用户明确要求 fully split contract package 时，才展开为 `02~07` 的细分文档。
+
 ## 最低要求
 
 ### 1. `api-contract-workflow-state.md`
@@ -22,44 +32,33 @@ API contract 文档应回答：
 - 阻塞项
 - 是否允许改代码（默认否）
 
-### 2. `01-api-contract-scope.md`
+### 2. `10-api-contract-scope.md`
 至少记录：
 - 目标接口 / DTO / 响应结构 / 调用方范围
 - 本轮关注点（字段、兼容性、错误码、校验等）
 - 范围内 / 范围外
 
-### 3. `02-api-current-contract.md`
+### 3. `11-api-current-proposed.md`
 至少记录：
 - 当前请求/响应结构
 - 当前字段语义
 - 当前验证或错误行为
-- 事实 / 推断 / 待确认 区分
-
-### 4. `03-api-proposed-contract.md`
-至少记录：
 - 目标字段定义
 - 字段位置、类型、空值语义、默认值
 - 若存在多种方案，当前选择与未选方案
+- `事实 / 推断 / 待确认` 区分
 
-### 5. `04-api-compatibility.md`
+### 4. `12-api-rules-examples.md`
 至少记录：
 - 是否兼容旧客户端
-- 若不完全兼容，兼容策略是什么
-- 版本/灰度/过渡期要求
-
-### 6. `05-api-validation-errors.md`
-至少记录：
+- 兼容策略 / 过渡期要求
 - 校验规则
 - 错误码或错误响应结构
 - 关键边界条件与失败行为
-
-### 7. `06-api-examples.md`
-至少记录：
 - 代表性 request/response 示例
 - 非法输入或失败示例
-- 兼容性示例（如 relevant）
 
-### 8. `07-api-summary.md` / `api-to-delivery-handoff.md`
+### 5. `13-api-summary.md` / `api-to-delivery-handoff.md`
 至少记录：
 - 最终契约结论
 - 未决问题

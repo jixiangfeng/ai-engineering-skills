@@ -153,31 +153,33 @@ Create artifacts under `<project-root>/workflow/debug/<YYYY-MM-DD>-<slug>/`.
 
 Required files:
 0. `debug-workflow-state.md`
-1. `01-debug-scope.md`
-2. `02-debug-reproduction.md`
-3. `03-debug-evidence.md`
-4. `04-debug-hypotheses.md`
-5. `05-debug-root-cause.md`
-6. `06-debug-fix-options.md`
-7. `07-debug-verification-plan.md`
-8. `08-debug-summary.md`
-9. `debug-to-delivery-handoff.md` (optional, when implementation is needed)
-10. `workflow-state.json` (machine-readable state, maintained alongside `debug-workflow-state.md`)
+1. `10-debug-scope-reproduction.md`
+2. `11-debug-evidence.md`
+3. `12-debug-root-cause.md`
+4. `13-debug-summary.md`
+5. `debug-to-delivery-handoff.md` (optional, when implementation is needed)
+6. `workflow-state.json` (machine-readable state, maintained alongside `debug-workflow-state.md`)
+
+Expanded files (only when the case is contested, high-risk, or the human explicitly wants the fully split trail):
+- `02-debug-reproduction.md`
+- `03-debug-evidence.md`
+- `04-debug-hypotheses.md`
+- `05-debug-root-cause.md`
+- `06-debug-fix-options.md`
+- `07-debug-verification-plan.md`
+- `08-debug-summary.md`
 
 Use templates in `assets/debug-templates/`.
 
 After each stage document is written or updated, update `debug-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, reproduction status, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
-## Workflow
+## Default Slim Workflow
 
-1. Define the failing behavior and scope.
-2. Reproduce or document why reproduction is blocked.
-3. Collect exact evidence: commands, logs, stack traces, code paths, configs, data.
-4. Generate hypotheses and eliminate them with evidence.
-5. State root cause with confidence and source evidence.
-6. Propose fix options and tradeoffs.
-7. Define verification plan.
-8. Ask the human to confirm fix direction before implementation, or hand off to `software-delivery-pipeline`.
+1. Define the failing behavior and scope, and reproduce or document why reproduction is blocked in `10-debug-scope-reproduction.md`.
+2. Collect exact evidence in `11-debug-evidence.md`: commands, logs, stack traces, code paths, configs, data, and active hypotheses with elimination status.
+3. State root cause with confidence and source evidence in `12-debug-root-cause.md`, and include fix options, tradeoffs, and verification plan in the same document.
+4. Ask the human to confirm fix direction before implementation, or hand off to `software-delivery-pipeline`.
+5. Write `13-debug-summary.md` to capture confirmed root cause, rejected hypotheses, remaining uncertainty, and the recommended next workflow.
 
 ## Escalation After Repeated Failed Fixes
 
@@ -190,18 +192,18 @@ If the same issue has already gone through two or three failed fix attempts:
    - incorrect data-contract assumptions
    - incorrect initialization or lifecycle assumptions
    - a design or architecture mismatch
-4. explicitly state in `05-debug-root-cause.md` whether the issue should escalate into architecture review or delivery replanning
+4. explicitly state in the root-cause artifact whether the issue should escalate into architecture review or delivery replanning
 
 ## Fix Options Guidance
 
-`06-debug-fix-options.md` should distinguish clearly between:
+The root-cause artifact should distinguish clearly between:
 - symptom relief
 - root-cause fix
 - monitoring/logging/guardrail improvements
 
 ## Summary Guidance
 
-`08-debug-summary.md` should capture at least:
+`13-debug-summary.md` should capture at least:
 - attempted fixes
 - rejected hypotheses
 - confirmed root cause

@@ -12,6 +12,16 @@ debug 文档应回答：
 - 确认根因是什么
 - 下一步是修复、继续调查，还是暂停确认
 
+## 默认瘦身路径
+
+`standard` 模式优先使用 4 份主文档：
+- `10-debug-scope-reproduction.md`
+- `11-debug-evidence.md`
+- `12-debug-root-cause.md`
+- `13-debug-summary.md`
+
+只有在 case 高风险、争议大、或用户明确要求完整调试轨迹时，才展开为 `02~08` 的细分文档。
+
 ## 最低要求
 
 ### 1. `debug-workflow-state.md`
@@ -23,30 +33,33 @@ debug 文档应回答：
 - 阻塞项
 - 是否允许改代码（默认否）
 
-### 2. `01~03` 阶段文档
+### 2. `10-debug-scope-reproduction.md`
 至少覆盖：
 - 问题范围
 - 复现步骤或复现受阻原因
-- 日志、堆栈、配置、代码路径等证据
+- 当前影响面
 
-### 3. `04-debug-hypotheses.md`
-至少区分：
+### 3. `11-debug-evidence.md`
+至少覆盖：
+- 日志、堆栈、配置、代码路径等证据
 - 保留假设
 - 已排除假设
 - 还需补证据的假设
 
-### 4. `05-debug-root-cause.md`
+### 4. `12-debug-root-cause.md`
 至少记录：
 - 确认根因
 - 证据链
 - 置信度
-- 是否需要升级为架构/契约/生命周期问题
-
-### 5. `06~08` 阶段文档
-至少覆盖：
 - 修复选项与取舍
 - 验证思路
+- 是否需要升级为架构/契约/生命周期问题
+
+### 5. `13-debug-summary.md`
+至少覆盖：
 - 总结与下一步 workflow
+- rejected hypotheses
+- 残余风险或未决问题
 
 ## 输出纪律
 

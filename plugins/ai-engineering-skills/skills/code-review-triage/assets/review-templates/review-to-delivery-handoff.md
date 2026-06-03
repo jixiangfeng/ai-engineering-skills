@@ -88,7 +88,7 @@ verificationRequired: true
 - 未解决阻塞项：无 | 列表
 
 ## 交接说明
-- `software-delivery-pipeline` 必须以本文件、`03-review-fix-selection.md`、`04-review-fix-plan.md` 作为需求输入，不得扩大到未选择的 Findings。
+- `software-delivery-pipeline` 必须以本文件和 `12-review-fix-plan.md` 作为需求输入；如果当前 run 使用 expanded split trail，再补充读取 `03-review-fix-selection.md`、`04-review-fix-plan.md`。不得扩大到未选择的 Findings。
 
 
 ## 机器可读摘要

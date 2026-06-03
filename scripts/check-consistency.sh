@@ -394,6 +394,66 @@ check_required_files_have_templates "debug-root-cause" "assets/debug-templates"
 check_required_files_have_templates "api-contract-design" "assets/api-contract-templates"
 check_required_files_have_templates "data-migration-planning" "assets/data-migration-templates"
 
+check_slim_default_contract() {
+  local skill="$1"
+  local skill_file="${SKILLS_DIR}/${skill}/SKILL.md"
+  local standard_example="${SKILLS_DIR}/${skill}/examples/standard-run.md"
+  local contract_doc
+  shift
+  contract_doc="$1"
+  shift
+
+  require_file "${contract_doc}"
+  rg -q '默认瘦身路径' "${contract_doc}" || fail "document contract should declare slim default path: ${skill}"
+
+  local artifact
+  for artifact in "$@"; do
+    rg -q "${artifact}" "${skill_file}" || fail "skill missing slim default artifact reference: ${skill} ${artifact}"
+    rg -q "${artifact}" "${standard_example}" || fail "standard example missing slim default artifact reference: ${skill} ${artifact}"
+    rg -q "${artifact}" "${contract_doc}" || fail "document contract missing slim default artifact reference: ${skill} ${artifact}"
+  done
+}
+
+check_slim_default_templates() {
+  local skill="$1"
+  local template_dir="$2"
+  shift 2
+  local artifact
+  for artifact in "$@"; do
+    require_file "${SKILLS_DIR}/${skill}/${template_dir}/${artifact}"
+  done
+}
+
+check_slim_default_contract "codebase-orientation" \
+  "${SKILLS_DIR}/codebase-orientation/references/orientation-document-contracts.md" \
+  "10-orientation-scope.md" "11-orientation-map.md" "12-orientation-summary.md"
+check_slim_default_templates "codebase-orientation" "assets/orientation-templates" \
+  "10-orientation-scope.md" "11-orientation-map.md" "12-orientation-summary.md"
+
+check_slim_default_contract "code-review-triage" \
+  "${SKILLS_DIR}/code-review-triage/references/review-document-contracts.md" \
+  "10-review-scope.md" "11-review-findings.md" "12-review-fix-plan.md" "13-review-summary.md"
+check_slim_default_templates "code-review-triage" "assets/review-templates" \
+  "10-review-scope.md" "11-review-findings.md" "12-review-fix-plan.md" "13-review-summary.md"
+
+check_slim_default_contract "debug-root-cause" \
+  "${SKILLS_DIR}/debug-root-cause/references/debug-document-contracts.md" \
+  "10-debug-scope-reproduction.md" "11-debug-evidence.md" "12-debug-root-cause.md" "13-debug-summary.md"
+check_slim_default_templates "debug-root-cause" "assets/debug-templates" \
+  "10-debug-scope-reproduction.md" "11-debug-evidence.md" "12-debug-root-cause.md" "13-debug-summary.md"
+
+check_slim_default_contract "api-contract-design" \
+  "${SKILLS_DIR}/api-contract-design/references/api-contract-document-contracts.md" \
+  "10-api-contract-scope.md" "11-api-current-proposed.md" "12-api-rules-examples.md" "13-api-summary.md"
+check_slim_default_templates "api-contract-design" "assets/api-contract-templates" \
+  "10-api-contract-scope.md" "11-api-current-proposed.md" "12-api-rules-examples.md" "13-api-summary.md"
+
+check_slim_default_contract "data-migration-planning" \
+  "${SKILLS_DIR}/data-migration-planning/references/data-migration-document-contracts.md" \
+  "10-migration-scope-current.md" "11-migration-target-plan.md" "12-migration-rollback-validation.md" "13-migration-summary.md"
+check_slim_default_templates "data-migration-planning" "assets/data-migration-templates" \
+  "10-migration-scope-current.md" "11-migration-target-plan.md" "12-migration-rollback-validation.md" "13-migration-summary.md"
+
 for state_template in \
   "${SKILLS_DIR}/codebase-orientation/assets/orientation-templates/orientation-workflow-state.md" \
   "${SKILLS_DIR}/code-review-triage/assets/review-templates/review-workflow-state.md" \

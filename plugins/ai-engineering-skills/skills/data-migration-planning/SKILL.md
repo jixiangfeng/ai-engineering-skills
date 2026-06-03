@@ -122,84 +122,65 @@ Create artifacts under `<project-root>/workflow/data-migrations/<YYYY-MM-DD>-<sl
 
 Required files:
 0. `migration-workflow-state.md`
-1. `01-migration-scope.md`
-2. `02-migration-current-data-model.md`
-3. `03-migration-target-data-model.md`
-4. `04-migration-plan.md`
-5. `05-migration-rollback-plan.md`
-6. `06-migration-validation-sql.md`
-7. `07-migration-summary.md`
-8. `migration-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
-9. `workflow-state.json` (machine-readable state, maintained alongside `migration-workflow-state.md`)
+1. `10-migration-scope-current.md`
+2. `11-migration-target-plan.md`
+3. `12-migration-rollback-validation.md`
+4. `13-migration-summary.md`
+5. `migration-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
+6. `workflow-state.json` (machine-readable state, maintained alongside `migration-workflow-state.md`)
+
+Expanded files (only when the migration is broad, high-risk, or the human explicitly wants a fully split plan):
+- `02-migration-current-data-model.md`
+- `03-migration-target-data-model.md`
+- `04-migration-plan.md`
+- `05-migration-rollback-plan.md`
+- `06-migration-validation-sql.md`
+- `07-migration-summary.md`
 
 Use the templates in `assets/data-migration-templates/`.
 
 After each stage document is written or updated, update `migration-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
-## Stage 1 — Scope
+## Default Slim Flow
 
-Goal: define what storage/data surface is changing and what must stay untouched.
+### Stage 1 — Scope + Current State
+Goal: define what storage/data surface is changing and record the current reality before planning.
 
 Actions:
 - identify target tables, entities, documents, storage paths, migration scripts, or read/write flows
 - identify requested focus: schema change, data backfill, cleanup, compatibility, validation SQL, rollback, or phased rollout
 - define in-scope and out-of-scope changes
-- write `01-migration-scope.md`
+- inspect current schema definitions, ORM entities, migration history, SQL, repositories, services, scripts, and tests
+- write `10-migration-scope-current.md`
+- separate `事实`, `推断`, and `待确认`
 
 If scope is broad, do a bounded first pass and document the boundary. If the migration target is ambiguous in a way that blocks safe planning, ask one concise question.
 
-## Stage 2 — Current Data Model
-
-Goal: record the current schema/data model and actual read/write path before planning changes.
-
-Actions:
-- inspect schema definitions, ORM entities, migration history, SQL, repositories, services, scripts, and tests
-- write `02-migration-current-data-model.md`
-- separate `事实`, `推断`, and `待确认`
-
-## Stage 3 — Target Data Model
-
-Goal: define the desired end state clearly enough that later delivery work can implement it without guessing.
+### Stage 2 — Target Model + Migration Plan
+Goal: define the desired end state and the executable path in one main planning artifact.
 
 Actions:
-- write `03-migration-target-data-model.md`
+- write `11-migration-target-plan.md`
 - describe target schema/entity/state changes, compatibility period expectations, and cleanup intent
 - compare viable options when more than one migration path exists
-- stop and ask the human to confirm or revise the target model before finalizing handoff-ready outputs
-
-## Stage 4 — Migration Plan
-
-Goal: break the migration into safe executable phases.
-
-Actions:
-- write `04-migration-plan.md`
 - separate schema change, code compatibility, data backfill, verification, rollout, and cleanup steps
 - if risk or ordering is unclear, update the document and repeat the confirmation gate
+- stop and ask the human to confirm or revise the target model and plan before finalizing handoff-ready outputs
 
-## Stage 5 — Rollback / Recovery Plan
-
-Goal: make failure recovery explicit before implementation begins.
+### Stage 3 — Rollback + Validation
+Goal: make failure recovery and acceptance checks explicit before implementation begins.
 
 Actions:
-- write `05-migration-rollback-plan.md`
+- write `12-migration-rollback-validation.md`
 - define rollback, recovery, fallback read strategy, or manual repair path as applicable
 - mark destructive or irreversible steps clearly
+- include validation SQL, integrity checks, row-count expectations, reconciliation steps, or equivalent executable checks when SQL is not enough
 
-## Stage 6 — Validation SQL / Checks
-
-Goal: define how the migration result will be verified.
-
-Actions:
-- write `06-migration-validation-sql.md`
-- include validation SQL, integrity checks, row-count expectations, and reconciliation steps
-- if SQL is not the right validation surface, document equivalent executable checks
-
-## Stage 7 — Summary and Handoff
-
+### Stage 4 — Summary and Handoff
 Goal: produce the reusable final migration package and route to delivery when needed.
 
 Actions:
-- write `07-migration-summary.md`
+- write `13-migration-summary.md`
 - summarize current model, target model, migration phases, rollback path, validation strategy, and open questions
 - include `Verification`: inspected schema/read-write paths, validation SQL/checks, rollback evidence, unverified assumptions, and completion judgment
 - if implementation should continue next, write `migration-to-delivery-handoff.md`

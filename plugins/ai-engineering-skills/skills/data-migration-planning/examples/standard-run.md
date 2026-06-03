@@ -2,16 +2,23 @@
 
 ## Run
 - Workflow: `data-migration-planning`
-- Mode: full
+- Mode: standard
 - Run path: `workflow/data-migrations/2026-05-26-order-status`
 - Status: `handoff_ready`
 - Code edits allowed: `false`
 
 ## State Snapshot
 - 当前阶段：`summary`
-- 最新文档：`07-migration-summary.md`
+- 最新文档：`13-migration-summary.md`
 - 下一步：使用 `migration-to-delivery-handoff.md` 落地
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
+
+## Slim Artifact Shape
+- `10-migration-scope-current.md`：合并 scope 和 current schema / read-write path
+- `11-migration-target-plan.md`：合并 target model 和 phased migration plan
+- `12-migration-rollback-validation.md`：合并 rollback / recovery 和 validation SQL / checks
+- `13-migration-summary.md`：给出最终迁移方案、风险和 open questions
+- `migration-to-delivery-handoff.md`：仅在需要进入实现时生成
 
 ## Migration Shape
 - current model: `orders.status` 缺少退款中状态
@@ -21,20 +28,7 @@
 - validation SQL: 统计目标状态数量和异常状态数量
 
 ## Worktree Recommendation
-
-当前任务建议使用独立 worktree：yes
-
-原因：
-- 涉及实体、SQL、服务判断和回滚脚本。
-- 当前迁移有数据兼容窗口和回填风险。
-
-建议命令：
-```bash
-git worktree add ../order-status-migration -b migration/order-status
-```
-
-## Handoff Shape
-`migration-to-delivery-handoff.md` 必须包含 schema/data changes、compatibility window、rollback requirements、validation SQL、rollout phases 和 unresolved questions。
+- 对涉及 schema、回填脚本和兼容代码的迁移，优先在独立分支或 worktree 中落地，避免和并行业务改动混在一起。
 
 ## Verification
 

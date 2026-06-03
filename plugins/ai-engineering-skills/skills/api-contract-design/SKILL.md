@@ -131,84 +131,64 @@ Create artifacts under `<project-root>/workflow/api-contracts/<YYYY-MM-DD>-<slug
 
 Required files:
 0. `api-contract-workflow-state.md`
-1. `01-api-contract-scope.md`
-2. `02-api-current-contract.md`
-3. `03-api-proposed-contract.md`
-4. `04-api-compatibility.md`
-5. `05-api-validation-errors.md`
-6. `06-api-examples.md`
-7. `07-api-summary.md`
-8. `api-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
-9. `workflow-state.json` (machine-readable state, maintained alongside `api-contract-workflow-state.md`)
+1. `10-api-contract-scope.md`
+2. `11-api-current-proposed.md`
+3. `12-api-rules-examples.md`
+4. `13-api-summary.md`
+5. `api-to-delivery-handoff.md` (optional, when implementation should continue in `software-delivery-pipeline`)
+6. `workflow-state.json` (machine-readable state, maintained alongside `api-contract-workflow-state.md`)
+
+Expanded files (only when the contract surface is broad, compatibility is sensitive, or the human explicitly wants a fully split package):
+- `02-api-current-contract.md`
+- `03-api-proposed-contract.md`
+- `04-api-compatibility.md`
+- `05-api-validation-errors.md`
+- `06-api-examples.md`
+- `07-api-summary.md`
 
 Use the templates in `assets/api-contract-templates/`.
 
 After each stage document is written or updated, update `api-contract-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
-## Stage 1 — Scope
+## Default Slim Flow
 
+### Stage 1 — Scope
 Goal: define what contract surface is being designed and what is intentionally out of scope.
 
 Actions:
 - identify target endpoint, API group, DTO set, response shape, or caller chain
 - identify requested focus: request fields, response fields, validation, error codes, versioning, compatibility, or frontend/backend alignment
 - define in-scope and out-of-scope changes
-- write `01-api-contract-scope.md`
+- write `10-api-contract-scope.md`
 
 If the task is too broad, do a bounded first pass and document the boundary. If the contract target is ambiguous in a way that blocks safe design, ask one concise question.
 
-## Stage 2 — Current Contract
-
-Goal: record the current request/response and validation behavior before proposing changes.
+### Stage 2 — Current + Proposed Contract
+Goal: record the current contract and converge on the target contract in one reusable main artifact.
 
 Actions:
 - inspect controllers/routes, DTOs, schemas, serializers, validators, tests, docs, and consumers
-- write `02-api-current-contract.md`
+- write `11-api-current-proposed.md`
 - separate `事实`, `推断`, and `待确认`
-
-## Stage 3 — Proposed Contract
-
-Goal: propose the target contract in a way that downstream implementation can follow without guessing.
-
-Actions:
-- write `03-api-proposed-contract.md`
-- define field names, field locations, types, nullability, defaults, enum/domain constraints, and ownership boundaries
-- compare viable options when the design is not obvious
+- define current request/response and validation behavior
+- define the proposed contract: field names, field locations, types, nullability, defaults, enum/domain constraints, ownership boundaries, and rejected alternatives when relevant
 - stop and ask the human to confirm or revise the proposed contract before finalizing handoff-ready outputs
 
-## Stage 4 — Compatibility
-
-Goal: make compatibility impact and migration expectations explicit.
+### Stage 3 — Rules + Examples
+Goal: make compatibility and failure behavior executable, not implicit.
 
 Actions:
-- write `04-api-compatibility.md`
+- write `12-api-rules-examples.md`
 - state whether existing clients keep working unchanged
-- document compatibility strategy, versioning, fallback behavior, and rollout constraints
-- if compatibility risk is unclear or conflicts with code evidence, update the document and repeat the confirmation gate
-
-## Stage 5 — Validation and Errors
-
-Goal: define validation rules and failure behavior clearly.
-
-Actions:
-- write `05-api-validation-errors.md`
-- define validation conditions, error code/shape, error message boundaries, and special edge cases
+- document compatibility strategy, versioning, fallback behavior, rollout constraints, validation conditions, error code/shape, special edge cases, and representative request/response examples
+- include invalid examples and compatibility examples when relevant
 - record unresolved validation ambiguities as `待确认`
 
-## Stage 6 — Examples
-
-Goal: give concrete examples for implementation and human review.
-
-Actions:
-- write `06-api-examples.md`
-- provide representative request/response samples, invalid examples, and compatibility examples when relevant
-
-## Stage 7 — Summary and Handoff
-
+### Stage 4 — Summary and Handoff
 Goal: produce the reusable final contract package and route to the next workflow when needed.
 
 Actions:
-- write `07-api-summary.md`
+- write `13-api-summary.md`
 - summarize scope, current contract, final proposed contract, compatibility decision, validation behavior, and open questions
 - include `Verification`: checked callers/DTOs/examples, UI/error states covered, unverified assumptions, and completion judgment
 - if implementation should continue next, write `api-to-delivery-handoff.md`

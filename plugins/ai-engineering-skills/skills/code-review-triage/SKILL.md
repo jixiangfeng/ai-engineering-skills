@@ -78,10 +78,10 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Findings lead the response, ordered by severity: blocker, high, medium, low.
 - Do not treat style preferences, speculative refactors, or generic best practices as required fixes.
 - If no material issues are found, say so clearly and record residual risks or test gaps.
-- Do not modify code before the human confirms `03-review-fix-selection.md` and `04-review-fix-plan.md`.
+- Do not modify code before the human confirms the selected findings and `12-review-fix-plan.md` (or the expanded `03-review-fix-selection.md` + `04-review-fix-plan.md` path when that split trail is being used).
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
-- By default, this skill must not implement fixes. After `04-review-fix-plan.md` is approved, generate `review-to-delivery-handoff.md` and stop so `software-delivery-pipeline` can run requirements, architecture, plan, implementation, and verification.
+- By default, this skill must not implement fixes. After `12-review-fix-plan.md` is approved, generate `review-to-delivery-handoff.md` and stop so `software-delivery-pipeline` can run requirements, architecture, plan, implementation, and verification.
 - Implement inside this skill only if the human explicitly says not to use `software-delivery-pipeline` and explicitly asks this review skill to implement the selected findings.
 - If implementation discovers new issues or requires scope expansion, append the issue to the review artifacts and pause for human confirmation.
 - Fix selection and fix-plan gates are clarification-and-convergence loops: do not treat the human's first selected findings or proposed fix direction as automatically safe or sufficient.
@@ -196,88 +196,66 @@ Project root resolution:
 Required files:
 
 0. `review-workflow-state.md`
-1. `01-review-scope.md`
-2. `02-review-findings.md`
-3. `03-review-fix-selection.md`
-4. `04-review-fix-plan.md`
-5. `review-to-delivery-handoff.md` (after `04-review-fix-plan.md` is approved, when fixes should continue in `software-delivery-pipeline`)
+1. `10-review-scope.md`
+2. `11-review-findings.md`
+3. `12-review-fix-plan.md`
+4. `13-review-summary.md`
+5. `review-to-delivery-handoff.md` (optional, when fixes should continue in `software-delivery-pipeline`)
 6. `review-delivery-result.md` (written by `software-delivery-pipeline` when fixes are implemented there)
-7. `07-review-summary.md` (after explicit no-fix closure, or after an explicitly requested in-skill implementation)
-8. `05-review-implementation.md` (exception only: if the human explicitly refuses `software-delivery-pipeline` and asks this skill to implement)
-9. `06-review-verification.md` (exception only: after in-skill implementation)
-10. `workflow-state.json` (machine-readable state, maintained alongside `review-workflow-state.md`)
+7. `workflow-state.json` (machine-readable state, maintained alongside `review-workflow-state.md`)
+
+Expanded files (only when the review is large, strongly disputed, or the human explicitly wants a fully split trail):
+- `03-review-fix-selection.md`
+- `04-review-fix-plan.md`
+- `05-review-implementation.md` (exception only: if the human explicitly refuses `software-delivery-pipeline` and asks this skill to implement)
+- `06-review-verification.md` (exception only: after in-skill implementation)
+- `07-review-summary.md`
 
 Use the templates in `assets/review-templates/`.
 
 After each stage document is written or updated, update `review-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, selected scope when known, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
-## Stage 1 — Review Scope
+## Default Slim Flow
 
+### Stage 1 — Review Scope
 Goal: define what is being reviewed and what kind of issues matter.
 
 Actions:
 - identify review target: whole repo, diff, module, package, endpoint, flow, or files
 - identify requested focus if any: bugs, security, performance, API contract, tests, maintainability, regression risk
 - define out-of-scope areas
-- write `01-review-scope.md`
+- write `10-review-scope.md`
 
 If the scope is broad but still reviewable, proceed with a bounded first pass and document assumptions. If scope is unsafe or impossible to infer, ask one concise question.
 
-## Stage 2 — Findings
-
+### Stage 2 — Findings
 Goal: produce a concrete issue list before discussing fixes.
 
 Actions:
 - inspect the relevant code, tests, configs, docs, and call paths
-- write `02-review-findings.md`
+- write `11-review-findings.md`
 - group findings by severity
 - for every finding include: ID, title, severity, location, evidence, impact, fix direction, confidence
 - when applicable, also include: `requires_spec_compliance_check`, `requires_code_quality_review`, `requires_architecture_gate`, `verification_focus`
 - include a `不建议处理` section for items that look tempting but should not be changed now
 
-After writing `02-review-findings.md`, stop and ask the human which finding IDs to fix. Do not write the fix plan yet unless the human has already clearly selected the findings.
-If the human says no fixes are needed, says to only record the review, or closes the review without implementation, write `07-review-summary.md` as a no-fix closure and stop. The summary should clearly state which findings were selected for repair, which were explicitly excluded, whether the review is ready to hand off to delivery, and the recommended next workflow with rationale.
+After writing `11-review-findings.md`, stop and ask the human which finding IDs to fix. Do not plan fixes before the selected finding set is clear.
+If the human says no fixes are needed, says to only record the review, or closes the review without implementation, write `13-review-summary.md` as a no-fix closure and stop.
 
-## Stage 3 — Fix Selection
-
-Goal: capture the human's selected findings.
-
-Actions:
-- write `03-review-fix-selection.md`
-- list selected finding IDs and explicitly excluded finding IDs
-- record any user constraints such as “只修高优先级”, “不改接口”, “不兼容旧数据”
-
-Human confirmation gate: stop until the selected findings are clear and internally consistent. If the selection omits a finding that blocks a selected fix, or includes a risky combination, explain the issue, update `03-review-fix-selection.md`, and ask for confirmation again.
-
-## Stage 4 — Fix Plan
-
-Goal: plan the fixes for only the selected findings.
+### Stage 3 — Fix Plan + Closure/Handoff
+Goal: lock the selected findings and define only the needed repair path.
 
 Actions:
-- write `04-review-fix-plan.md`
+- write `12-review-fix-plan.md`
+- include selected finding IDs, explicitly excluded finding IDs, user constraints, risks, likely changed files, and tests/checks to run
 - map each selected finding to planned code changes and verification
-- call out risks, files likely to change, and tests/checks to run
 
-Human confirmation gate: stop after `04-review-fix-plan.md` and ask the human to confirm or revise the plan. Do not implement before approval. If the plan is unsafe, incomplete, conflicts with code evidence, or needs architecture/scope expansion, state that plainly, update `04-review-fix-plan.md`, and repeat the confirmation gate.
+Human confirmation gate: stop after `12-review-fix-plan.md` and ask the human to confirm or revise the plan. Do not implement before approval. If the plan is unsafe, incomplete, conflicts with code evidence, or needs architecture/scope expansion, state that plainly, update `12-review-fix-plan.md`, and repeat the confirmation gate.
 
-After the human approves the fix plan, write `review-to-delivery-handoff.md` if the next step is to use `software-delivery-pipeline`. The handoff must include selected finding IDs, excluded finding IDs, evidence locations, user constraints, architecture-gate recommendation, fix plan summary, verification requirements, the source review run path, and a machine-readable YAML summary.
-For each selected finding when relevant, `review-to-delivery-handoff.md` should also include:
-- accepted scope
-- excluded scope
-- implementation constraints
-- whether spec compliance review is required
-- whether code quality review is required
-- whether architecture gate is recommended
-- special verification focus
-Do not hand off a selected finding as a vague paragraph when structured review metadata is available.
-If the human says “按这个修”, “继续”, “落地”, “修复选中的问题”, or equivalent after handoff creation, treat that as intent to continue with `software-delivery-pipeline` using the handoff file.
-
-## Stage 5 — Delivery Handoff or Explicit No-Fix Closure
-
-Default path after `04-review-fix-plan.md` approval:
-- write `review-to-delivery-handoff.md`
+After approval:
+- write `review-to-delivery-handoff.md` when the next step is `software-delivery-pipeline`
+- write `13-review-summary.md` to record selected/excluded findings, readiness, and recommended next workflow
 - stop
-- tell the human that implementation must continue through `software-delivery-pipeline`
 
 Hard rules:
 - Do not edit code in the default review flow.
@@ -285,7 +263,7 @@ Hard rules:
 - If the human says “按这个修”, “继续”, “落地”, or “修复选中的问题”, treat that as a request to start `software-delivery-pipeline` with the handoff, not as permission for this skill to edit code.
 - Do not include unselected findings in implementation scope.
 - If an unselected finding blocks a selected fix, stop, explain the dependency clearly, and ask the human whether to expand scope.
-- Implement inside this skill only when the human explicitly says to bypass `software-delivery-pipeline` and explicitly asks this skill to implement. In that exception, still write `05-review-implementation.md`, `06-review-verification.md`, and `07-review-summary.md`.
+- Implement inside this skill only when the human explicitly says to bypass `software-delivery-pipeline` and explicitly asks this skill to implement. In that exception, expand into `05-review-implementation.md`, `06-review-verification.md`, and `07-review-summary.md`.
 
 If the task becomes a normal feature/bugfix after findings are selected, chain into `software-delivery-pipeline` by passing `review-to-delivery-handoff.md` as the source-of-truth input. Keep the review artifacts as the source of truth for selected findings and scope.
 

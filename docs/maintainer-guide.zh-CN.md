@@ -63,6 +63,7 @@ tests/
 - 修改恢复、索引或机器可读状态时，同步更新 `docs/workflow-state-schema.json` 和 `docs/workflow-index-template.md`。
 - 新增某个 workflow 的细节规则时，优先放入该 skill 的 `references/`，再从 `SKILL.md` 引用。
 - 新增或修改 required files 时，同步更新对应 `assets/*-templates/`。
+- 如果某个 workflow 采用“默认轻量、按需展开”，同步更新 `SKILL.md`、`examples/standard-run.md`、`references/*document-contracts.md`、state 模板与相关检查，避免只改一处说明。
 - 修改安装脚本时，保持默认不覆盖真实本地目录，并保留 `--dry-run`、`--force`、`--backup`。
 - 修改 skill 行为、workflow contract、触发规则、安装语义或 manifest 时，同步更新 `CHANGELOG.md`。
 - 不做无关格式化或全仓换行归一化；换行策略由 `.gitattributes` 约束后续改动。

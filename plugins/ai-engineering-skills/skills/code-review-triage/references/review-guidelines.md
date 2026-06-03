@@ -50,10 +50,10 @@
 
 ## No-Fix Closure
 
-如果用户在 `02-review-findings.md` 后选择“不修”“先记录”“关闭”或等价表达：
+如果用户在 `11-review-findings.md` 后选择“不修”“先记录”“关闭”或等价表达：
 - 不生成修复计划。
 - 不改代码。
-- 写 `07-review-summary.md`，交付类型标为“仅审查无修复”。
+- 写 `13-review-summary.md`，交付类型标为“仅审查无修复”。
 - 列出保留 findings、剩余风险和后续重新开启条件。
 
 ## Handoff 机器可读 YAML
@@ -76,4 +76,4 @@
 - 是否隐含架构调整、范围扩大或高风险操作。
 - 是否存在更小、更稳妥的修复路径。
 
-发现问题时，不进入实现；更新 `03-review-fix-selection.md` 或 `04-review-fix-plan.md`，提出选项，再请求确认。
+发现问题时，不进入实现；默认更新 `12-review-fix-plan.md`，如果当前 run 使用 expanded split trail，则更新 `03-review-fix-selection.md` 或 `04-review-fix-plan.md`，提出选项，再请求确认。

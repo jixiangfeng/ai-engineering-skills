@@ -6,7 +6,7 @@
 
 | Updated At | Workflow | Status | Scope | Run Path | Summary | Next Action |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-05-26T00:00:00+08:00 | `codebase-orientation` | `completed` | 示例 scope | `workflow/orientation/2026-05-26-example` | `workflow/orientation/2026-05-26-example/07-orientation-summary.md` | 无 |
+| 2026-05-26T00:00:00+08:00 | `codebase-orientation` | `completed` | 示例 scope | `workflow/orientation/2026-05-26-example` | `workflow/orientation/2026-05-26-example/12-orientation-summary.md` | 无 |
 
 ## 状态枚举
 
