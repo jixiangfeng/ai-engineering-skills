@@ -63,7 +63,7 @@ echo "== Execution mode contract =="
 bash "${REPO_ROOT}/scripts/check-execution-mode-contract.sh"
 
 echo
-echo "== Markdown lint =="
+echo "== Structured checks =="
 bash "${REPO_ROOT}/scripts/check-structured.sh"
 
 echo

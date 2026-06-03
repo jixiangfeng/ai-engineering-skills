@@ -24,12 +24,16 @@ python3 "${REPO_ROOT}/scripts/check-artifact-metadata.py" \
   "${REPO_ROOT}/docs/run-examples" \
   "${REPO_ROOT}/tests/artifact-metadata/valid-artifact.md"
 
+echo "== Bootstrap routing cases =="
 python3 "${REPO_ROOT}/scripts/check-bootstrap-routing.py" \
   --cases "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv"
+
+echo "== Bootstrap routing runtime-command harness =="
 python3 "${REPO_ROOT}/scripts/check-bootstrap-routing.py" \
   --cases "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv" \
   --runtime-command "${REPO_ROOT}/tests/bootstrap-routing/fake-agent-runtime.py"
 
+echo "== Domain module routing =="
 python3 "${REPO_ROOT}/scripts/check-domain-module-routing.py" \
   --cases "${REPO_ROOT}/tests/domain-modules/java-spring-microservice-cases.tsv"
 
