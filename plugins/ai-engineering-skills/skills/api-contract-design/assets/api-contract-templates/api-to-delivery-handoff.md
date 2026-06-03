@@ -26,6 +26,33 @@ verificationRequired: true
 ## 来源 API Contract Run
 - 路径：`workflow/api-contracts/<YYYY-MM-DD>-<slug>/`
 
+## Accepted Scope
+-
+
+## Excluded Scope
+-
+
+## Evidence
+-
+
+## Constraints
+-
+
+## Unresolved Questions
+-
+
+## Verification Focus
+-
+
+## Source of Truth Artifacts
+-
+
+## Recommended Next Workflow
+- `software-delivery-pipeline`
+
+## Why Next Workflow Is Appropriate
+-
+
 ## 已确认契约
 -
 
@@ -43,3 +70,18 @@ verificationRequired: true
 
 ## 禁止事项
 - 不得改变未确认的请求/响应字段。
+
+## 机器可读摘要
+
+```yaml
+source_run_path: "workflow/api-contracts/<YYYY-MM-DD>-<slug>"
+source_workflow: "api-contract-design"
+target_workflow: "software-delivery-pipeline"
+accepted_scope: []
+excluded_scope: []
+constraints: []
+unresolved_questions: []
+verification_focus: []
+source_of_truth_artifacts: []
+recommended_next_workflow: "software-delivery-pipeline"
+```

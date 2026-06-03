@@ -518,8 +518,39 @@ for term in "当前结论" "已确认 Scope" "未解决问题" "主要风险" "�
   rg -q "${term}" "${REPO_ROOT}/docs/artifact-templates/summary.md" || fail "shared summary template missing term: ${term}"
 done
 
-for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolved Questions" "Verification Focus" "Machine-Readable Summary"; do
+for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolved Questions" "Verification Focus" "Source of Truth Artifacts" "Recommended Next Workflow" "Machine-Readable Summary"; do
   rg -q "${term}" "${REPO_ROOT}/docs/artifact-templates/handoff.md" || fail "shared handoff template missing term: ${term}"
+done
+
+for handoff_template in \
+  "${SKILLS_DIR}/codebase-orientation/assets/orientation-templates/orientation-to-review-handoff.md" \
+  "${SKILLS_DIR}/codebase-orientation/assets/orientation-templates/orientation-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/code-review-triage/assets/review-templates/review-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/debug-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/api-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-to-delivery-handoff.md"; do
+  require_file "${handoff_template}"
+  for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolved Questions" "Verification Focus" "Source of Truth Artifacts" "Recommended Next Workflow" "Why Next Workflow Is Appropriate"; do
+    rg -q "${term}" "${handoff_template}" || fail "handoff template missing term ${term}: ${handoff_template}"
+  done
+  rg -q 'source_of_truth_artifacts' "${handoff_template}" || fail "handoff template missing machine-readable source_of_truth_artifacts: ${handoff_template}"
+  rg -q 'recommended_next_workflow' "${handoff_template}" || fail "handoff template missing machine-readable recommended_next_workflow: ${handoff_template}"
+done
+
+for term in \
+  "## Review Handoff Input" \
+  "## Other Upstream Handoff Inputs" \
+  "### Orientation Handoff Input" \
+  "### Debug Handoff Input" \
+  "### API Contract Handoff Input" \
+  "### Migration Handoff Input" \
+  "orientation-to-delivery-handoff.md" \
+  "debug-to-delivery-handoff.md" \
+  "api-to-delivery-handoff.md" \
+  "migration-to-delivery-handoff.md" \
+  "source of truth" \
+  "01-delivery-requirements.md"; do
+  rg -q "${term}" "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing upstream handoff rule term: ${term}"
 done
 
 for term in "schemaVersion" "workflow" "runPath" "domainModules" "executionMode" "modePath" "affectedServices" "affectedControllers" "affectedTables" "affectedCollections" "affectedTopics" "affectedConfigKeys" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do

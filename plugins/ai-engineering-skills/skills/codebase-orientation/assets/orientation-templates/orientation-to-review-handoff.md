@@ -26,10 +26,31 @@ verificationRequired: true
 ## 来源 Orientation Run
 - 路径：`workflow/orientation/<YYYY-MM-DD>-<slug>/`
 
-## 建议 Review 范围
+## Accepted Scope
 -
 
-## Review 重点
+## Excluded Scope
+-
+
+## Evidence
+-
+
+## Constraints
+-
+
+## Unresolved Questions
+-
+
+## Verification Focus
+-
+
+## Source of Truth Artifacts
+-
+
+## Recommended Next Workflow
+- `code-review-triage`
+
+## Why Next Workflow Is Appropriate
 -
 
 ## 后续可 review 的线索
@@ -60,3 +81,18 @@ verificationRequired: true
 - 允许改变的行为：
 - 不允许改变的行为：
 - 超出范围时的处理：暂停并请求用户确认。
+
+## 机器可读摘要
+
+```yaml
+source_run_path: "workflow/orientation/<YYYY-MM-DD>-<slug>"
+source_workflow: "codebase-orientation"
+target_workflow: "code-review-triage"
+accepted_scope: []
+excluded_scope: []
+constraints: []
+unresolved_questions: []
+verification_focus: []
+source_of_truth_artifacts: []
+recommended_next_workflow: "code-review-triage"
+```

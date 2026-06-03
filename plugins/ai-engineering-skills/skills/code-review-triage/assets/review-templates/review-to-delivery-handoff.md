@@ -38,20 +38,36 @@ verificationRequired: true
 
 ## Fix Handoff
 
-### Accepted scope
+### Accepted Scope
 -
 
-### Excluded scope
+### Excluded Scope
 -
 
-### Files likely affected
+### Evidence
 -
 
-### Verification focus
+### Constraints
 -
 
-### Recommended next workflow
+### Unresolved Questions
+-
+
+### Verification Focus
+-
+
+### Source of Truth Artifacts
+- `12-review-fix-plan.md`
+- `11-review-findings.md`
+
+### Recommended Next Workflow
 - software-delivery-pipeline
+
+### Why Next Workflow Is Appropriate
+-
+
+### Files Likely Affected
+-
 
 ## Findings 明细
 
@@ -108,6 +124,10 @@ constraints:
   - ""
 verification:
   - ""
+source_of_truth_artifacts:
+  - "12-review-fix-plan.md"
+  - "11-review-findings.md"
+recommended_next_workflow: "software-delivery-pipeline"
 architecture_gate:
   required: false
   reason: ""

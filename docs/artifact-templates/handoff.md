@@ -40,6 +40,12 @@ verificationRequired: true
 
 ## Verification Focus
 
+## Source of Truth Artifacts
+- `path/to/document.md`
+
+## Recommended Next Workflow
+- `<target-workflow>`
+
 ## Why Next Workflow Is Appropriate
 
 ## Machine-Readable Summary
@@ -53,4 +59,7 @@ excluded_scope: []
 constraints: []
 unresolved_questions: []
 verification_focus: []
+source_of_truth_artifacts:
+  - "path/to/document.md"
+recommended_next_workflow: "<target-workflow>"
 ```

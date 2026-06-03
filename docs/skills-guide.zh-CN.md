@@ -6,7 +6,7 @@
 
 所有 workflow 共同遵守 [`engineering-principles.zh-CN.md`](./engineering-principles.zh-CN.md)：编码前先澄清、简单优先、精准修改、目标驱动验证。具体 workflow 的阶段规则优先，但不能绕过这些底线。
 
-执行重量按 [`execution-modes.zh-CN.md`](./execution-modes.zh-CN.md) 裁剪：`lightweight` 对应 fast，`standard` 对应 guarded，`full` 对应 audited。小任务不应默认生成完整阶段文档；高风险、handoff、契约、数据或权限任务必须升级并保留确认门禁。
+执行重量按 [`execution-modes.zh-CN.md`](./execution-modes.zh-CN.md) 裁剪：`lightweight` 对应 fast，`standard` 对应 guarded，`full` 对应 audited。其中 `standard` 默认使用各 workflow 自己的 slim artifacts；只有 `software-delivery-pipeline` 的 guarded path 会使用 `10-guarded-*` 这类合并交付文档。小任务不应默认生成完整阶段文档；高风险、handoff、契约、数据或权限任务必须升级并保留确认门禁。
 
 ## 一、Skill 总览
 

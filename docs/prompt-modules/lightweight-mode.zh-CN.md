@@ -5,8 +5,14 @@
 ## 模式选择
 
 - `lightweight` / fast: 小改、快速看下、简单修复、轻量问答后的最小 workflow；只生成 `workflow-state.json` 和 summary / verification note。
-- `standard` / guarded: 普通 review/debug/design/planning/delivery；默认只生成 `10-guarded-scope-plan.md`、`11-guarded-execution.md`、`12-guarded-summary.md` 三份关键文档。
+- `standard` / guarded: 普通 review/debug/design/planning/delivery；默认生成 **workflow-specific slim default artifacts**，而不是所有 workflow 共用一套固定文件名。
 - `full` / audited: 用户要求完整、深度、形成文档、handoff、可恢复，或任务风险较高；生成完整阶段链路。
+
+### `standard` 的具体落地
+
+- 对 `codebase-orientation`、`code-review-triage`、`debug-root-cause`、`api-contract-design`、`data-migration-planning`，`standard` 默认使用各自的 `10~13` slim 主文档。
+- 对 `software-delivery-pipeline`，`standard` / `guarded` 可以使用合并后的交付文档，例如 `10-guarded-scope-plan.md`、`11-guarded-execution.md`、`12-guarded-summary.md`。
+- old split / expanded trail 只用于 compatibility、resume、显式审计需求或用户明确要求，不作为新 run 默认产物。
 
 ## 执行规则
 
@@ -35,9 +41,11 @@
 ## 正例
 
 - “简单修复一个文案”使用 `lightweight`，只产出 state 和 summary。
+- “普通 review 一个模块并给出修复范围”使用 `standard`，对 `code-review-triage` 产出 `10-review-scope.md`、`11-review-findings.md`、`12-review-fix-plan.md`、`13-review-summary.md`。
 - “深度 review 并形成文档”使用 `full`。
 
 ## 反例
 
 - 小改也默认生成 01-07 全部阶段文档。
+- 把所有 workflow 的 `standard` 都写成 `10-guarded-scope-plan.md`、`11-guarded-execution.md`、`12-guarded-summary.md`。
 - 跳过阶段文档但不记录跳过原因。

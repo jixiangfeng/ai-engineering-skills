@@ -26,6 +26,33 @@ verificationRequired: true
 ## 来源 Migration Run
 - 路径：`workflow/data-migrations/<YYYY-MM-DD>-<slug>/`
 
+## Accepted Scope
+-
+
+## Excluded Scope
+-
+
+## Evidence
+-
+
+## Constraints
+-
+
+## Unresolved Questions
+-
+
+## Verification Focus
+-
+
+## Source of Truth Artifacts
+-
+
+## Recommended Next Workflow
+- `software-delivery-pipeline`
+
+## Why Next Workflow Is Appropriate
+-
+
 ## 已确认迁移方案
 -
 
@@ -53,3 +80,18 @@ verificationRequired: true
 
 ## 禁止事项
 - 不得执行未确认的破坏性数据操作。
+
+## 机器可读摘要
+
+```yaml
+source_run_path: "workflow/data-migrations/<YYYY-MM-DD>-<slug>"
+source_workflow: "data-migration-planning"
+target_workflow: "software-delivery-pipeline"
+accepted_scope: []
+excluded_scope: []
+constraints: []
+unresolved_questions: []
+verification_focus: []
+source_of_truth_artifacts: []
+recommended_next_workflow: "software-delivery-pipeline"
+```

@@ -198,6 +198,47 @@ Rules:
 - Do not treat review plan approval as delivery implementation approval; delivery requirements and delivery plan approval are still required.
 - After delivery, write or update `workflow/reviews/<run>/review-delivery-result.md` with fixed finding IDs, unfixed finding IDs, verification summary, delivery run path, and remaining risks.
 
+## Other Upstream Handoff Inputs
+
+### Orientation Handoff Input
+
+When the user provides `workflow/orientation/.../orientation-to-delivery-handoff.md` or asks to implement directly from orientation, treat that handoff as the source of truth.
+
+Rules:
+- Read `orientation-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Extract at least: accepted scope, excluded scope, constraints, unresolved questions, verification focus, source of truth artifacts, and why direct delivery is appropriate.
+- If those minimum fields are missing, stop and ask for confirmation instead of filling gaps from chat memory.
+- `01-delivery-requirements.md` must record the source orientation run path, affected modules, locked scope, unresolved questions, and any architecture gate recommendation.
+
+### Debug Handoff Input
+
+When the user provides `workflow/debug/.../debug-to-delivery-handoff.md` or asks to implement from a confirmed debug result, treat that handoff as the source of truth.
+
+Rules:
+- Read `debug-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Extract at least: accepted scope, excluded scope, root cause, selected fix direction, constraints, verification focus, and source of truth artifacts.
+- If root cause, scope lock, or verification focus is missing, stop and ask for confirmation instead of guessing the intended fix.
+- `01-delivery-requirements.md` must record the source debug run path, confirmed root cause, allowed modification scope, forbidden scope, and required verification signals.
+
+### API Contract Handoff Input
+
+When the user provides `workflow/api-contracts/.../api-to-delivery-handoff.md` or asks to implement from a confirmed API contract, treat that handoff as the source of truth.
+
+Rules:
+- Read `api-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Extract at least: accepted scope, excluded scope, contract decisions, compatibility decision, validation/error behavior, constraints, verification focus, and source of truth artifacts.
+- If field semantics, compatibility rules, or forbidden changes are missing, stop and ask for confirmation instead of reconstructing them from chat.
+- `01-delivery-requirements.md` must record the source API contract run path, DTO / endpoint / response boundaries, compatibility commitments, forbidden changes, and verification examples.
+
+### Migration Handoff Input
+
+When the user provides `workflow/data-migrations/.../migration-to-delivery-handoff.md` or asks to implement from a confirmed migration plan, treat that handoff as the source of truth.
+
+Rules:
+- Read `migration-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Extract at least: accepted scope, excluded scope, schema/data changes, compatibility window, rollback requirements, validation SQL/checks, constraints, and source of truth artifacts.
+- If rollback requirements, compatibility window, or validation checks are missing, stop and ask for confirmation instead of improvising a migration plan.
+- `01-delivery-requirements.md` must record the source migration run path, migration phases, rollback / recovery obligations, destructive-operation boundaries, and verification checks.
 
 ## Document Quality Rules
 
