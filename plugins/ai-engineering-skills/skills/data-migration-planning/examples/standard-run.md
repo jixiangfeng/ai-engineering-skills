@@ -10,7 +10,7 @@
 ## State Snapshot
 - 当前阶段：`summary`
 - 最新文档：`13-migration-summary.md`
-- 下一步：使用 `migration-to-delivery-handoff.md` 落地
+- 下一步：使用 `migration-to-delivery-handoff.md` 进入下游实现，并由下游 workflow 按自己的确认门禁继续
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
 ## Slim Artifact Shape
@@ -18,7 +18,7 @@
 - `11-migration-target-plan.md`：合并 target model 和 phased migration plan
 - `12-migration-rollback-validation.md`：合并 rollback / recovery 和 validation SQL / checks
 - `13-migration-summary.md`：给出最终迁移方案、风险和 open questions
-- `migration-to-delivery-handoff.md`：仅在需要进入实现时生成
+- `migration-to-delivery-handoff.md`：仅在需要进入实现时生成；它提供迁移方案与约束，不直接提供下游代码修改授权
 
 ## Migration Shape
 - current model: `orders.status` 缺少退款中状态

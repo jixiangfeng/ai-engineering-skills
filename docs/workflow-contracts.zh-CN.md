@@ -62,6 +62,7 @@
 默认选择规则：
 
 - 用户说“小改一下 / 快速看下 / 简单修复 / 帮我看一眼 / 简单看下”时，默认 `lightweight`。
+- 用户已明确给出“直接改 / 直接做 / 改完告诉我验证结果 / 不要铺太多文档”等执行授权，且任务仍是低风险 repo-local 修改时，应优先保持 `lightweight`，不要为了形式升级。
 - 用户只说普通“review / 排查 / 设计 / 规划 / 实现”，且任务不明显高风险时，默认 `standard`。
 - 用户说“完整 / 深度 / 形成文档 / 可交付 / handoff / 后续恢复 / 全链路 / 审计”时，默认 `full`。
 - 任务涉及生产风险、数据迁移、接口兼容、跨模块改造、多个修复方向或需要 handoff 时，即使用户未说“完整”，也应升级到 `standard` 或 `full`，并说明原因。
@@ -71,6 +72,8 @@
 - 如果 `lightweight` 过程中发现 scope 变大、风险升高或需要 handoff，必须先说明原因，再升级到 `standard` 或 `full`。
 - 如果用户明确要求“不要生成太多文档”，不得自动进入 `full`；除非存在安全或恢复风险，并需说明取舍。
 - `standard` 模式优先合并可合并阶段，但合并后的产物应遵循对应 workflow 的 slim default contract。
+- 对 `software-delivery-pipeline` 的 `standard` / `guarded` 路径，如果用户初始指令已经明确批准最小范围、计划方向和验证目标，且不存在 handoff / API / DTO / 数据 / 权限 / MQ / 调度 / 跨服务 / destructive / dirty worktree 风险，可把该初始指令记录为 combined gate 的 approval basis，避免再做一轮低价值确认。
+- 任何 handoff 驱动的下游 workflow 默认 `handoff_approval_basis_allowed=false`；handoff 提供 source of truth，但不直接替代下游的需求/计划确认门禁。
 - old split trail 只用于 compatibility / resume / explicit expanded request，不作为新 run 默认产物。
 - 如果用户要求完整文档，不能用 `lightweight` 代替。
 
@@ -154,12 +157,20 @@ handoff 文件至少应包含：
 - source of truth artifacts
 - recommended next workflow
 - why the next workflow is appropriate
+- target execution hint
+- handoff approval basis allowed
 
 如果 handoff 来自 findings、debug hypothesis、contract proposal 或 migration plan，应该尽可能保留结构化字段，而不是只写自然语言段落。
 
 允许在共享骨架之外补充 workflow-specific 段落，但不得删除上述最小字段。推荐做法是：先给出统一骨架，再补充领域字段（如 selected findings、root cause、contract decisions、rollback / recovery、review leads 等）。
 
 ## Handoff Flow Contract
+
+机器可读 source of truth：`docs/handoff-routing-matrix.json`
+
+- 用于声明允许的 `source workflow -> target workflow` 路由、共享 YAML 字段、route-specific YAML 字段以及 `source_of_truth_artifacts` 默认清单。
+- 下游 workflow 在消费 handoff 前，应先按该 matrix 验证 route、字段和 artifact 引用，再进入自己的阶段文档。
+- 如果 handoff route 未出现在 matrix 中，默认暂停并请求人工确认，而不是自行发明新的跨 workflow 流转。
 
 允许的跨 workflow handoff：
 
@@ -176,6 +187,7 @@ handoff 接收规则：
 
 - 下游 workflow 必须先读取 handoff，再写自己的 `01-*` 阶段文档。
 - handoff 是 source of truth；不得依赖聊天上下文补范围。
+- handoff 默认不是“直接开始改代码”的批准依据；只有下游 workflow 自己的契约明确允许，且 handoff 明确标注 `handoff_approval_basis_allowed=true` 时，才能把它当作已满足的最小确认基础。当前内置 route 默认均为 `false`。
 - 下游不得处理 handoff 明确 excluded 的 scope。
 - 如果 handoff 缺失关键字段，下游必须按 `Stop and Confirmation Contract` 暂停确认。
 - 如果用户要求“按 handoff 落地”，默认进入 `software-delivery-pipeline`，除非 handoff 指向其他 target workflow。

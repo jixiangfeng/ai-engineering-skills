@@ -110,6 +110,16 @@ verificationRequired: true
 ## 机器可读摘要
 
 ```yaml
+source_run_path: "workflow/reviews/<YYYY-MM-DD>-<slug>"
+source_workflow: "code-review-triage"
+target_workflow: "software-delivery-pipeline"
+accepted_scope:
+  - "F-001"
+excluded_scope:
+  - "F-002"
+unresolved_questions: []
+verification_focus:
+  - "重复提交与正常提交行为"
 source_review_run: "workflow/reviews/<YYYY-MM-DD>-<slug>"
 selected_findings:
   - id: "F-001"
@@ -128,6 +138,8 @@ source_of_truth_artifacts:
   - "12-review-fix-plan.md"
   - "11-review-findings.md"
 recommended_next_workflow: "software-delivery-pipeline"
+target_execution_hint: "full"
+handoff_approval_basis_allowed: false
 architecture_gate:
   required: false
   reason: ""

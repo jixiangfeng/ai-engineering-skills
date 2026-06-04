@@ -45,13 +45,20 @@ verificationRequired: true
 -
 
 ## Source of Truth Artifacts
--
+- `10-orientation-scope.md`
+- `11-orientation-map.md`
+- `12-orientation-summary.md`
 
 ## Recommended Next Workflow
 - `software-delivery-pipeline`
 
 ## Why Next Workflow Is Appropriate
 -
+## Downstream Execution Hint
+- 建议下游执行模式：`standard`
+- `handoff_approval_basis_allowed`: false
+- 说明：本 handoff 提供 source of truth，但不直接构成下游开始实现的批准依据。
+
 
 ## 已确认上下文
 -
@@ -100,6 +107,11 @@ excluded_scope: []
 constraints: []
 unresolved_questions: []
 verification_focus: []
-source_of_truth_artifacts: []
+source_of_truth_artifacts:
+  - "10-orientation-scope.md"
+  - "11-orientation-map.md"
+  - "12-orientation-summary.md"
 recommended_next_workflow: "software-delivery-pipeline"
+target_execution_hint: "standard"
+handoff_approval_basis_allowed: false
 ```

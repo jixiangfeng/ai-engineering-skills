@@ -34,6 +34,9 @@ python3 "${REPO_ROOT}/scripts/check-example-completeness.py" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/examples" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/examples"
 
+python3 "${REPO_ROOT}/scripts/check-handoff-contracts.py" \
+  --matrix "${REPO_ROOT}/docs/handoff-routing-matrix.json"
+
 echo "== Bootstrap routing cases =="
 python3 "${REPO_ROOT}/scripts/check-bootstrap-routing.py" \
   --cases "${REPO_ROOT}/tests/bootstrap-routing/cases.tsv"

@@ -1,0 +1,116 @@
+{
+  "sharedYamlKeys": [
+    "source_run_path",
+    "source_workflow",
+    "target_workflow",
+    "accepted_scope",
+    "excluded_scope",
+    "constraints",
+    "unresolved_questions",
+    "verification_focus",
+    "source_of_truth_artifacts",
+    "recommended_next_workflow",
+    "target_execution_hint",
+    "handoff_approval_basis_allowed"
+  ],
+  "routes": [
+    {
+      "sourceWorkflow": "codebase-orientation",
+      "targetWorkflow": "code-review-triage",
+      "template": "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates/orientation-to-review-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed"
+      ],
+      "requiredSourceArtifacts": [
+        "10-orientation-scope.md",
+        "11-orientation-map.md",
+        "12-orientation-summary.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "codebase-orientation",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates/orientation-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed"
+      ],
+      "requiredSourceArtifacts": [
+        "10-orientation-scope.md",
+        "11-orientation-map.md",
+        "12-orientation-summary.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "code-review-triage",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/code-review-triage/assets/review-templates/review-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/code-review-triage/assets/review-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed",
+        "source_review_run",
+        "selected_findings",
+        "excluded_findings",
+        "verification",
+        "architecture_gate",
+        "forbidden_scope"
+      ],
+      "requiredSourceArtifacts": [
+        "12-review-fix-plan.md",
+        "11-review-findings.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "debug-root-cause",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates/debug-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed"
+      ],
+      "requiredSourceArtifacts": [
+        "10-debug-scope-reproduction.md",
+        "11-debug-evidence.md",
+        "12-debug-root-cause.md",
+        "13-debug-summary.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "api-contract-design",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/api-contract-design/assets/api-contract-templates/api-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/api-contract-design/assets/api-contract-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed"
+      ],
+      "requiredSourceArtifacts": [
+        "10-api-contract-scope.md",
+        "11-api-current-proposed.md",
+        "12-api-rules-examples.md",
+        "13-api-summary.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "data-migration-planning",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates/migration-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed"
+      ],
+      "requiredSourceArtifacts": [
+        "10-migration-scope-current.md",
+        "11-migration-target-plan.md",
+        "12-migration-rollback-validation.md",
+        "13-migration-summary.md"
+      ]
+    }
+  ]
+}

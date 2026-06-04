@@ -8,6 +8,7 @@
 2. 下游 workflow 必须把 handoff 当作输入事实来源，不得重新扩大 scope。
 3. 如果 handoff 缺少 selected items、验收标准、验证要求或用户确认记录，下游必须暂停补齐。
 4. handoff 不等于代码修改授权；进入代码修改前仍需目标 workflow 的计划和确认门禁。
+5. 如 handoff 带有 `target_execution_hint`，只把它当作下游模式建议；除非 handoff 明确标注 `handoff_approval_basis_allowed=true` 且下游 workflow 契约允许，否则不得把 handoff 当作已满足的批准依据。
 5. 修改 handoff 中未选择或已排除的事项，必须先请求用户确认。
 
 ## 机器可读元数据
@@ -34,6 +35,8 @@ verificationRequired: true
 ### Target
 - toWorkflow:
 - recommendedNextAction:
+- targetExecutionHint:
+- handoffApprovalBasisAllowed:
 
 ### Accepted Scope
 - ...
@@ -54,7 +57,7 @@ verificationRequired: true
 ## 正例
 
 - review handoff 明确 `F-001`、`F-003` 已选择，`F-002` 排除，下游 delivery 只修选中项。
-- debug handoff 带上复现命令、根因证据、最小修复点和验证命令。
+- debug handoff 带上复现命令、根因证据、最小修复点和验证命令，并把 `target_execution_hint` 仅作为模式建议，而不是直接放行实现。
 
 ## 反例
 

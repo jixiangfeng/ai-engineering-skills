@@ -10,7 +10,7 @@
 ## State Snapshot
 - 当前阶段：`summary`
 - 最新文档：`13-api-summary.md`
-- 下一步：使用 `api-to-delivery-handoff.md` 落地
+- 下一步：使用 `api-to-delivery-handoff.md` 进入下游实现，并由下游 workflow 按自己的确认门禁继续
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
 ## Slim Artifact Shape
@@ -18,7 +18,7 @@
 - `11-api-current-proposed.md`：合并 current contract、proposed contract、事实 / 推断 / 待确认
 - `12-api-rules-examples.md`：合并 compatibility、validation / errors、request / response examples
 - `13-api-summary.md`：给出最终契约结论与 open questions
-- `api-to-delivery-handoff.md`：仅在需要进入实现时生成
+- `api-to-delivery-handoff.md`：仅在需要进入实现时生成；它提供契约事实与约束，不直接提供下游代码修改授权
 
 ## Contract Shape
 - endpoint: `GET /api/orders/current`

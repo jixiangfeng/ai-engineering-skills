@@ -10,7 +10,7 @@
 ## State Snapshot
 - 当前阶段：`summary`
 - 最新文档：`13-debug-summary.md`
-- 下一步：如需修复，使用 `debug-to-delivery-handoff.md`
+- 下一步：如需修复，使用 `debug-to-delivery-handoff.md`，并由下游 workflow 按自己的确认门禁继续
 - Reproduction status：`reproduced`
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
@@ -19,7 +19,7 @@
 - `11-debug-evidence.md`：合并日志、堆栈、代码路径、配置、数据和 hypotheses
 - `12-debug-root-cause.md`：合并根因、fix options、verification plan
 - `13-debug-summary.md`：记录 rejected hypotheses、confirmed root cause、next workflow
-- `debug-to-delivery-handoff.md`：仅在需要进入实现时生成
+- `debug-to-delivery-handoff.md`：仅在需要进入实现时生成；它提供根因与范围事实，不直接提供下游代码修改授权
 
 ## Debug Analysis
 - 现象：重复调用提交接口时第二次请求超时。

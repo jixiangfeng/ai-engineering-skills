@@ -45,13 +45,21 @@ verificationRequired: true
 -
 
 ## Source of Truth Artifacts
--
+- `10-debug-scope-reproduction.md`
+- `11-debug-evidence.md`
+- `12-debug-root-cause.md`
+- `13-debug-summary.md`
 
 ## Recommended Next Workflow
 - `software-delivery-pipeline`
 
 ## Why Next Workflow Is Appropriate
 -
+## Downstream Execution Hint
+- 建议下游执行模式：`standard`
+- `handoff_approval_basis_allowed`: false
+- 说明：本 handoff 提供 source of truth，但不直接构成下游开始实现的批准依据。
+
 
 ## 根因
 -
@@ -85,6 +93,12 @@ excluded_scope: []
 constraints: []
 unresolved_questions: []
 verification_focus: []
-source_of_truth_artifacts: []
+source_of_truth_artifacts:
+  - "10-debug-scope-reproduction.md"
+  - "11-debug-evidence.md"
+  - "12-debug-root-cause.md"
+  - "13-debug-summary.md"
 recommended_next_workflow: "software-delivery-pipeline"
+target_execution_hint: "standard"
+handoff_approval_basis_allowed: false
 ```

@@ -83,6 +83,7 @@
 
 ## Handoff Input Shape
 从 review/debug/api/migration handoff 继续时，handoff 是 source of truth；不得修复未选择 finding 或扩大 scope。
+同时，handoff 默认不是直接开始实现的批准依据；仍需按 delivery 自身的 mode 和确认门禁继续。
 
 ## Verification
 

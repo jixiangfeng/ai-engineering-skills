@@ -10,7 +10,7 @@
 ## State Snapshot
 - 当前阶段：`summary`
 - 最新文档：`13-review-summary.md`
-- 下一步：等待 `software-delivery-pipeline` 按 handoff 落地
+- 下一步：等待 `software-delivery-pipeline` 读取 handoff 并按其自身确认门禁继续落地
 - Selected scope：`F-001`
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
@@ -19,7 +19,7 @@
 - `11-review-findings.md`：记录 findings 列表、severity、evidence、impact、fix direction
 - `12-review-fix-plan.md`：合并 selected / excluded findings、用户约束、fix 计划、验证要求
 - `13-review-summary.md`：记录 closure / handoff readiness / recommended next workflow
-- `review-to-delivery-handoff.md`：仅在需要进入实现时生成
+- `review-to-delivery-handoff.md`：仅在需要进入实现时生成；它提供 source of truth，不直接提供下游代码修改授权
 
 ## Review Findings
 

@@ -234,6 +234,9 @@ rg -q 'Audited hard triggers override task size' "${SKILLS_DIR}/software-deliver
 rg -q 'single combined gate' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill should define guarded combined confirmation"
 rg -q '风险触发优先于任务大小' "${REPO_ROOT}/docs/execution-modes.zh-CN.md" || fail "execution modes should prioritize risk over task size"
 rg -q 'fast 模式例外' "${REPO_ROOT}/docs/prompt-modules/write-guard.zh-CN.md" || fail "write guard should define fast mode write exception"
+rg -q '不把 handoff 视为直接开改的批准依据' "${REPO_ROOT}/docs/install-smoke-test.zh-CN.md" || fail "install smoke test should treat handoff as source of truth, not direct execution approval"
+rg -q '不能把上游 handoff 直接当成代码修改授权' "${REPO_ROOT}/docs/skills-guide.zh-CN.md" || fail "skills guide should forbid treating handoff as direct code edit authorization"
+rg -q 'handoff_approval_basis_allowed=true' "${REPO_ROOT}/docs/prompt-modules/handoff.zh-CN.md" || fail "handoff prompt module should describe explicit approval-basis opt-in"
 for term in 'brainstorming' 'writing-plans' 'executing-plans' 'test-driven-development' 'systematic-debugging' 'verification-before-completion' 'requesting-code-review' 'receiving-code-review' 'using-git-worktrees' 'subagent-driven-development' 'finishing-a-development-branch'; do
   rg -q "${term}" "${REPO_ROOT}/docs/superpowers-inspired-rules.zh-CN.md" || fail "superpowers-inspired rules missing capability: ${term}"
 done
@@ -564,6 +567,8 @@ for handoff_template in \
 done
 
 for term in \
+  "## Upstream Handoff Source of Truth" \
+  "docs/handoff-routing-matrix.json" \
   "## Review Handoff Input" \
   "## Other Upstream Handoff Inputs" \
   "### Orientation Handoff Input" \
@@ -577,6 +582,13 @@ for term in \
   "source of truth" \
   "01-delivery-requirements.md"; do
   rg -q "${term}" "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing upstream handoff rule term: ${term}"
+done
+
+for term in \
+  'docs/handoff-routing-matrix.json' \
+  'source workflow -> target workflow' \
+  'source_of_truth_artifacts'; do
+  rg -q "${term}" "${REPO_ROOT}/docs/workflow-contracts.zh-CN.md" || fail "workflow contracts missing handoff matrix term: ${term}"
 done
 
 for term in "schemaVersion" "workflow" "runPath" "domainModules" "executionMode" "modePath" "affectedServices" "affectedControllers" "affectedTables" "affectedCollections" "affectedTopics" "affectedConfigKeys" "status" "currentStage" "nextAction" "codeEditsAllowed" "riskLevel" "riskReason" "confirmationRequired" "rollbackRequired" "updatedAt"; do

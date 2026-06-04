@@ -45,13 +45,21 @@ verificationRequired: true
 -
 
 ## Source of Truth Artifacts
--
+- `10-api-contract-scope.md`
+- `11-api-current-proposed.md`
+- `12-api-rules-examples.md`
+- `13-api-summary.md`
 
 ## Recommended Next Workflow
 - `software-delivery-pipeline`
 
 ## Why Next Workflow Is Appropriate
 -
+## Downstream Execution Hint
+- 建议下游执行模式：`full`
+- `handoff_approval_basis_allowed`: false
+- 说明：本 handoff 提供 source of truth，但不直接构成下游开始实现的批准依据。
+
 
 ## 已确认契约
 -
@@ -82,6 +90,12 @@ excluded_scope: []
 constraints: []
 unresolved_questions: []
 verification_focus: []
-source_of_truth_artifacts: []
+source_of_truth_artifacts:
+  - "10-api-contract-scope.md"
+  - "11-api-current-proposed.md"
+  - "12-api-rules-examples.md"
+  - "13-api-summary.md"
 recommended_next_workflow: "software-delivery-pipeline"
+target_execution_hint: "full"
+handoff_approval_basis_allowed: false
 ```
