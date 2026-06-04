@@ -48,6 +48,25 @@
 
 所有 workflow 都应遵守 [工程行为原则](./docs/engineering-principles.zh-CN.md)：先澄清关键假设，保持方案简单，只做可追溯的精准修改，并用实际验证结果支撑完成声明。执行重量按 [Execution Modes](./docs/execution-modes.zh-CN.md) 裁剪：小任务走 fast，普通变更走 guarded，高风险或 handoff 交付走 audited。
 
+## 自用优先的 5 分钟路径
+
+如果你主要是给自己日常 coding 用，这套 skill 最推荐的不是“完整文档流”，而是下面这条默认路径：
+
+1. 先用 `workflow-bootstrap` 判断是熟悉 / review / debug / 契约 / 迁移 / 交付。
+2. 如果是低风险小改动，并且你已经明确说了“直接改 / 改完告诉我验证结果 / 不要铺太多文档”，优先走 `software-delivery-pipeline` 的 `lightweight` / fast。
+3. 如果还需要锁 scope、plan 和 verification，但不值得走完整审计链路，走 `standard` / guarded，并允许把用户初始指令记录为单次 combined gate 的 approval basis。
+4. 只有遇到 handoff、API / DTO / 数据 / 权限 / MQ / 跨服务、或明确要求可审计产物时，才升级到 `full` / audited。
+
+一句话：**先快跑，再升级；不是先把流程铺满。**
+
+可直接用于自测的提示词：
+
+```text
+$workflow-bootstrap 直接把 README 里一个错别字改掉，改完告诉我验证结果
+$workflow-bootstrap 把这个局部 bugfix 先锁范围后直接改，改完给我验证结果
+$workflow-bootstrap 按这个 review handoff 修复涉及 API 响应结构的问题
+```
+
 ## 目录结构
 
 ```text

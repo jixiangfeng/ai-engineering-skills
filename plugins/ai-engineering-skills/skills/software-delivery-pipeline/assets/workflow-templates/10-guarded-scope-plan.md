@@ -44,6 +44,10 @@ nextAction: confirm_scope_plan
 | --- | --- | --- | --- |
 |  |  |  | 是 / 否 |
 
+## Approval Basis
+- 来源：待补充（用户初始指令 / 本轮确认 / 其他）
+- 若直接沿用用户初始指令作为 combined gate，请写明原话与适用原因。
+
 ## Skipped Gates
 | Gate | 结果 | 原因 |
 | --- | --- | --- |
@@ -61,3 +65,4 @@ nextAction: confirm_scope_plan
 
 ## Confirmation
 - 待确认；确认前不得进入实现或代码修改阶段。
+- 或：已由用户初始指令完成 combined gate（仅限低风险、无 handoff、无 API/DTO/数据/权限/MQ/调度/跨服务影响的场景）。

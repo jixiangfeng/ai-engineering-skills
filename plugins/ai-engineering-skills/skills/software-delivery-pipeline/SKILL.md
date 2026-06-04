@@ -104,7 +104,8 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Every generated stage must write its output document before the next generated stage starts.
 - Guarded runs use one mandatory human review gate on `10-guarded-scope-plan.md`; audited runs use the full staged gates starting from `01-delivery-requirements.md`.
 - `lightweight` / fast runs may use a concise summary / verification note instead of full requirements and plan documents, but must still record goal, scope, assumptions, verification, skipped gates, and upgrade conditions.
-- Guarded runs require scope and plan confirmation, but the confirmation may be a single combined gate when the user's instruction already clearly approves the scope, plan direction, and verification target. Do not skip verification.
+- If the user explicitly authorizes direct execution for a low-risk repo-local task (for example “直接改 / 直接做 / 改完告诉我验证结果 / 不要铺太多文档”), prefer fast when safe instead of expanding into guarded for ceremony only.
+- Guarded runs require scope and plan confirmation, but the confirmation may be a single combined gate when the user's instruction already clearly approves the scope, plan direction, and verification target. In that case, record the user's instruction as the approval basis in `10-guarded-scope-plan.md` and proceed without forcing a second chat round-trip. Do not skip verification.
 - Audited hard triggers override task size. If any audited trigger is present, do not downgrade to guarded or fast only because the code diff is small.
 - Architecture design is conditional: for simple tasks, record why no standalone architecture document is needed; for architecture-triggering tasks, write `02-delivery-architecture.md` and stop for human confirmation before planning.
 - The planning stage has a mandatory human review gate: guarded runs satisfy it inside `10-guarded-scope-plan.md`; audited runs keep the standalone plan confirmation before implementation.
@@ -114,6 +115,7 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - If the human requests requirement, architecture, or plan changes, update the current stage document and ask for confirmation again; repeat until explicitly approved and no unresolved questions remain.
 - Do not begin planning until the guarded `scope+plan` document or audited requirements document is approved, except in `lightweight` / fast runs where the summary records the scope and verification note.
 - Do not begin implementation or code edits until required architecture and implementation plan documents are approved, except in `lightweight` / fast runs where the task is low risk and the fast note records the minimal plan and stop conditions.
+- For `standard` / guarded, the approval may come from the user's initial instruction only when all of the following hold: low risk, no handoff, no API / DTO / data / permission / MQ / scheduling / cross-service impact, no destructive action, and scope can be self-locked from code evidence.
 - During implementation, debugging, or verification, pause for human confirmation if scope expands, the plan must materially change, verification is blocked, or a destructive/high-risk operation is needed.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields such as `projectRoot`, `runDir`, `branch`, `commit`, `producedArtifacts`, `skippedArtifacts`, or `verification`.
@@ -175,6 +177,16 @@ Default principle:
 
 Use `docs/prompt-modules/worktree-recommendation.zh-CN.md`. Worktree creation is only a recommendation unless the human explicitly asks.
 
+## Upstream Handoff Source of Truth
+
+Use `docs/handoff-routing-matrix.json` as the shared machine-readable source of truth for allowed upstream handoff routes, shared YAML keys, route-specific YAML keys, and required source artifacts.
+
+Rules:
+- When consuming a handoff, first validate its route and machine-readable fields against `docs/handoff-routing-matrix.json`.
+- If the handoff route is not declared in the matrix, stop and ask for confirmation instead of improvising a new workflow transition.
+- If the handoff YAML is missing matrix-required keys or required source artifacts, stop and ask for confirmation before writing `01-delivery-requirements.md`.
+- The workflow-specific rules below add delivery-side interpretation and stop conditions; they do not replace the matrix.
+
 ## Review Handoff Input
 
 Use this mode when the user says to continue from a review, fix selected findings, follow `code-review-triage`, provides a `workflow/reviews/...` path, or says “按这个修”, “继续”, “落地”, “修复选中的问题” immediately after a review handoff. In these cases, automatically use the review handoff as input instead of asking which workflow to use.
@@ -188,6 +200,7 @@ Required input files, in priority order:
 
 Rules:
 - Read the handoff before writing `01-delivery-requirements.md`.
+- Validate shared and review-specific YAML fields against `docs/handoff-routing-matrix.json` before interpreting the handoff.
 - If `review-to-delivery-handoff.md` contains a YAML block, use it to verify selected findings, excluded findings, constraints, verification requirements, and forbidden scope.
 - If no handoff exists but the review run has confirmed `12-review-fix-plan.md`, reconstruct the handoff in `01-delivery-requirements.md` from that file, state that no handoff file was found, and stop for requirements confirmation before any code edit.
 - If no handoff exists but the review run uses the legacy split path and has confirmed `03-review-fix-selection.md` and `04-review-fix-plan.md`, reconstruct the handoff in `01-delivery-requirements.md` from those files, state that no handoff file was found, and stop for requirements confirmation before any code edit.
@@ -206,6 +219,7 @@ When the user provides `workflow/orientation/.../orientation-to-delivery-handoff
 
 Rules:
 - Read `orientation-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Validate shared YAML fields and source-of-truth artifacts against `docs/handoff-routing-matrix.json` before interpreting the handoff.
 - Extract at least: accepted scope, excluded scope, constraints, unresolved questions, verification focus, source of truth artifacts, and why direct delivery is appropriate.
 - If those minimum fields are missing, stop and ask for confirmation instead of filling gaps from chat memory.
 - `01-delivery-requirements.md` must record the source orientation run path, affected modules, locked scope, unresolved questions, and any architecture gate recommendation.
@@ -216,6 +230,7 @@ When the user provides `workflow/debug/.../debug-to-delivery-handoff.md` or asks
 
 Rules:
 - Read `debug-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Validate shared YAML fields and source-of-truth artifacts against `docs/handoff-routing-matrix.json` before interpreting the handoff.
 - Extract at least: accepted scope, excluded scope, root cause, selected fix direction, constraints, verification focus, and source of truth artifacts.
 - If root cause, scope lock, or verification focus is missing, stop and ask for confirmation instead of guessing the intended fix.
 - `01-delivery-requirements.md` must record the source debug run path, confirmed root cause, allowed modification scope, forbidden scope, and required verification signals.
@@ -226,6 +241,7 @@ When the user provides `workflow/api-contracts/.../api-to-delivery-handoff.md` o
 
 Rules:
 - Read `api-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Validate shared YAML fields and source-of-truth artifacts against `docs/handoff-routing-matrix.json` before interpreting the handoff.
 - Extract at least: accepted scope, excluded scope, contract decisions, compatibility decision, validation/error behavior, constraints, verification focus, and source of truth artifacts.
 - If field semantics, compatibility rules, or forbidden changes are missing, stop and ask for confirmation instead of reconstructing them from chat.
 - `01-delivery-requirements.md` must record the source API contract run path, DTO / endpoint / response boundaries, compatibility commitments, forbidden changes, and verification examples.
@@ -236,6 +252,7 @@ When the user provides `workflow/data-migrations/.../migration-to-delivery-hando
 
 Rules:
 - Read `migration-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Validate shared YAML fields and source-of-truth artifacts against `docs/handoff-routing-matrix.json` before interpreting the handoff.
 - Extract at least: accepted scope, excluded scope, schema/data changes, compatibility window, rollback requirements, validation SQL/checks, constraints, and source of truth artifacts.
 - If rollback requirements, compatibility window, or validation checks are missing, stop and ask for confirmation instead of improvising a migration plan.
 - `01-delivery-requirements.md` must record the source migration run path, migration phases, rollback / recovery obligations, destructive-operation boundaries, and verification checks.
@@ -299,6 +316,8 @@ Mode-specific artifact paths:
 ### Fast Patch — `lightweight` / fast
 Use this path for low-risk small edits. Do not create full 01-08 artifacts.
 
+Prefer this path when the user already asked for direct execution and the task remains safely repo-local.
+
 Required files:
 0. `workflow-state.json`
 1. `delivery-workflow-state.md` only when a persistent run directory is useful
@@ -317,7 +336,7 @@ Required files:
 4. `workflow-state.json`
 
 Guarded consolidation rules:
-- `10-guarded-scope-plan.md` combines requirements/scope, implementation plan, and verification target, then stops for one human confirmation gate.
+- `10-guarded-scope-plan.md` combines requirements/scope, implementation plan, and verification target. Normally it stops for one human confirmation gate; when the user's initial instruction already serves as a valid combined approval basis, record that basis and continue in the same turn.
 - `11-guarded-execution.md` combines implementation record and verification evidence, so ordinary runs do not split those into two files.
 - Only expand to audited delivery documents when architecture, change-review, debugging, handoff, or risk triggers require it.
 
@@ -577,10 +596,11 @@ When using this skill in a live task:
 2. run the preflight checklist
 3. create the run folder under `<project-root>/workflow/runs/<YYYY-MM-DD>-<slug>/`
 4. create or update `delivery-workflow-state.md`
-5. if the run stays `standard` / guarded, write `10-guarded-scope-plan.md` in Chinese, ask the human to confirm or revise it, then stop
-6. if guarded revisions are requested, update `10-guarded-scope-plan.md` and repeat the confirmation gate
-7. after guarded approval, execute implementation + verification and write `11-guarded-execution.md`, then summarize in `12-guarded-summary.md`
-8. if the run is `full` / audited, write `01-delivery-requirements.md` in Chinese
+5. if the run stays `standard` / guarded, write `10-guarded-scope-plan.md` in Chinese
+6. if guarded approval is not yet satisfied, ask the human to confirm or revise it, then stop
+7. if guarded revisions are requested, update `10-guarded-scope-plan.md` and repeat the confirmation gate
+8. after guarded approval — or when the initial user instruction is a valid combined approval basis under the low-risk rule — execute implementation + verification and write `11-guarded-execution.md`, then summarize in `12-guarded-summary.md`
+9. if the run is `full` / audited, write `01-delivery-requirements.md` in Chinese
 9. ask the human to confirm or revise `01-delivery-requirements.md`, then stop
 10. if audited requirement revisions are requested, update `01-delivery-requirements.md` and repeat the confirmation gate
 11. after explicit approval, evaluate the architecture gate

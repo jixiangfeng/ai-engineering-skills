@@ -82,6 +82,17 @@ Use the data-migration-planning skill to plan this migration.
 
 如果任务从 `lightweight` 变复杂，agent 必须先说明原因并升级模式，不能静默铺开大量文档。
 
+### 自用默认建议
+
+如果这套 skill 主要是给自己日常开发使用，推荐把默认心智模型改成：
+
+- 明确低风险小任务：优先 `lightweight` / fast。
+- 明确执行授权（如“直接改 / 改完告诉我验证结果 / 不要铺太多文档”）：不要再为了形式多做一轮确认。
+- 普通实现但仍需锁定范围和验证：使用 `standard` / guarded，并允许把用户初始指令记录成 combined gate 的 approval basis。
+- handoff、契约、数据、权限、MQ、跨服务：仍然升级并保留强门禁。
+
+目标不是减少约束，而是**减少低价值往返**。
+
 ## 五、核心理念
 
 ### 1. 先分流，再理解，再审查，再实现
@@ -287,6 +298,11 @@ $software-delivery-pipeline 按 API 契约设计落地
 ### 默认行为
 
 它是唯一默认可以改代码的主流程 skill，但必须经过确认门禁。
+
+但这里的“确认门禁”不等于一律多来一轮聊天：
+- `lightweight` / fast：低风险且用户已明确要求直接执行时，可以直接记录最小计划并实施。
+- `standard` / guarded：如果用户初始指令已经明确批准最小范围、计划方向和验证目标，可把该指令记录为 combined gate 的 approval basis，然后在同一轮继续实现。
+- `full` / audited：仍必须保留完整确认链路，不能因为改动小而跳过。
 
 补充执行纪律：
 - 支持 `inline` / `subagent` 两种执行模式
@@ -576,7 +592,7 @@ $software-delivery-pipeline 按 workflow/reviews/<run>/review-to-delivery-handof
 12-review-fix-plan.md
 ```
 
-`software-delivery-pipeline` 可以重建需求，但必须停在 `01-delivery-requirements.md` 等用户确认，不能直接改代码。
+`software-delivery-pipeline` 可以重建需求，但不能把上游 handoff 直接当成代码修改授权；应按当前 delivery mode 与下游确认门禁继续执行。对 handoff 驱动场景，默认仍需保留下游 requirements / plan 确认链路。
 
 旧 run 仍兼容 `03-review-fix-selection.md` + `04-review-fix-plan.md`。
 

@@ -19,9 +19,11 @@
 1. 每个 workflow 开始前必须选择并记录 `executionMode`。
 2. 小任务默认 `lightweight`，除非证据、风险或用户要求需要升级。
 3. `lightweight` 不等于无状态；仍必须有严格符合 `docs/workflow-state-schema.json` 的机器可读 state 和 summary。
-4. 任务扩大、出现 handoff、需要恢复或需要审计时，先说明原因，再升级为 `standard` 或 `full`。
-5. summary 必须记录已生成和已跳过的产物。
-6. 跳过重阶段时优先使用 `docs/prompt-modules/conditional-blocks.zh-CN.md` 的 skipped reason，而不是保留空模板。
+4. 如果用户明确表达“直接改 / 直接做 / 改完告诉我验证结果 / 不要铺太多文档”，且任务仍满足 fast 条件，应优先保持 `lightweight`，不要为了流程感强行升级到 `standard`。
+5. `standard` 可用于仍需 scope/plan 锁定但不值得展开完整审计链路的普通实现；若用户的初始指令已经明确批准该最小范围、计划方向和验证目标，可把这条初始指令记录为 combined gate 的 approval basis，避免额外往返一次低价值确认。
+6. 任务扩大、出现 handoff、需要恢复或需要审计时，先说明原因，再升级为 `standard` 或 `full`。
+7. summary 必须记录已生成和已跳过的产物。
+8. 跳过重阶段时优先使用 `docs/prompt-modules/conditional-blocks.zh-CN.md` 的 skipped reason，而不是保留空模板。
 
 ## 输出要求
 
@@ -41,11 +43,14 @@
 ## 正例
 
 - “简单修复一个文案”使用 `lightweight`，只产出 state 和 summary。
+- “直接把 README 里一个错别字改掉，改完告诉我验证结果”使用 `lightweight`，不再展开额外确认门禁。
 - “普通 review 一个模块并给出修复范围”使用 `standard`，对 `code-review-triage` 产出 `10-review-scope.md`、`11-review-findings.md`、`12-review-fix-plan.md`、`13-review-summary.md`。
+- “把这个局部 bugfix 先锁范围后直接改，改完给我验证结果”在低风险前提下可使用 `standard`，并把用户原话记录为 combined gate 的 approval basis。
 - “深度 review 并形成文档”使用 `full`。
 
 ## 反例
 
 - 小改也默认生成 01-07 全部阶段文档。
+- 用户已经明确要求直接执行、风险也低，却因为“看起来更正规”强行升级到 guarded。
 - 把所有 workflow 的 `standard` 都写成 `10-guarded-scope-plan.md`、`11-guarded-execution.md`、`12-guarded-summary.md`。
 - 跳过阶段文档但不记录跳过原因。

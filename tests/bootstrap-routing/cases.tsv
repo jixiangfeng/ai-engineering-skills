@@ -23,6 +23,8 @@ schema 兼容和回滚方案	data-migration-planning	yes
 修复选中的 findings	software-delivery-pipeline	yes
 按已确认 handoff 落地	software-delivery-pipeline	yes
 实现这个小改动	software-delivery-pipeline	yes
+直接把 README 里一个错别字改掉，改完告诉我验证结果	software-delivery-pipeline	yes
+把这个局部 bugfix 先锁范围后直接改，改完给我验证结果	software-delivery-pipeline	yes
 解释一下 DTO 是什么	none	no
 解释一下这个问题	none	no
 总结一下上面的内容	none	no

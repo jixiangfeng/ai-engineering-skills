@@ -27,6 +27,7 @@
 - 不来自 review handoff。
 - worktree 变更不会被本轮修改影响。
 - 有明确可执行的验证方式。
+- 用户已明确要求直接执行时，优先保持在 fast，而不是为了形式升级。
 
 最小输出：
 - 当前假设。
@@ -44,6 +45,7 @@
 - 普通实现、bugfix 或局部重构。
 - 需要明确 scope、plan 和 verification，但不需要完整审计链路。
 - 未触发 audited 硬条件。
+- 用户已经明确批准直接执行，但任务仍值得留下一个可回看的 scope+plan 锁定记录。
 
 最小输出：
 - 对 analysis-first workflow：对应 workflow 的 slim default artifacts。
@@ -57,6 +59,7 @@
 推荐收缩：
 - analysis-first workflow 默认使用各自 `10~13` 主文档，而不是套用 delivery 的 guarded 文件名。
 - `software-delivery-pipeline` 的 `scope` 与 `plan` 默认合并在 `10-guarded-scope-plan.md`，用一次确认门禁锁定范围、计划和验证目标。
+- 当用户初始指令已经明确批准最小范围、计划方向和验证目标时，可把该指令记录为 combined gate 的 approval basis，避免再增加一次低价值往返。
 - `software-delivery-pipeline` 的 `implementation` 与 `verification` 默认合并在 `11-guarded-execution.md`，避免把“实现完成”和“验证完成”拆成两份重复文档。
 - 只有需要审计、handoff 或风险升级时，才展开为 audited 的独立阶段文档。
 

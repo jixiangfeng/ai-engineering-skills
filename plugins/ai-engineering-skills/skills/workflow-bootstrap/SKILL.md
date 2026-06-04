@@ -91,6 +91,7 @@ rollbackRequired: true
 - Follow the `Prompt Modules` section for shared clarification, execution mode, handoff, minimal-change, and verification discipline.
 
 - Apply the shared engineering principles before routing: clarify assumptions, prefer simple scope, avoid unrelated changes, and require verifiable completion criteria.
+- If the user already gave explicit execution authorization for a low-risk repo-local change (for example “直接改 / 直接做 / 改完告诉我验证结果 / 不要铺太多文档”), route decisively instead of adding a low-value confirmation loop.
 - If the task clearly matches one of the workflow skills, route to that workflow before acting.
 - Do not jump directly into code edits when a design, review, debugging, or orientation workflow should happen first.
 - Prefer the narrowest correct workflow.
@@ -197,6 +198,8 @@ Before choosing a workflow, identify:
 - 修复 bug
 - 按 handoff 落地
 - 完成开发并验证交付
+- 直接改一个低风险 repo 内问题，并给出验证结果
+- 明确要求少文档、快执行的小改动
 
 ## Conflict Resolution
 
@@ -247,6 +250,7 @@ A concise routing message is enough, for example:
 - “这个任务先走 `debug-root-cause`，因为当前目标是先定位失败根因，再决定修复方案。”
 - “这个任务先走 `api-contract-design`，先把契约定稳，再进入实现。”
 - “这个任务已经是明确实现范围，直接进入 `software-delivery-pipeline`。”
+- “这是低风险的小改动，而且你已经明确让我直接执行，我会走 `software-delivery-pipeline` 的最轻路径并把验证结果带回来。”
 
 ## References
 

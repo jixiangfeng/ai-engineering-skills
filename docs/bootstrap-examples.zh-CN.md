@@ -37,6 +37,8 @@
 | 按这个 handoff 落地 | `software-delivery-pipeline` | 用户要求按已确认 handoff 实现 |
 | 修复选中的 findings | `software-delivery-pipeline` | 用户要求交付 review 选中项 |
 | 实现这个小改动 | `software-delivery-pipeline` | 用户要求明确实现 |
+| 直接把 README 里一个错别字改掉，改完告诉我验证结果 | `software-delivery-pipeline` | 低风险小改动且有明确执行授权 |
+| 把这个局部 bugfix 先锁范围后直接改，改完给我验证结果 | `software-delivery-pipeline` | 需要最小 scope+plan 锁定，但不必展开完整流程 |
 
 ## 不应打开 workflow 的示例
 
@@ -72,7 +74,9 @@
 | 用户提示词 | 期望模式 | 期望产物 |
 | --- | --- | --- |
 | 帮我把 README 里一个错别字改掉，并说明验证结果 | `lightweight` / `fast` | concise summary 或 `00-fast-patch-summary.md` |
+| 直接把 README 里一个错别字改掉，改完告诉我验证结果 | `lightweight` / `fast` | 不额外追问，直接记录最小计划和验证结果 |
 | 实现一个局部低风险 bugfix，需要先确认范围和计划 | `standard` / `guarded` | `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md` |
+| 把这个局部 bugfix 先锁范围后直接改，改完给我验证结果 | `standard` / `guarded` | `10-guarded-scope-plan.md` 记录 combined gate 的 approval basis，必要时可同轮继续 |
 | 按这个 review handoff 修复涉及 API 响应结构的问题 | `full` / `audited` | `20-audited-run-map.md` + 完整门禁链路 |
 
 每次测试确认：
