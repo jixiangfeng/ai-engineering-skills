@@ -129,6 +129,7 @@ Before writing artifacts:
 - confirm current `cwd` and project root
 - inspect whether the worktree already has changes if reproduction or prior fix attempts may matter
 - locate or create the current run directory
+- if the user provides `workflow/tests/.../test-to-debug-handoff.md`, read it first and validate shared/test-specific YAML fields against `docs/handoff-routing-matrix.json`
 - read `debug-workflow-state.md` if it exists
 - read the latest required stage document before continuing
 - create artifacts under the project root, not under the skill directory
@@ -180,6 +181,8 @@ After each stage document is written or updated, update `debug-workflow-state.md
 3. State root cause with confidence and source evidence in `12-debug-root-cause.md`, and include fix options, tradeoffs, and verification plan in the same document.
 4. Ask the human to confirm fix direction before implementation, or hand off to `software-delivery-pipeline`.
 5. Write `13-debug-summary.md` to capture confirmed root cause, rejected hypotheses, remaining uncertainty, and the recommended next workflow.
+
+When starting from `test-to-debug-handoff.md`, use `failure_symptoms`, `executed_commands`, `rejected_explanations`, and `debug_questions` as starting evidence. Do not treat the test handoff as a confirmed root cause or fix approval.
 
 ## Escalation After Repeated Failed Fixes
 

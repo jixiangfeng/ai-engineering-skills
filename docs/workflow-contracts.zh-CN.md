@@ -182,6 +182,8 @@ handoff 文件至少应包含：
 | `debug-root-cause` | `software-delivery-pipeline` | `debug-to-delivery-handoff.md` | root cause、selected fix option、affected files、scope lock、risks、verification focus、source of truth artifacts |
 | `api-contract-design` | `software-delivery-pipeline` | `api-to-delivery-handoff.md` | endpoint/DTO decisions、compatibility decision、validation/error behavior、examples、forbidden changes、source of truth artifacts |
 | `data-migration-planning` | `software-delivery-pipeline` | `migration-to-delivery-handoff.md` | schema/data changes、rollout phases、compatibility window、rollback requirements、validation SQL、source of truth artifacts |
+| `tdd-test-engineering` | `software-delivery-pipeline` | `test-to-delivery-handoff.md` | approved failing tests、fix scope、forbidden scope、required regression、evidence、source of truth artifacts |
+| `tdd-test-engineering` | `debug-root-cause` | `test-to-debug-handoff.md` | failure symptoms、executed commands、rejected explanations、debug questions、evidence、source of truth artifacts |
 
 handoff 接收规则：
 

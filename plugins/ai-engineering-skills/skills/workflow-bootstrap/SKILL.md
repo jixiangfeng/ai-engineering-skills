@@ -3,7 +3,7 @@ name: workflow-bootstrap
 description: >-
   Route software-engineering tasks into the correct workflow skill before acting.
   Use when a user asks to understand a codebase, review code, debug a failure,
-  design an API contract, plan a data migration, or implement a feature/fix.
+  design an API contract, plan a data migration, design or run tests, or implement a feature/fix.
 ---
 
 # Workflow Bootstrap
@@ -26,6 +26,7 @@ Prefer another skill when:
 - `debug-root-cause`: there is a concrete failure, error, regression, or bad runtime behavior
 - `api-contract-design`: the main decision is endpoint, DTO, response shape, validation, or error contract
 - `data-migration-planning`: the task changes schema, persisted data, migrations, cleanup scripts, or backfills
+- `tdd-test-engineering`: the task is to design, write, execute, or summarize tests and regression evidence
 - `code-review-triage`: the user asks to review or find issues before implementation
 - `codebase-orientation`: the user asks to become familiar with code before judging or changing it
 - `software-delivery-pipeline`: requirements and scope are already implementation-ready
@@ -41,6 +42,7 @@ It helps decide whether the task should begin with:
 - `debug-root-cause`
 - `api-contract-design`
 - `data-migration-planning`
+- `tdd-test-engineering`
 - `software-delivery-pipeline`
 
 
@@ -192,6 +194,14 @@ Before choosing a workflow, identify:
 - 回填数据
 - 清理旧字段
 - 设计回滚/恢复方案
+
+### Route to `tdd-test-engineering` when the user asks to:
+- 写测试
+- 补测试
+- 设计测试用例
+- 跑回归
+- 输出测试证据
+- 先写失败测试
 
 ### Route to `software-delivery-pipeline` when the user asks to:
 - 实现功能

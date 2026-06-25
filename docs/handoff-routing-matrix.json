@@ -111,6 +111,46 @@
         "12-migration-rollback-validation.md",
         "13-migration-summary.md"
       ]
+    },
+    {
+      "sourceWorkflow": "tdd-test-engineering",
+      "targetWorkflow": "software-delivery-pipeline",
+      "template": "plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates/test-to-delivery-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed",
+        "approved_failing_tests",
+        "fix_scope",
+        "forbidden_scope",
+        "required_regression"
+      ],
+      "requiredSourceArtifacts": [
+        "10-test-scope-criteria.md",
+        "11-test-plan-cases.md",
+        "12-test-execution-evidence.md",
+        "13-test-summary.md"
+      ]
+    },
+    {
+      "sourceWorkflow": "tdd-test-engineering",
+      "targetWorkflow": "debug-root-cause",
+      "template": "plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates/test-to-debug-handoff.md",
+      "artifactsDir": "plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates",
+      "requiredYamlKeys": [
+        "target_execution_hint",
+        "handoff_approval_basis_allowed",
+        "failure_symptoms",
+        "executed_commands",
+        "rejected_explanations",
+        "debug_questions"
+      ],
+      "requiredSourceArtifacts": [
+        "10-test-scope-criteria.md",
+        "11-test-plan-cases.md",
+        "12-test-execution-evidence.md",
+        "13-test-summary.md"
+      ]
     }
   ]
 }

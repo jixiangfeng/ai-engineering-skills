@@ -19,6 +19,7 @@ python3 "${REPO_ROOT}/scripts/check-artifact-metadata.py" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates" \
   "${REPO_ROOT}/docs/full-run-examples" \
   "${REPO_ROOT}/docs/run-examples" \
@@ -32,6 +33,7 @@ python3 "${REPO_ROOT}/scripts/check-example-completeness.py" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/codebase-orientation/examples" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/data-migration-planning/examples" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/examples" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/tdd-test-engineering/examples" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/examples"
 
 python3 "${REPO_ROOT}/scripts/check-handoff-contracts.py" \

@@ -114,7 +114,8 @@ def detect_domain_module(prompt: str) -> str:
 def expected_mode(prompt: str, workflow: str, module: str) -> str:
     normalized = prompt.lower()
     if module == "java-spring-microservice" and (
-        workflow in {"data-migration-planning"} or any(signal in normalized for signal in HIGH_RISK_SIGNALS)
+        workflow in {"data-migration-planning", "tdd-test-engineering"}
+        or any(signal in normalized for signal in HIGH_RISK_SIGNALS)
     ):
         return "full"
     return "standard"

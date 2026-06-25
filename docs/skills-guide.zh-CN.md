@@ -1,6 +1,6 @@
 # AI Engineering Skills 使用说明
 
-这套仓库包含 7 个面向软件研发流程的 agent skill，目标是把“熟悉项目、审查问题、定位根因、设计契约、规划迁移、实现交付”变成可复用、可审查、可交接的文档化流程。
+这套仓库包含 8 个面向软件研发流程的 agent skill，目标是把“熟悉项目、审查问题、定位根因、设计契约、规划迁移、测试工程、实现交付”变成可复用、可审查、可交接的文档化流程。
 
 所有中间产物默认使用中文，生成在当前项目根目录的 `workflow/` 下，而不是生成在 skill 安装目录里。
 
@@ -19,6 +19,7 @@
 | `debug-root-cause` | 排查报错、失败测试、启动失败、运行时异常 | 否 | `workflow/debug/<run>/` |
 | `api-contract-design` | 设计接口、DTO、响应结构、错误码、兼容策略 | 否 | `workflow/api-contracts/<run>/` |
 | `data-migration-planning` | 规划表结构、数据迁移、回填、清理、回滚 | 否 | `workflow/data-migrations/<run>/` |
+| `tdd-test-engineering` | 测试用例确认、环境验证、TDD、回归和测试证据 | 否 | `workflow/tests/<run>/` |
 
 ## 二、安装与调用
 
@@ -35,6 +36,7 @@ $software-delivery-pipeline 按已确认的 handoff 进行实现
 $debug-root-cause 排查这个启动失败
 $api-contract-design 设计这个接口的请求响应契约
 $data-migration-planning 规划这次表结构和数据迁移
+$tdd-test-engineering 写测试覆盖这个回归问题
 ```
 
 ### Claude
@@ -55,6 +57,7 @@ Use the software-delivery-pipeline skill to implement the confirmed handoff.
 Use the debug-root-cause skill to investigate this failure.
 Use the api-contract-design skill to design this endpoint contract.
 Use the data-migration-planning skill to plan this migration.
+Use the tdd-test-engineering skill to design and run regression tests.
 ```
 
 ## 三、统一入口与路由
@@ -68,6 +71,7 @@ Use the data-migration-planning skill to plan this migration.
 - 报错、失败测试、启动异常 → `debug-root-cause`
 - API / DTO / 响应契约设计 → `api-contract-design`
 - 表结构 / 数据迁移 / 回滚规划 → `data-migration-planning`
+- 测试工程 / TDD / 回归证据 → `tdd-test-engineering`
 - 已明确的实现或修复任务 → `software-delivery-pipeline`
 
 简单概念问答不强制进入 workflow。
@@ -386,7 +390,57 @@ approved_with_notes
 
 其他结论必须回到实现、调试、计划、架构、需求，或暂停等待用户确认。
 
-## 4. debug-root-cause
+## 4. tdd-test-engineering
+
+### 用途
+
+用于设计、编写、执行和总结测试，包括 TDD、回归、环境验证、测试证据和测试交接。
+
+适合用户这样说：
+
+```text
+$tdd-test-engineering 写测试覆盖这个回归
+$tdd-test-engineering 先写失败测试再修复
+$tdd-test-engineering 跑一下这个模块回归
+```
+
+### 默认行为
+
+- 先确认验收标准，再写测试。
+- 测试用例确认前，不扩大测试实现范围。
+- 默认不改生产代码；如果测试暴露生产缺陷且未获修复授权，生成 handoff。
+- 对环境、数据和凭证只记录脱敏信息。
+- `workflow-state.json` 记录当前阶段、是否允许改测试代码、是否允许改生产代码、阻塞项和下一步。
+- 默认按 scope + plan + evidence + summary 的瘦身阶段推进；需要时再展开为更细的测试分析链路。
+
+### 主要产物
+
+目录：
+
+```text
+workflow/tests/<YYYY-MM-DD>-<slug>/
+```
+
+文件（默认瘦身）：
+
+```text
+test-workflow-state.md
+10-test-scope-criteria.md
+11-test-plan-cases.md
+12-test-execution-evidence.md
+13-test-summary.md
+test-to-delivery-handoff.md
+test-to-debug-handoff.md
+```
+
+需要更细拆分时，再展开为 `02~07` 的细分文档。
+
+### 后续联动
+
+- 需要修复生产代码：交给 `software-delivery-pipeline` 读取 `test-to-delivery-handoff.md`。
+- 根因不清：交给 `debug-root-cause` 读取 `test-to-debug-handoff.md`。
+
+## 5. debug-root-cause
 
 ### 用途
 
@@ -435,7 +489,7 @@ debug-to-delivery-handoff.md
 
 - 要修复：交给 `software-delivery-pipeline` 读取 `debug-to-delivery-handoff.md`。
 
-## 5. api-contract-design
+## 6. api-contract-design
 
 ### 用途
 
@@ -484,7 +538,7 @@ api-to-delivery-handoff.md
 - 契约确认后，交给 `software-delivery-pipeline` 读取 `api-to-delivery-handoff.md` 实现。
 - 相关最小文档契约由 `plugins/ai-engineering-skills/skills/api-contract-design/references/api-contract-document-contracts.md` 约束。
 
-## 6. data-migration-planning
+## 7. data-migration-planning
 
 ### 用途
 

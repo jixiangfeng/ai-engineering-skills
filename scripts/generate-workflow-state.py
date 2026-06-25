@@ -16,6 +16,7 @@ WORKFLOWS = (
     "debug-root-cause",
     "api-contract-design",
     "data-migration-planning",
+    "tdd-test-engineering",
     "software-delivery-pipeline",
 )
 

@@ -37,6 +37,7 @@ expected_skills=(
   debug-root-cause
   api-contract-design
   data-migration-planning
+  tdd-test-engineering
 )
 
 for skill in "${expected_skills[@]}"; do

@@ -260,6 +260,7 @@ expected_skills=(
   debug-root-cause
   api-contract-design
   data-migration-planning
+  tdd-test-engineering
 )
 
 for skill in "${expected_skills[@]}"; do
@@ -307,6 +308,7 @@ rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/code-review-triage/SKILL.md" || fail "re
 rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/debug-root-cause/SKILL.md" || fail "debug skill missing handoff prompt module"
 rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/api-contract-design/SKILL.md" || fail "api contract skill missing handoff prompt module"
 rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/data-migration-planning/SKILL.md" || fail "migration skill missing handoff prompt module"
+rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/tdd-test-engineering/SKILL.md" || fail "test skill missing handoff prompt module"
 rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/codebase-orientation/SKILL.md" || fail "orientation skill missing handoff prompt module"
 rg -q 'handoff.zh-CN.md' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing handoff prompt module"
 rg -q 'Implementation Plan' "${SKILLS_DIR}/software-delivery-pipeline/SKILL.md" || fail "delivery skill missing Implementation Plan"
@@ -327,7 +329,8 @@ rg -q 'Review Findings' "${SKILLS_DIR}/code-review-triage/examples/standard-run.
 rg -q 'Fix Handoff' "${SKILLS_DIR}/code-review-triage/examples/standard-run.md" || fail "review standard example missing Fix Handoff"
 rg -q 'Task Decomposition' "${SKILLS_DIR}/codebase-orientation/examples/standard-run.md" || fail "orientation standard example missing Task Decomposition"
 rg -q 'Worktree Recommendation' "${SKILLS_DIR}/data-migration-planning/examples/standard-run.md" || fail "migration standard example missing Worktree Recommendation"
-for skill in codebase-orientation code-review-triage software-delivery-pipeline debug-root-cause api-contract-design data-migration-planning; do
+rg -q 'Test Engineering Analysis' "${SKILLS_DIR}/tdd-test-engineering/examples/standard-run.md" || fail "test standard example missing Test Engineering Analysis"
+for skill in codebase-orientation code-review-triage software-delivery-pipeline debug-root-cause api-contract-design data-migration-planning tdd-test-engineering; do
   rg -q '## Verification' "${SKILLS_DIR}/${skill}/examples/standard-run.md" || fail "standard example missing Verification: ${skill}"
 done
 rg -q 'Implementation Strategy' "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/02-delivery-plan.md" || fail "delivery simple plan template missing Implementation Strategy"
@@ -353,7 +356,8 @@ for template in \
   "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/08-delivery-summary.md" \
   "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/08-debug-summary.md" \
   "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/07-api-summary.md" \
-  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/07-migration-summary.md"; do
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/07-migration-summary.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/assets/test-templates/13-test-summary.md"; do
   rg -q '## Verification' "${template}" || fail "template missing Verification section: ${template}"
   rg -q '完成判断' "${template}" || fail "template missing completion judgment: ${template}"
 done
@@ -396,6 +400,7 @@ check_required_files_have_templates "software-delivery-pipeline" "assets/workflo
 check_required_files_have_templates "debug-root-cause" "assets/debug-templates"
 check_required_files_have_templates "api-contract-design" "assets/api-contract-templates"
 check_required_files_have_templates "data-migration-planning" "assets/data-migration-templates"
+check_required_files_have_templates "tdd-test-engineering" "assets/test-templates"
 
 check_slim_default_contract() {
   local skill="$1"
@@ -457,13 +462,20 @@ check_slim_default_contract "data-migration-planning" \
 check_slim_default_templates "data-migration-planning" "assets/data-migration-templates" \
   "10-migration-scope-current.md" "11-migration-target-plan.md" "12-migration-rollback-validation.md" "13-migration-summary.md"
 
+check_slim_default_contract "tdd-test-engineering" \
+  "${SKILLS_DIR}/tdd-test-engineering/references/test-document-contracts.md" \
+  "10-test-scope-criteria.md" "11-test-plan-cases.md" "12-test-execution-evidence.md" "13-test-summary.md"
+check_slim_default_templates "tdd-test-engineering" "assets/test-templates" \
+  "10-test-scope-criteria.md" "11-test-plan-cases.md" "12-test-execution-evidence.md" "13-test-summary.md"
+
 for standard_example in \
   "${SKILLS_DIR}/codebase-orientation/examples/standard-run.md" \
   "${SKILLS_DIR}/code-review-triage/examples/standard-run.md" \
   "${SKILLS_DIR}/software-delivery-pipeline/examples/standard-run.md" \
   "${SKILLS_DIR}/debug-root-cause/examples/standard-run.md" \
   "${SKILLS_DIR}/api-contract-design/examples/standard-run.md" \
-  "${SKILLS_DIR}/data-migration-planning/examples/standard-run.md"; do
+  "${SKILLS_DIR}/data-migration-planning/examples/standard-run.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/examples/standard-run.md"; do
   require_file "${standard_example}"
   rg -q 'Slim Artifact Shape' "${standard_example}" || fail "standard example missing Slim Artifact Shape section: ${standard_example}"
 done
@@ -489,7 +501,8 @@ for state_template in \
   "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/delivery-workflow-state.md" \
   "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/debug-workflow-state.md" \
   "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/api-contract-workflow-state.md" \
-  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-workflow-state.md"; do
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-workflow-state.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/assets/test-templates/test-workflow-state.md"; do
   require_file "${state_template}"
   rg -q 'executionMode' "${state_template}" || fail "state template missing executionMode: ${state_template}"
   rg -q 'workflow-state.json' "${state_template}" || fail "state template missing workflow-state.json reference: ${state_template}"
@@ -503,7 +516,8 @@ for summary_template in \
   "${SKILLS_DIR}/software-delivery-pipeline/assets/workflow-templates/08-delivery-summary.md" \
   "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/08-debug-summary.md" \
   "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/07-api-summary.md" \
-  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/07-migration-summary.md"; do
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/07-migration-summary.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/assets/test-templates/13-test-summary.md"; do
   require_file "${summary_template}"
   rg -q 'executionMode' "${summary_template}" || fail "summary template missing executionMode: ${summary_template}"
 done
@@ -557,7 +571,9 @@ for handoff_template in \
   "${SKILLS_DIR}/code-review-triage/assets/review-templates/review-to-delivery-handoff.md" \
   "${SKILLS_DIR}/debug-root-cause/assets/debug-templates/debug-to-delivery-handoff.md" \
   "${SKILLS_DIR}/api-contract-design/assets/api-contract-templates/api-to-delivery-handoff.md" \
-  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-to-delivery-handoff.md"; do
+  "${SKILLS_DIR}/data-migration-planning/assets/data-migration-templates/migration-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/assets/test-templates/test-to-delivery-handoff.md" \
+  "${SKILLS_DIR}/tdd-test-engineering/assets/test-templates/test-to-debug-handoff.md"; do
   require_file "${handoff_template}"
   for term in "Accepted Scope" "Excluded Scope" "Evidence" "Constraints" "Unresolved Questions" "Verification Focus" "Source of Truth Artifacts" "Recommended Next Workflow" "Why Next Workflow Is Appropriate"; do
     rg -q "${term}" "${handoff_template}" || fail "handoff template missing term ${term}: ${handoff_template}"

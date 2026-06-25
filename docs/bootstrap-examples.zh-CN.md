@@ -34,6 +34,9 @@
 | 规划这次表结构和数据迁移 | `data-migration-planning` | 用户要求 schema / 数据迁移规划 |
 | 这个字段要回填历史数据 | `data-migration-planning` | 用户要求数据回填和验证策略 |
 | 表结构迁移并实现 | `data-migration-planning` | schema / 数据变更优先规划，再交付 |
+| 写测试覆盖这个回归 | `tdd-test-engineering` | 用户要求先补测试证据和回归覆盖 |
+| 先写失败测试再修复 | `tdd-test-engineering` | 用户要求测试先行和缺陷复现 |
+| 跑一下这个模块回归 | `tdd-test-engineering` | 用户要求执行回归测试和证据整理 |
 | 按这个 handoff 落地 | `software-delivery-pipeline` | 用户要求按已确认 handoff 实现 |
 | 修复选中的 findings | `software-delivery-pipeline` | 用户要求交付 review 选中项 |
 | 实现这个小改动 | `software-delivery-pipeline` | 用户要求明确实现 |
@@ -78,6 +81,14 @@
 | 实现一个局部低风险 bugfix，需要先确认范围和计划 | `standard` / `guarded` | `10-guarded-scope-plan.md` + `11-guarded-execution.md` + `12-guarded-summary.md` |
 | 把这个局部 bugfix 先锁范围后直接改，改完给我验证结果 | `standard` / `guarded` | `10-guarded-scope-plan.md` 记录 combined gate 的 approval basis，必要时可同轮继续 |
 | 按这个 review handoff 修复涉及 API 响应结构的问题 | `full` / `audited` | `20-audited-run-map.md` + 完整门禁链路 |
+
+安装后还应测试 `tdd-test-engineering` 是否能独立运行并在需要时 handoff：
+
+| 用户提示词 | 期望 workflow | 期望行为 |
+| --- | --- | --- |
+| 写测试覆盖这个回归 | `tdd-test-engineering` | 先确认验收标准，再进入测试计划 |
+| 先写失败测试再修复 | `tdd-test-engineering` | 输出失败测试、执行证据或下游 handoff |
+| 跑一下这个模块回归 | `tdd-test-engineering` | 记录命令、结果、失败分类和剩余风险 |
 
 每次测试确认：
 

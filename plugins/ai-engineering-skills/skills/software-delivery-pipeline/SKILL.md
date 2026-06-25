@@ -235,6 +235,18 @@ Rules:
 - If root cause, scope lock, or verification focus is missing, stop and ask for confirmation instead of guessing the intended fix.
 - `01-delivery-requirements.md` must record the source debug run path, confirmed root cause, allowed modification scope, forbidden scope, and required verification signals.
 
+### Test Handoff Input
+
+When the user provides `workflow/tests/.../test-to-delivery-handoff.md` or asks to implement from confirmed failing tests, treat that handoff as the source of truth.
+
+Rules:
+- Read `test-to-delivery-handoff.md` before writing `01-delivery-requirements.md`.
+- Validate shared and test-specific YAML fields against `docs/handoff-routing-matrix.json` before interpreting the handoff.
+- Extract at least: approved failing tests, fix scope, forbidden scope, required regression, constraints, verification focus, and source of truth artifacts.
+- If approved failing tests, allowed fix scope, or required regression is missing, stop and ask for confirmation instead of inferring the intended production fix.
+- `01-delivery-requirements.md` must record the source test run path, approved failing tests, allowed and forbidden modification scope, required regression, and any pre-existing workspace diffs that could affect the fix.
+- Do not treat the test handoff as direct production-code edit approval; delivery requirements and plan gates still apply.
+
 ### API Contract Handoff Input
 
 When the user provides `workflow/api-contracts/.../api-to-delivery-handoff.md` or asks to implement from a confirmed API contract, treat that handoff as the source of truth.

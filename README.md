@@ -1,6 +1,6 @@
 # AI Engineering Skills
 
-面向软件研发流程的七套 agent skill，Codex 和 Claude 都可以使用。
+面向软件研发流程的八套 agent skill，Codex 和 Claude 都可以使用。
 
 ## 文档
 
@@ -28,6 +28,7 @@
 - [`workflow-bootstrap`](./plugins/ai-engineering-skills/skills/workflow-bootstrap/SKILL.md)：软件研发任务的统一入口分流，先判断该走熟悉、review、debug、契约设计、迁移规划还是直接交付实现。
 - [`codebase-orientation`](./plugins/ai-engineering-skills/skills/codebase-orientation/SKILL.md)：只读熟悉项目/模块/业务流程，输出业务与技术理解文档，并可交接到 review 或交付流程。
 - [`software-delivery-pipeline`](./plugins/ai-engineering-skills/skills/software-delivery-pipeline/SKILL.md)：需求确认、架构/选型门禁、实施计划、实现、调试、验证、交付的闭环流程。
+- [`tdd-test-engineering`](./plugins/ai-engineering-skills/skills/tdd-test-engineering/SKILL.md)：测试用例确认、环境验证、TDD 执行、执行证据、回归和测试交接。
 - [`code-review-triage`](./plugins/ai-engineering-skills/skills/code-review-triage/SKILL.md)：只读代码审查、问题清单、修复项选择、修复计划、handoff 到交付流程。
 - [`debug-root-cause`](./plugins/ai-engineering-skills/skills/debug-root-cause/SKILL.md)：错误、失败测试、启动异常、运行时问题的证据优先根因分析。
 - [`api-contract-design`](./plugins/ai-engineering-skills/skills/api-contract-design/SKILL.md)：接口、DTO、响应结构、错误码、兼容策略的契约设计。
@@ -42,6 +43,7 @@
 - 问题排查 → `debug-root-cause`
 - 契约设计 → `api-contract-design`
 - 迁移规划 → `data-migration-planning`
+- 测试工程 / 回归 / TDD → `tdd-test-engineering`
 - 功能实现 / 修复交付 → `software-delivery-pipeline`
 
 简单概念问答不强制进入 workflow。
@@ -108,6 +110,7 @@ plugins/
 $workflow-bootstrap
 $codebase-orientation
 $code-review-triage
+$tdd-test-engineering
 $software-delivery-pipeline
 $debug-root-cause
 $api-contract-design
@@ -129,6 +132,7 @@ claude plugin install ai-engineering-skills@ai-engineering-skills
 Use the workflow-bootstrap skill first for software engineering tasks...
 Use the codebase-orientation skill...
 Use the code-review-triage skill...
+Use the tdd-test-engineering skill to design and run regression tests.
 Use the software-delivery-pipeline skill...
 Use the debug-root-cause skill...
 Use the api-contract-design skill...
@@ -156,6 +160,8 @@ Use the data-migration-planning skill...
 - `workflow-bootstrap` → `debug-root-cause` → `software-delivery-pipeline`
 - `workflow-bootstrap` → `api-contract-design` → `software-delivery-pipeline`
 - `workflow-bootstrap` → `data-migration-planning` → `software-delivery-pipeline`
+- `workflow-bootstrap` → `tdd-test-engineering` → `software-delivery-pipeline`
+- `workflow-bootstrap` → `tdd-test-engineering` → `debug-root-cause`
 - 对于已经范围明确的实现任务，也可以由 `workflow-bootstrap` 直接路由到 `software-delivery-pipeline`
 
 ## 自检

@@ -42,6 +42,7 @@ ALLOWED_WORKFLOWS = {
     "debug-root-cause",
     "api-contract-design",
     "data-migration-planning",
+    "tdd-test-engineering",
     "software-delivery-pipeline",
 }
 
@@ -52,6 +53,7 @@ DEFAULT_PATHS = [
     "plugins/ai-engineering-skills/skills/codebase-orientation/assets/orientation-templates",
     "plugins/ai-engineering-skills/skills/data-migration-planning/assets/data-migration-templates",
     "plugins/ai-engineering-skills/skills/debug-root-cause/assets/debug-templates",
+    "plugins/ai-engineering-skills/skills/tdd-test-engineering/assets/test-templates",
     "plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets/workflow-templates",
     "docs/full-run-examples",
     "tests/artifact-metadata/valid-artifact.md",
