@@ -39,6 +39,7 @@ verificationRequired: true
 ## 生命周期阶段
 | 阶段 | 文档 | 状态 | 确认记录 |
 | --- | --- | --- | --- |
+| environment_safety_gate | `00-environment-safety-gate.md` |  |  |
 | requirement_analysis | `10-test-scope-criteria.md` |  |  |
 | acceptance_definition | `10-test-scope-criteria.md` |  |  |
 | impact_analysis | `10-test-scope-criteria.md` / `11-test-plan-cases.md` |  |  |

@@ -15,7 +15,8 @@
 
 ## 默认瘦身路径
 
-`standard` 模式优先使用 4 份主文档：
+`standard` 模式优先使用 5 份主文档：
+- `00-environment-safety-gate.md`
 - `10-test-scope-criteria.md`
 - `11-test-plan-cases.md`
 - `12-test-execution-evidence.md`
@@ -23,7 +24,8 @@
 
 只有在发布级回归、高风险权限/资金/医疗/数据/MQ、或用户明确要求 full trail 时，才展开更多细分文档。
 
-设计文档中的需求理解、验收标准、影响范围、测试策略、数据计划、环境检查、问题记录、修复记录、回归报告和风险报告，在 `standard` 模式下应归并到这 4 份主文档；在 `full` 模式下可以拆分，但不能少于这些信息。
+设计文档中的需求理解、验收标准、影响范围、测试策略、数据计划、环境检查、问题记录、修复记录、回归报告和风险报告，在 `standard` 模式下应归并到这 5 份主文档；在 `full` 模式下可以拆分，但不能少于这些信息。
+环境检查的最小前置文档是 `00-environment-safety-gate.md`，它必须先于任何连接 MySQL、MongoDB、Redis、MQ、Nacos、Elasticsearch 或外部 API 的动作。
 
 ## 最低要求
 
@@ -38,6 +40,18 @@
 - 测试用例确认状态和修复确认状态
 - 已批准用例基线版本
 - `workflow-state.json` 同步状态
+
+### 1a. `00-environment-safety-gate.md`
+
+至少记录：
+- 环境 Profile
+- 环境类型
+- 连接目标
+- 允许的 smoke check
+- 禁止操作
+- 写边界
+- 凭证策略
+- gate 结果
 
 ### 2. `10-test-scope-criteria.md`
 

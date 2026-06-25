@@ -57,6 +57,13 @@ verificationRequired: true
 ## 环境依赖
 -
 
+## 环境 Profile
+- profilePath：
+- profileVersion：
+- credentialPolicy：masked_by_default | plaintext_user_approved
+- credentialApprovalBasis：
+- runOverrides：
+
 ## 环境写入边界
 - environmentType：
 - productionWriteAllowed：false

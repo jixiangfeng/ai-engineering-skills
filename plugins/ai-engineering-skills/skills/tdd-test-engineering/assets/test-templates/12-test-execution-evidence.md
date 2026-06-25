@@ -29,7 +29,11 @@ verificationRequired: true
 ## 环境安全确认
 - environmentType：
 - productionWriteAllowed：false
+- envProfile：
+- credentialPolicy：masked_by_default | plaintext_user_approved
+- credentialApprovalBasis：
 - credentialExposure：
+- handoffCredentialAllowed：
 - cleanupReady：
 - P0 依赖环境是否通过：
 

@@ -14,6 +14,7 @@
 - `workflow-state.json`：与 Markdown state 同步 `workflow`、`runPath`、`status`、`currentStage`、`latestDocument`、`nextAction`、`codeEditsAllowed`
 
 ## Slim Artifact Shape
+- `00-environment-safety-gate.md`：先确认环境 profile、危险操作禁用项、写边界和凭证策略
 - `10-test-scope-criteria.md`：记录测试目标、来源输入、范围边界和验收标准
 - `11-test-plan-cases.md`：合并影响范围、测试策略、测试矩阵、测试数据和环境依赖
 - `12-test-execution-evidence.md`：记录环境验证、测试实现、执行命令、结果、失败分类和回归记录
@@ -28,6 +29,7 @@
 - 测试策略：Service 集成测试覆盖权限过滤，Controller 测试覆盖接口响应，Mapper 测试覆盖时间条件。
 - 已批准用例：`TC-REPORT-001`、`TC-REPORT-002`、`TC-REPORT-003`。
 - 环境：测试库和测试账号可用，权限服务使用测试 stub。
+- 环境安全门：MySQL / MongoDB / Redis / MQ / Nacos / 外部 API 均已确认只允许只读 smoke check，危险写入已禁用。
 - 执行证据：运行 `mvn -pl report-service -Dtest=ReportPermissionServiceTest test`，失败 1 个认证前过滤用例。
 - 结论：测试已稳定复现生产代码缺陷，可 handoff 到 `software-delivery-pipeline`。
 

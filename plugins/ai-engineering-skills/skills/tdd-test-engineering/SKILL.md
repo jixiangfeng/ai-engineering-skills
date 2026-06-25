@@ -87,9 +87,10 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Do not disable, delete, weaken, or bypass failing tests to claim success.
 - Do not claim "tests passed" without command, result, scope, and evidence.
 - Separate product defects, test bugs, test data issues, environment blockers, external dependency failures, and unclear requirements.
-- Never print full passwords, tokens, private keys, production credentials, or real sensitive user data. Record only masked values and credential sources.
+- Default to masked credentials and credential sources. If the user explicitly says the run is personal/local and allows plaintext, full test-environment credentials may be recorded in the environment profile or current test run document, with the credential policy and risk noted. Do not record production credentials, private keys, or real sensitive user data unless the user explicitly requests it for a private local document.
 - P0/P1 approved cases cannot be skipped without a recorded blocker and user confirmation.
 - Environment validation is required before integration tests that depend on databases, Redis, MQ, config centers, external services, or AI model endpoints.
+- Environment safety gate must run before any external connection attempt. Do not connect to MySQL, MongoDB, Redis, MQ, Nacos, Elasticsearch, model endpoints, or third-party services until `00-environment-safety-gate.md` confirms the environment profile, allowed operations, forbidden operations, credential policy, and write boundary.
 - All generated workflow documents must be written in Simplified Chinese, except code identifiers, commands, paths, error text, API names, and quoted user text.
 - Follow `docs/workflow-contracts.zh-CN.md` `Stop and Confirmation Contract`; when it triggers, update state and stop for human confirmation.
 - `workflow-state.json` must strictly match `docs/workflow-state-schema.json`: include `schemaVersion`, `runPath`, `executionMode`, `modePath`, risk and confirmation fields, and `updatedAt`; do not write ad hoc extra fields.
@@ -103,6 +104,15 @@ Load `docs/domain-modules/java-spring-microservice.zh-CN.md` for the full checkl
 - Fix approval: do not edit production code unless the user explicitly approves the TDD implementation/fix path. Without approval, create `test-to-delivery-handoff.md`; if root cause is unclear, create `test-to-debug-handoff.md`.
 - Regression gate: after an approved fix, run the original failing case, adjacent scenarios, current module tests, and all approved cases unless a blocker is recorded and confirmed.
 - Completion gate: only mark `completed` when all approved cases ran or have confirmed blockers, P0/P1 cases are not silently skipped, failures are classified, environment/data state is clear, cleanup is handled or documented, and command/result/report evidence is complete. Otherwise mark `blocked` or `handoff_ready`.
+
+## Environment Profiles and Credentials
+
+- Prefer stable environment profiles for repeated test environments: `workflow/env-profiles/<env>.yaml` or `workflow/env-profiles/<env>.md`.
+- In each test run, reference the environment profile and record only run-specific overrides in `11-test-plan-cases.md`.
+- In `12-test-execution-evidence.md`, record which profile was used, whether credentials were plaintext or masked, and the validation result.
+- If plaintext credentials are used, mark `credentialPolicy=plaintext_user_approved`, record the user's approval basis, and avoid copying those credentials into handoff files unless the downstream workflow truly needs them.
+- `workflow-state.json` must not store credentials because its schema is workflow state only.
+- The first executable step is the environment safety gate. It permits read-only smoke checks such as `SELECT 1`, MongoDB `ping`, Redis `PING`, Nacos read-only config fetch, and HTTP health checks. It must explicitly forbid destructive SQL, bulk writes, collection drops, Redis flushes, production MQ publishes, config mutations, real payments, real SMS, and real user pushes unless the user gives explicit one-off approval for a private local environment.
 
 ## Test Engineering Analysis
 
@@ -159,19 +169,33 @@ Project root resolution:
 Required files:
 
 0. `test-workflow-state.md`
-1. `10-test-scope-criteria.md`
-2. `11-test-plan-cases.md`
-3. `12-test-execution-evidence.md`
-4. `13-test-summary.md`
-5. `test-to-delivery-handoff.md` (optional, when production-code fix is needed)
-6. `test-to-debug-handoff.md` (optional, when root cause is unclear)
-7. `workflow-state.json`
+1. `00-environment-safety-gate.md`
+2. `10-test-scope-criteria.md`
+3. `11-test-plan-cases.md`
+4. `12-test-execution-evidence.md`
+5. `13-test-summary.md`
+6. `test-to-delivery-handoff.md` (optional, when production-code fix is needed)
+7. `test-to-debug-handoff.md` (optional, when root cause is unclear)
+8. `workflow-state.json`
 
 Use the templates in `assets/test-templates/`.
 
 After each stage document is written or updated, update `test-workflow-state.md` and `workflow-state.json` with current stage, status, latest document, next action, blockers, and whether code edits are allowed. If `workflow/index.md` exists in the project root, update the run entry as well.
 
 ## Default Slim Flow
+
+### Stage 0 — Environment Safety Gate
+
+Goal: prevent unsafe external operations before any environment connection.
+
+Actions:
+- read or create the referenced environment profile
+- classify the environment as local, test, staging, or production
+- record connection targets for MySQL, MongoDB, Redis, MQ, Nacos, Elasticsearch, external APIs, and model endpoints when used
+- record credential policy, including whether plaintext credentials are user-approved
+- list allowed smoke checks and forbidden operations per service
+- write `00-environment-safety-gate.md`
+- block environment validation and test execution if the profile is missing, the environment looks production-like, write boundaries are unclear, or any destructive operation is requested without explicit one-off approval
 
 ### Stage 1 — Scope and Criteria
 

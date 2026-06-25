@@ -409,7 +409,8 @@ $tdd-test-engineering 跑一下这个模块回归
 - 先确认验收标准，再写测试。
 - 测试用例确认前，不扩大测试实现范围。
 - 默认不改生产代码；如果测试暴露生产缺陷且未获修复授权，生成 handoff。
-- 对环境、数据和凭证只记录脱敏信息。
+- 环境和数据默认记录脱敏凭证；用户明确允许个人本地明文时，可在环境 profile 或本轮测试文档记录完整测试环境凭证，并标注 `credentialPolicy` 和批准依据。
+- 第一件事是环境安全门：先确认环境 profile、允许操作、禁止危险操作和写边界，再做任何外部连接。
 - `workflow-state.json` 记录当前阶段、是否允许改测试代码、是否允许改生产代码、阻塞项和下一步。
 - 默认按 scope + plan + evidence + summary 的瘦身阶段推进；需要时再展开为更细的测试分析链路。
 
@@ -424,6 +425,7 @@ workflow/tests/<YYYY-MM-DD>-<slug>/
 文件（默认瘦身）：
 
 ```text
+00-environment-safety-gate.md
 test-workflow-state.md
 10-test-scope-criteria.md
 11-test-plan-cases.md
