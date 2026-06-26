@@ -2,6 +2,13 @@
 name: tdd-test-engineering
 description: >-
   Test engineering workflow for requirements-to-tests, acceptance criteria, test case approval, environment validation, TDD or regression test implementation, execution evidence, issue reporting, and regression summaries. Use when the user asks to write or补充测试, run TDD, design test cases, produce testing evidence, perform regression testing, validate a feature before release, or turn a bug/finding/contract into executable tests.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [testing, tdd, regression, evidence, handoff]
+    related_skills: [workflow-bootstrap, codebase-orientation, code-review-triage, debug-root-cause, api-contract-design, data-migration-planning, software-delivery-pipeline]
 ---
 
 # TDD Test Engineering

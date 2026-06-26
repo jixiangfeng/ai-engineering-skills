@@ -2,6 +2,13 @@
 name: data-migration-planning
 description: >-
   Plan database/schema/data migrations with compatibility, rollout, rollback, validation SQL, risk analysis, and implementation handoff. Use before changing tables, entities, stored data, migrations, cleanup scripts, or backfills.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [data-migration, schema, rollback, validation, handoff]
+    related_skills: [workflow-bootstrap, codebase-orientation, tdd-test-engineering, software-delivery-pipeline]
 ---
 
 # Data Migration Planning

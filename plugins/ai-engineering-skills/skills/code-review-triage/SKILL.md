@@ -2,6 +2,13 @@
 name: code-review-triage
 description: >-
   Review code before making changes, produce a Chinese issue triage document with evidence and severity, require the human to choose which findings to fix, then create a confirmed fix plan. Use when the user asks Codex to review code, audit a module, find problems, or modify code based on review findings.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [review, triage, findings, evidence, handoff]
+    related_skills: [workflow-bootstrap, codebase-orientation, tdd-test-engineering, software-delivery-pipeline]
 ---
 
 # Code Review Triage

@@ -2,6 +2,13 @@
 name: debug-root-cause
 description: >-
   Read-first root-cause debugging workflow for errors, failing tests, startup failures, API bugs, regressions, or unexpected runtime behavior. Produces Chinese reproduction, evidence, hypothesis, trace, root cause, fix options, verification, and optional handoff to software-delivery-pipeline.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [debugging, root-cause, reproduction, evidence, handoff]
+    related_skills: [workflow-bootstrap, codebase-orientation, tdd-test-engineering, software-delivery-pipeline]
 ---
 
 # Debug Root Cause

@@ -25,7 +25,7 @@ WORKFLOW_ACTIONS: dict[str, list[str]] = {
     "debug-root-cause": ["排查", "启动失败", "启动不了", "失败", "报错", "异常", "根因", "测试为什么失败"],
     "api-contract-design": ["设计接口", "接口返回结构", "请求响应契约", "接口契约", "返回字段", "响应结构", "DTO", "VO", "days[]"],
     "data-migration-planning": ["表结构", "数据迁移", "回填", "迁移", "schema", "兼容"],
-    "tdd-test-engineering": ["TDD", "写测试", "补测试", "测试用例", "回归测试", "测试证据", "验收标准", "发布前测试", "测试矩阵"],
+    "tdd-test-engineering": ["TDD", "写测试", "补测试", "测试覆盖", "失败测试", "测试用例", "跑回归", "回归", "回归测试", "测试证据", "验收标准", "发布前测试", "测试矩阵"],
     "software-delivery-pipeline": ["实现", "修复", "落地", "改代码", "改一下", "小改", "handoff 落地", "修复选中的", "直接改", "改完告诉我验证结果", "局部 bugfix"],
     "codebase-orientation": ["熟悉", "梳理", "看懂", "项目地图", "调用链", "怎么跑"],
 }
@@ -41,6 +41,7 @@ ROUTING_PRIORITY = [
 ]
 
 REVIEW_FIRST_PATTERNS = ["review 后修复", "review 再改", "先 review", "审查后修复", "先列问题"]
+TEST_FIRST_PATTERNS = ["写测试", "补测试", "测试覆盖", "先写失败测试", "跑回归", "回归测试", "测试证据"]
 CONFIRMED_HANDOFF_PATTERNS = ["按这个 handoff 落地", "按已确认 handoff", "修复选中的", "修复已确认"]
 
 
@@ -62,6 +63,9 @@ def route(prompt: str) -> tuple[str, str]:
 
     if any(pattern in prompt for pattern in REVIEW_FIRST_PATTERNS):
         return "code-review-triage", "yes"
+
+    if any(pattern in prompt for pattern in TEST_FIRST_PATTERNS):
+        return "tdd-test-engineering", "yes"
 
     for workflow in ROUTING_PRIORITY:
         if workflow in matched_workflows:

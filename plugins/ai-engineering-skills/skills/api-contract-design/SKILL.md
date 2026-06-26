@@ -2,6 +2,13 @@
 name: api-contract-design
 description: >-
   Design API contracts, DTOs, request/response shapes, error codes, compatibility rules, and validation behavior before implementation. Produces Chinese contract documents and optional handoff to software-delivery-pipeline.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [api, contracts, dto, compatibility, handoff]
+    related_skills: [workflow-bootstrap, codebase-orientation, tdd-test-engineering, software-delivery-pipeline]
 ---
 
 # API Contract Design

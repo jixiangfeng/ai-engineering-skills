@@ -4,6 +4,13 @@ description: >-
   Route software-engineering tasks into the correct workflow skill before acting.
   Use when a user asks to understand a codebase, review code, debug a failure,
   design an API contract, plan a data migration, design or run tests, or implement a feature/fix.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [routing, workflows, software-engineering, handoff, skills]
+    related_skills: [codebase-orientation, code-review-triage, debug-root-cause, api-contract-design, data-migration-planning, tdd-test-engineering, software-delivery-pipeline]
 ---
 
 # Workflow Bootstrap
@@ -147,8 +154,9 @@ When multiple workflows could apply and the user has not already made the sequen
 2. `debug-root-cause` for failures, exceptions, startup issues, broken tests, regressions, or root-cause work.
 3. `api-contract-design` for interface, DTO/VO, field placement, response shape, validation, or compatibility contracts.
 4. `data-migration-planning` for schema, stored data, backfill, cleanup, compatibility, rollout, or rollback.
-5. `software-delivery-pipeline` for implementation-ready work or an explicitly confirmed handoff.
-6. `codebase-orientation` for project/module understanding, call paths, maps, and read-only familiarization.
+5. `tdd-test-engineering` for explicit test-first work, test case design, regression execution, or test evidence.
+6. `software-delivery-pipeline` for implementation-ready work or an explicitly confirmed handoff.
+7. `codebase-orientation` for project/module understanding, call paths, maps, and read-only familiarization.
 
 Use the more specific workflow before the more general one.
 

@@ -36,6 +36,15 @@ python3 "${REPO_ROOT}/scripts/check-example-completeness.py" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/tdd-test-engineering/examples" \
   "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/examples"
 
+python3 "${REPO_ROOT}/scripts/check-template-placeholders.py" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/api-contract-design/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/code-review-triage/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/codebase-orientation/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/data-migration-planning/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/debug-root-cause/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/tdd-test-engineering/assets" \
+  "${REPO_ROOT}/plugins/ai-engineering-skills/skills/software-delivery-pipeline/assets"
+
 python3 "${REPO_ROOT}/scripts/check-handoff-contracts.py" \
   --matrix "${REPO_ROOT}/docs/handoff-routing-matrix.json"
 

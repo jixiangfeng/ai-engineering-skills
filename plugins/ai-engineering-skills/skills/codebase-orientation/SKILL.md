@@ -2,6 +2,13 @@
 name: codebase-orientation
 description: >-
   Read-only orientation workflow for quickly understanding a codebase, module, business domain, or execution flow. Produces Chinese project maps, business flow notes, technical call paths, data contracts, open questions, and optional handoff documents for code-review-triage or software-delivery-pipeline.
+version: 1.0.0
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [orientation, codebase, read-only, mapping, handoff]
+    related_skills: [workflow-bootstrap, code-review-triage, api-contract-design, data-migration-planning, software-delivery-pipeline]
 ---
 
 # Codebase Orientation

@@ -19,6 +19,9 @@ review 后修复这些问题	code-review-triage	yes
 这个字段要回填历史数据	data-migration-planning	yes
 表结构迁移并实现	data-migration-planning	yes
 schema 兼容和回滚方案	data-migration-planning	yes
+写测试覆盖这个回归	tdd-test-engineering	yes
+先写失败测试再修复	tdd-test-engineering	yes
+跑一下这个模块回归	tdd-test-engineering	yes
 按这个 handoff 落地	software-delivery-pipeline	yes
 修复选中的 findings	software-delivery-pipeline	yes
 按已确认 handoff 落地	software-delivery-pipeline	yes
